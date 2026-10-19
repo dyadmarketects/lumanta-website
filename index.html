@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Lumanta | Rise Above the Static</title>
+<meta name="description" content="Lumanta is a mindfulness app built around four simple steps: Catch, Shift, Rise and Repeat. Notice your thoughts. See your patterns. Free up space. Coming soon to the App Store and Google Play.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#faf7f5">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Lumanta">
+<meta property="og:title" content="Lumanta | Rise Above the Static">
+<meta property="og:description" content="Notice your thoughts. See your patterns. Free up space. Coming soon to the App Store and Google Play.">
+<meta property="og:image" content="https://dyadmarketects.github.io/lumanta-website/assets/img/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="preload" href="assets/fonts/dazzle-unicase-thin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/dazzle-unicase-medium.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/data/lumanta-particles.bin" as="fetch" type="application/octet-stream" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+<script>document.documentElement.classList.replace('no-js','js');</script>
+</head>
+<body class="is-loading">
+
+<!-- ============ LOADER: the Lumanta particles assemble, then we fly through the ring ============ -->
+<div class="loader" id="loader" aria-hidden="true">
+  <canvas class="loader__canvas" id="loaderCanvas"></canvas>
+  <img class="loader__fallback" src="assets/img/lumanta-mark.webp" alt="">
+  <div class="loader__brand">
+    <p class="loader__word" aria-label="Lumanta"><span>L</span><span>U</span><span>M</span><span>A</span><span>N</span><span>T</span><span>A</span></p>
+    <p class="loader__tag"><i></i>Rise above the static<i></i></p>
+  </div>
+  <div class="loader__progress"><span class="loader__bar" id="loaderBar"></span><span class="loader__pct" id="loaderPct">00</span></div>
+</div>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <a class="nav__logo" href="#top" aria-label="Lumanta home">
+    <img src="assets/img/lumanta-lockup.webp" width="720" height="189" alt="Lumanta: Rise above the static">
+  </a>
+  <nav class="nav__links" aria-label="Main">
+    <a href="#app">App</a>
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#contact">Contact</a>
+    <a class="nav__donate" href="#donate">Donate <span aria-hidden="true">&rarr;</span></a>
+  </nav>
+  <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+</header>
+
+<div class="menu" id="menu" aria-hidden="true">
+  <nav aria-label="Mobile">
+    <a href="#app">App</a>
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#contact">Contact</a>
+    <a href="#donate">Donate &rarr;</a>
+  </nav>
+  <img class="menu__mark" src="assets/img/lumanta-mark.webp" alt="">
+</div>
+
+<main id="main">
+
+<!-- ============ HERO ============ -->
+<div class="hero-wrap" id="top">
+  <section class="hero" id="hero" aria-label="Rise above the static">
+    <div class="hero__media">
+      <video class="hero__video" id="heroVideo" muted loop playsinline autoplay preload="auto" poster="assets/img/hero-poster.jpg"
+             data-src-hd="assets/video/hero-1080.mp4" data-src-sd="assets/video/hero-720.mp4"></video>
+      <div class="hero__wash"></div>
+      <canvas class="hero__mesh" id="heroMesh" aria-hidden="true"></canvas>
+    </div>
+
+    <div class="hero__content">
+      <h1 class="headline" aria-label="Rise above the static">
+        <span class="headline__line headline__rise" aria-hidden="true"><span class="ch">R</span> <span class="ch">I</span> <span class="ch">S</span> <span class="ch">E</span></span>
+        <span class="headline__line headline__above" aria-hidden="true"><span class="ch">A</span> <span class="ch">B</span> <span class="ch ch--mark"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""></span> <span class="ch">V</span> <span class="ch">E</span></span>
+        <span class="headline__line headline__static" aria-hidden="true"><span class="ch">T</span> <span class="ch">H</span> <span class="ch">E</span> <span class="gap"></span> <span class="ch">S</span> <span class="ch">T</span> <span class="ch">A</span> <span class="ch">T</span> <span class="ch">I</span> <span class="ch">C</span></span>
+      </h1>
+      <hr class="hero__rule">
+      <p class="hero__tag">
+        <span class="tl">Notice your thoughts.</span>
+        <span class="tl">See your patterns.</span>
+        <strong class="tl">Free Up Space.</strong>
+      </p>
+      <div class="stores hero__stores">
+        <a class="store" href="#contact" aria-label="Coming soon to the App Store">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.6c-.02-2.45 2-3.63 2.09-3.69-1.14-1.67-2.91-1.9-3.54-1.92-1.5-.15-2.94.89-3.7.89-.77 0-1.94-.87-3.19-.85-1.64.02-3.15.95-4 2.42-1.71 2.96-.44 7.34 1.22 9.74.81 1.17 1.78 2.49 3.05 2.44 1.22-.05 1.69-.79 3.17-.79 1.48 0 1.9.79 3.19.76 1.32-.02 2.15-1.19 2.95-2.37.93-1.36 1.31-2.68 1.33-2.75-.03-.01-2.55-.98-2.57-3.88zM13.95 5.43c.67-.82 1.13-1.95 1-3.08-.97.04-2.14.65-2.84 1.46-.62.72-1.17 1.87-1.02 2.98 1.08.08 2.19-.55 2.86-1.36z"/></svg>
+          <span><small>Coming soon to the</small><b>App Store</b></span>
+        </a>
+        <a class="store" href="#contact" aria-label="Coming soon to Google Play">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.2v17.6c0 .55.6.9 1.08.62l14.9-8.8a.72.72 0 0 0 0-1.24L6.08 2.58A.72.72 0 0 0 5 3.2z"/></svg>
+          <span><small>Coming soon to</small><b>Google Play</b></span>
+        </a>
+      </div>
+    </div>
+
+    <a class="scroll-cue" href="#method" aria-label="Scroll to explore">
+      <span class="scroll-cue__text">Scroll to explore</span>
+      <span class="scroll-cue__mouse"><i></i></span>
+    </a>
+  </section>
+</div>
+
+<!-- ============ METHOD: Catch / Shift / Rise / Repeat ============ -->
+<section class="pillars" id="method" aria-label="The Lumanta method">
+  <article class="pillar pillar--catch">
+    <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="2.25"/><path d="M4 12.5c1.8 4.2 4.6 6.5 8 6.5s6.2-2.3 8-6.5"/><path d="M12 2.5v0.5"/></svg>
+    <h2 class="pillar__title" data-anim="up">Catch</h2>
+    <p class="pillar__text" data-anim="up">Notice a thought the moment it shows up, before it quietly runs the rest of your day.</p>
+    <a class="pill" href="#app" data-anim="up">Learn More</a>
+  </article>
+  <article class="pillar pillar--shift">
+    <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h11a4.5 4.5 0 0 1 0 9H8"/><path d="M10.5 14.5 8 17l2.5 2.5"/></svg>
+    <h2 class="pillar__title" data-anim="up">Shift</h2>
+    <p class="pillar__text" data-anim="up">Turn it over and look again. A new angle is often all it takes to loosen an old pattern.</p>
+    <a class="pill" href="#app" data-anim="up">Learn More</a>
+  </article>
+  <article class="pillar pillar--rise">
+    <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19h18"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><path d="M12 10V4"/><path d="M9.5 6.5 12 4l2.5 2.5"/></svg>
+    <h2 class="pillar__title" data-anim="up">Rise</h2>
+    <p class="pillar__text" data-anim="up">Let it lift. Free up the space it was taking and breathe a little easier.</p>
+    <a class="pill" href="#app" data-anim="up">Learn More</a>
+  </article>
+  <article class="pillar pillar--repeat">
+    <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12a7 7 0 1 1-2.05-4.95"/><path d="M17.25 3.5v3.75H13.5"/><circle cx="12" cy="12" r="1.25"/></svg>
+    <h2 class="pillar__title" data-anim="up">Repeat</h2>
+    <p class="pillar__text" data-anim="up">Come back to it often. Small, steady reps help calm feel like second nature.</p>
+    <a class="pill" href="#app" data-anim="up">Learn More</a>
+  </article>
+</section>
+
+<!-- ============ THE STATIC: scroll-driven particle story ============ -->
+<section class="static" id="static" aria-label="Rise above the static">
+  <div class="static__stage">
+    <canvas class="static__canvas" id="staticCanvas" aria-hidden="true"></canvas>
+    <img class="static__fallback" src="assets/img/lumanta-mark.webp" alt="">
+    <div class="static__copy static__copy--1">
+      <p class="kicker">The static</p>
+      <h2>Thoughts loop. Patterns repeat.<br>The noise gets <em>loud.</em></h2>
+    </div>
+    <div class="static__copy static__copy--2">
+      <h2>Lumanta helps you <em>notice</em> it.</h2>
+    </div>
+    <div class="static__copy static__copy--3">
+      <h2 class="static__big"><span>Rise above</span><span>the static</span></h2>
+      <p class="static__steps">Catch it <i></i> Shift it <i></i> Rise <i></i> Repeat</p>
+    </div>
+    <p class="static__hint">Move your cursor through the light</p>
+  </div>
+</section>
+
+<!-- ============ THE APP: pinned phone walkthrough ============ -->
+<section class="app" id="app" aria-label="The Lumanta app">
+  <div class="app__stage">
+    <div class="app__text">
+      <p class="kicker">The app</p>
+      <h2 class="app__title">Four simple steps.<br><em>One clearer mind.</em></h2>
+      <ol class="app__steps">
+        <li class="is-active" data-step="0"><span class="num">01</span><span><b>Catch</b>Notice the thought as it shows up.</span></li>
+        <li data-step="1"><span class="num">02</span><span><b>Shift</b>Look at it from a new angle.</span></li>
+        <li data-step="2"><span class="num">03</span><span><b>Rise</b>Let it lift and make some room.</span></li>
+        <li data-step="3"><span class="num">04</span><span><b>Repeat</b>Come back. Small reps build calm.</span></li>
+      </ol>
+      <div class="stores app__stores">
+        <a class="store store--ink" href="#contact" aria-label="Coming soon to the App Store">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.6c-.02-2.45 2-3.63 2.09-3.69-1.14-1.67-2.91-1.9-3.54-1.92-1.5-.15-2.94.89-3.7.89-.77 0-1.94-.87-3.19-.85-1.64.02-3.15.95-4 2.42-1.71 2.96-.44 7.34 1.22 9.74.81 1.17 1.78 2.49 3.05 2.44 1.22-.05 1.69-.79 3.17-.79 1.48 0 1.9.79 3.19.76 1.32-.02 2.15-1.19 2.95-2.37.93-1.36 1.31-2.68 1.33-2.75-.03-.01-2.55-.98-2.57-3.88zM13.95 5.43c.67-.82 1.13-1.95 1-3.08-.97.04-2.14.65-2.84 1.46-.62.72-1.17 1.87-1.02 2.98 1.08.08 2.19-.55 2.86-1.36z"/></svg>
+          <span><small>Coming soon to the</small><b>App Store</b></span>
+        </a>
+        <a class="store store--ink" href="#contact" aria-label="Coming soon to Google Play">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.2v17.6c0 .55.6.9 1.08.62l14.9-8.8a.72.72 0 0 0 0-1.24L6.08 2.58A.72.72 0 0 0 5 3.2z"/></svg>
+          <span><small>Coming soon to</small><b>Google Play</b></span>
+        </a>
+      </div>
+    </div>
+
+    <div class="app__device">
+      <div class="phone" id="phone">
+        <div class="phone__screen">
+          <div class="phone__status"><span>9:41</span><span class="phone__notch"></span><span class="phone__sig"><i></i><i></i><i></i></span></div>
+          <p class="phone__hello">Good evening</p>
+          <div class="phone__ring">
+            <img src="assets/img/lumanta-mark.webp" alt="">
+            <div class="phone__icons">
+              <svg class="is-active" viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.25"/><path d="M4 12.5c1.8 4.2 4.6 6.5 8 6.5s6.2-2.3 8-6.5"/><path d="M12 2.5v0.5"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M4 8h11a4.5 4.5 0 0 1 0 9H8"/><path d="M10.5 14.5 8 17l2.5 2.5"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M3 19h18"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><path d="M12 10V4"/><path d="M9.5 6.5 12 4l2.5 2.5"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95"/><path d="M17.25 3.5v3.75H13.5"/><circle cx="12" cy="12" r="1.25"/></svg>
+            </div>
+          </div>
+          <div class="phone__cards">
+            <div class="phone__card is-active"><b>Catch</b><span>What's on your mind right now?</span></div>
+            <div class="phone__card"><b>Shift</b><span>Is there another way to see it?</span></div>
+            <div class="phone__card"><b>Rise</b><span>Breathe in. Let it lift.</span></div>
+            <div class="phone__card"><b>Repeat</b><span>Nice work. See you tomorrow.</span></div>
+          </div>
+          <span class="phone__btn">Begin</span>
+          <div class="phone__dots"><i class="is-active"></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+      <div class="app__glow" aria-hidden="true"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ABOUT: statement ============ -->
+<section class="about" id="about" aria-label="About Lumanta">
+  <p class="kicker" data-anim="up">About Lumanta</p>
+  <p class="statement" data-anim="words">Lumanta is a quiet place to notice your thoughts, see your patterns and free up space for what <em>matters most.</em></p>
+  <div class="about__mark" data-anim="scale"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""></div>
+</section>
+
+<!-- ============ RESEARCH ============ -->
+<section class="research" id="research" aria-label="Research">
+  <div class="research__head">
+    <p class="kicker" data-anim="up">Research</p>
+    <h2 class="research__title" data-anim="up">Grounded in <em>research.</em><br>Designed for real life.</h2>
+  </div>
+  <ul class="research__list">
+    <li data-anim="up"><span class="num">01</span><span class="research__label">The science behind each step</span><span class="research__note">Coming soon</span></li>
+    <li data-anim="up"><span class="num">02</span><span class="research__label">Partners and advisors</span><span class="research__note">Coming soon</span></li>
+    <li data-anim="up"><span class="num">03</span><span class="research__label">What early users are noticing</span><span class="research__note">Coming soon</span></li>
+  </ul>
+  <p class="research__foot" data-anim="up">Our research hub is on its way. <a href="#contact">Get notified when it's live &rarr;</a></p>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="faq" aria-label="Questions">
+  <h2 class="faq__title" data-anim="up">You may be <em>wondering.</em></h2>
+  <div class="faq__list">
+    <div class="faq__item" data-anim="up">
+      <button class="faq__q" aria-expanded="false"><span class="num">01</span><span>What is Lumanta?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>A mindfulness app built around four simple steps: Catch, Shift, Rise and Repeat. It helps you notice your thoughts, see your patterns and free up space.</p></div></div>
+    </div>
+    <div class="faq__item" data-anim="up">
+      <button class="faq__q" aria-expanded="false"><span class="num">02</span><span>When can I download it?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Lumanta is coming soon to the App Store and Google Play. Join the list below and we'll let you know the moment it's live.</p></div></div>
+    </div>
+    <div class="faq__item" data-anim="up">
+      <button class="faq__q" aria-expanded="false"><span class="num">03</span><span>Who is Lumanta for?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Anyone who wants a calmer, clearer relationship with their own thoughts. No experience needed.</p></div></div>
+    </div>
+    <div class="faq__item" data-anim="up">
+      <button class="faq__q" aria-expanded="false"><span class="num">04</span><span>How can I support Lumanta?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a"><div><p>Share it with someone who could use a little more quiet, or make a donation to help bring Lumanta to more people.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ JOIN / CONTACT / DONATE ============ -->
+<section class="join" id="contact" aria-label="Join the list">
+  <div class="join__bg" data-parallax><img src="assets/img/beach.jpg" alt="" width="1920" height="1080" loading="lazy"></div>
+  <div class="join__inner">
+    <img class="join__logo" src="assets/img/lumanta-stacked.webp" width="640" height="829" alt="Lumanta" data-anim="scale" loading="lazy">
+    <h2 class="join__title" data-anim="up">Be the first to <em>rise.</em></h2>
+    <p class="join__text" data-anim="up">Get a note the day Lumanta launches. No noise, we promise.</p>
+    <form class="join__form" id="joinForm" data-anim="up">
+      <label class="sr-only" for="email">Email address</label>
+      <input id="email" type="email" name="email" placeholder="Your email address" required autocomplete="email">
+      <button type="submit">Notify me</button>
+    </form>
+    <p class="join__thanks" id="joinThanks" role="status" hidden>Thank you! You're on the list.</p>
+    <div class="stores join__stores" data-anim="up">
+      <a class="store" href="#contact" aria-label="Coming soon to the App Store">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.37 12.6c-.02-2.45 2-3.63 2.09-3.69-1.14-1.67-2.91-1.9-3.54-1.92-1.5-.15-2.94.89-3.7.89-.77 0-1.94-.87-3.19-.85-1.64.02-3.15.95-4 2.42-1.71 2.96-.44 7.34 1.22 9.74.81 1.17 1.78 2.49 3.05 2.44 1.22-.05 1.69-.79 3.17-.79 1.48 0 1.9.79 3.19.76 1.32-.02 2.15-1.19 2.95-2.37.93-1.36 1.31-2.68 1.33-2.75-.03-.01-2.55-.98-2.57-3.88zM13.95 5.43c.67-.82 1.13-1.95 1-3.08-.97.04-2.14.65-2.84 1.46-.62.72-1.17 1.87-1.02 2.98 1.08.08 2.19-.55 2.86-1.36z"/></svg>
+        <span><small>Coming soon to the</small><b>App Store</b></span>
+      </a>
+      <a class="store" href="#contact" aria-label="Coming soon to Google Play">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.2v17.6c0 .55.6.9 1.08.62l14.9-8.8a.72.72 0 0 0 0-1.24L6.08 2.58A.72.72 0 0 0 5 3.2z"/></svg>
+        <span><small>Coming soon to</small><b>Google Play</b></span>
+      </a>
+    </div>
+    <div class="donate" id="donate" data-anim="up">
+      <p><b>Help more people rise above the static.</b> Your support brings Lumanta to people who need a little more quiet.</p>
+      <a class="pill pill--glow" href="#donate">Donate &rarr;</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand" data-anim="up">
+      <img src="assets/img/lumanta-lockup.webp" width="720" height="189" alt="Lumanta" loading="lazy">
+      <p>Notice your thoughts.<br>See your patterns.<br><b>Free Up Space.</b></p>
+    </div>
+    <nav class="footer__col" aria-label="Explore" data-anim="up">
+      <p class="kicker">Explore</p>
+      <a href="#app">App</a><a href="#about">About</a><a href="#research">Research</a><a href="#method">The method</a>
+    </nav>
+    <nav class="footer__col" aria-label="Connect" data-anim="up">
+      <p class="kicker">Connect</p>
+      <a href="#contact">Contact</a><a href="#donate">Donate</a><a href="#contact">Join the list</a>
+    </nav>
+  </div>
+  <div class="footer__bottom">
+    <span>&copy; 2026 Lumanta. All rights reserved.</span>
+    <span>Website by <a href="https://dyadgrow.com/" target="_blank" rel="noopener">DYAD Marketects</a></span>
+  </div>
+</footer>
+
+<script src="assets/js/vendor/gsap.min.js"></script>
+<script src="assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="assets/js/vendor/lenis.min.js"></script>
+<script src="assets/js/particles.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
