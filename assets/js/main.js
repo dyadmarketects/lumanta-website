@@ -252,6 +252,18 @@
   }
 
   /* ---------- Pillar icons draw themselves ---------- */
+  // Tap or click a card to pop it up (tap again or tap another card to settle it)
+  function pillarPop() {
+    const cards = $$(".pillar");
+    cards.forEach((c) => c.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      const on = !c.classList.contains("is-pop");
+      cards.forEach((o) => o.classList.remove("is-pop"));
+      c.classList.toggle("is-pop", on);
+    }));
+    document.addEventListener("click", (e) => { if (!e.target.closest(".pillar")) cards.forEach((o) => o.classList.remove("is-pop")); });
+  }
+
   function pillarIcons() {
     $$(".pillar").forEach((card) => {
       const shapes = $$("path, circle", $(".pillar__icon", card));
@@ -535,6 +547,7 @@
   heroMesh();
   heroScroll();
   pillarIcons();
+  pillarPop();
   reveals();
   staticSection();
   appSection();
