@@ -312,7 +312,7 @@
   function staticSection() {
     const section = $("#static"), stage = $(".static__stage");
     const c1 = $(".static__copy--1"), c2 = $(".static__copy--2"), c3 = $(".static__copy--3"), hint = $(".static__hint");
-    const eng = new LumantaParticles($("#staticCanvas"), { count: mobile ? 30000 : 72000, dprMax: mobile ? 1.5 : 2 });
+    const eng = new LumantaParticles($("#staticCanvas"), { count: mobile ? 24000 : 72000, dprMax: mobile ? 1.25 : 2 });
     if (!eng.ok) document.documentElement.classList.add("no-webgl");
     const night = [10, 15, 36], off = [250, 247, 245];
     let target = 0, cur = 0, mx = 0, my = 0, loaded = false;
@@ -325,7 +325,7 @@
     if (finePointer) {
       stage.addEventListener("pointermove", (e) => { eng.setMouse(e.clientX, e.clientY); mx = (e.clientX / innerWidth) * 2 - 1; my = (e.clientY / innerHeight) * 2 - 1; });
       stage.addEventListener("pointerleave", () => { eng.mouse.has = false; mx = my = 0; });
-      stage.addEventListener("pointerdown", () => { pulse = 1.3; });
+      stage.addEventListener("pointerdown", () => { pulse = 0.9; });
     }
     // Touch: tap or drag a finger through the light (passive, so the page still scrolls)
     const touchAt = (e) => {
@@ -333,12 +333,19 @@
       clearTimeout(releaseT);
       eng.setMouse(t.clientX, t.clientY); mx = (t.clientX / innerWidth) * 2 - 1; my = (t.clientY / innerHeight) * 2 - 1;
     };
-    stage.addEventListener("touchstart", (e) => { touchAt(e); pulse = 1.4; }, { passive: true });
+    stage.addEventListener("touchstart", (e) => { touchAt(e); pulse = 0.9; }, { passive: true });
     stage.addEventListener("touchmove", touchAt, { passive: true });
-    stage.addEventListener("touchend", () => { releaseT = setTimeout(() => { eng.mouse.has = false; mx = my = 0; }, 1100); }, { passive: true });
+    const release = () => { releaseT = setTimeout(() => { eng.mouse.has = false; mx = my = 0; }, 350); };
+    stage.addEventListener("touchend", release, { passive: true });
+    stage.addEventListener("touchcancel", release, { passive: true });
 
     // Progress in "vh scrolled since the section's top reached the viewport bottom"
-    const total = () => (section.offsetHeight / innerHeight) * 100;   // 430
+    // Section length in vh, measured once per layout change (not every frame)
+    let T = (section.offsetHeight / innerHeight) * 100;
+    ScrollTrigger.addEventListener("refresh", () => { T = (section.offsetHeight / innerHeight) * 100; });
+    // write a style only when its value actually changes
+    const cache = new Map();
+    const css = (el, prop, val) => { const k = el.className + prop; if (cache.get(k) !== val) { cache.set(k, val); el.style[prop] = val; } };
     ScrollTrigger.create({ trigger: section, start: "top bottom", end: "bottom bottom",
       onUpdate: (s) => { target = s.progress; } });
     let underNav = false;
@@ -348,7 +355,7 @@
       onToggle: (s) => { if (s.isActive && loaded !== null) eng.start(frame); else eng.stop(); } });
 
     function apply(p) {
-      const T = total(), s = p * T; // s in vh
+      const s = p * T; // s in vh
       const rs = (a, b) => seg(s, a, b);
       const form = reduced ? 1 : smooth(rs(190, 330));
       const light = reduced ? 1 : smooth(rs(292, 352));
@@ -360,21 +367,21 @@
       u.rise = smooth(rs(T - 26, T + 40));
       u.alpha = 1 - rs(T - 6, T + 50) * 0.9;
       u.mouseOn = form > 0.97 && s < T - 20 ? 1 + pulse : 0;
-      const zWide = eng.fitZ(mobile ? 0.5 : 0.42) * 0.9, zLogo = eng.fitZ(mobile ? 0.86 : 0.64);
+      const zWide = eng.fitZ(mobile ? 0.5 : 0.42) * 0.9, zLogo = eng.fitZ(mobile ? 0.72 : 0.64);
       eng.cam.z = mix(zWide, zLogo, form);
       eng.cam.y = mix(0, 0.25, form);
       const bg = night.map((v, i) => Math.round(mix(v, off[i], light)));
-      stage.style.backgroundColor = "rgb(" + bg.join(",") + ")";
+      css(stage, "backgroundColor", "rgb(" + bg.join(",") + ")");
       if (underNav) setNavTheme(light > 0.5 ? "light" : "dark");
       // copy timings
       const o1 = rs(30, 95) * (1 - rs(165, 195));
       const o2 = rs(212, 238) * (1 - rs(285, 308));
       const o3 = rs(342, 372) * (1 - rs(T - 18, T + 6));
-      c1.style.opacity = o1; c1.style.transform = "translateY(" + ((1 - rs(30, 95)) * 40 - rs(165, 195) * 40) + "px)";
-      c2.style.opacity = o2; c2.style.transform = "translateY(" + ((1 - rs(212, 238)) * 40 - rs(285, 308) * 40) + "px)";
-      c3.style.opacity = o3; c3.style.transform = "scale(" + (0.94 + 0.06 * rs(342, 372)) + ") translateY(" + (-rs(T - 18, T + 6) * 40) + "px)";
-      c3.style.filter = "blur(" + ((1 - rs(342, 372)) * 8).toFixed(2) + "px)";
-      hint.style.opacity = rs(372, 388) * (1 - rs(T - 30, T - 14));
+      css(c1, "opacity", o1.toFixed(3)); css(c1, "transform", "translate3d(0," + ((1 - rs(30, 95)) * 40 - rs(165, 195) * 40).toFixed(1) + "px,0)");
+      css(c2, "opacity", o2.toFixed(3)); css(c2, "transform", "translate3d(0," + ((1 - rs(212, 238)) * 40 - rs(285, 308) * 40).toFixed(1) + "px,0)");
+      css(c3, "opacity", o3.toFixed(3)); css(c3, "transform", "translate3d(0," + (-rs(T - 18, T + 6) * 40).toFixed(1) + "px,0) scale(" + (0.94 + 0.06 * rs(342, 372)).toFixed(4) + ")");
+      if (!mobile) css(c3, "filter", "blur(" + ((1 - rs(342, 372)) * 8).toFixed(1) + "px)");
+      css(hint, "opacity", (rs(372, 388) * (1 - rs(T - 30, T - 14))).toFixed(3));
     }
 
     function frame(e) {
@@ -382,7 +389,7 @@
       pulse *= 0.94;
       apply(cur);
       const f = e.u.form;
-      e.cam.ry = Math.sin(f * Math.PI) * 0.75 + Math.sin(e.u.time * 0.35) * 0.2 * f + mx * 0.18 * f;
+      e.cam.ry = Math.sin(f * Math.PI) * 0.75 + Math.sin(e.u.time * 0.35) * (mobile ? 0.12 : 0.2) * f + mx * (mobile ? 0.06 : 0.18) * f;
       e.cam.rx = Math.sin(f * Math.PI) * 0.12 + my * 0.1 * f;
     }
     apply(0);

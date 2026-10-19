@@ -230,7 +230,7 @@ em { font-style: normal; }
 .static__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
 .static__fallback { display: none; position: absolute; left: 50%; top: 50%; width: 40vmin; transform: translate(-50%, -50%); }
 .no-webgl .static__fallback { display: block; }
-.static__copy { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 7vw; pointer-events: none; opacity: 0; }
+.static__copy { will-change: opacity, transform; position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 0 7vw; pointer-events: none; opacity: 0; }
 .static__copy h2 { font: 300 clamp(30px, 4.3vw, 72px)/1.22 var(--head); letter-spacing: .05em; }
 .static__copy--1 .kicker { color: var(--aqua); margin-bottom: 26px; }
 .static__copy--3 { color: var(--ink); }

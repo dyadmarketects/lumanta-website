@@ -114,7 +114,7 @@
     this.opts = Object.assign({ count: 72000, dprMax: 2, fov: 60 }, opts || {});
     this.u = { time: 0, burst: 0, form: 0, useStatic: 0, staticAmt: 0, explode: 0, rise: 0, size: 1, alpha: 1, additive: 1, light: 0, mouseOn: 0 };
     this.cam = { z: 15, y: 0, ry: 0, rx: 0 };
-    this.mouse = { x: 0, y: 0, z: 0, has: false, ndcX: 0, ndcY: 0 };
+    this.mouse = { x: 0, y: 0, z: 0, has: false, ndcX: 0, ndcY: 0, sx: 0, sy: 0, k: 0, init: false };
     this.running = false;
     this.ok = false;
     this._t0 = performance.now();
@@ -217,7 +217,12 @@
       const ry = dy * uy + fy, rz = dy * uz + fz, rx = dx;              // ray dir
       const s = -ez / rz;
       this.mouse.x = rx * s; this.mouse.y = ey + ry * s; this.mouse.z = 0;
+      if (!this.mouse.init) { this.mouse.sx = this.mouse.x; this.mouse.sy = this.mouse.y; this.mouse.init = true; }
     }
+    // ease the pointer position and its strength so taps and drags glide in and out
+    this.mouse.sx += (this.mouse.x - this.mouse.sx) * 0.2;
+    this.mouse.sy += (this.mouse.y - this.mouse.sy) * 0.2;
+    this.mouse.k += ((this.mouse.has ? 1 : 0) - this.mouse.k) * (this.mouse.has ? 0.12 : 0.06);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.disable(gl.DEPTH_TEST);
     gl.useProgram(this.prog);
@@ -227,7 +232,7 @@
     gl.uniform1f(L.uTime, u.time); gl.uniform1f(L.uBurst, u.burst); gl.uniform1f(L.uForm, u.form);
     gl.uniform1f(L.uUseStatic, u.useStatic); gl.uniform1f(L.uStatic, u.staticAmt); gl.uniform1f(L.uExplode, u.explode);
     gl.uniform1f(L.uRise, u.rise); gl.uniform1f(L.uSize, u.size); gl.uniform1f(L.uDpr, this.dpr);
-    gl.uniform1f(L.uMouseOn, this.mouse.has ? u.mouseOn : 0); gl.uniform3f(L.uMouse, this.mouse.x, this.mouse.y, this.mouse.z);
+    gl.uniform1f(L.uMouseOn, u.mouseOn * this.mouse.k); gl.uniform3f(L.uMouse, this.mouse.sx, this.mouse.sy, 0);
     gl.uniform1f(L.uAlpha, u.alpha); gl.uniform1f(L.uAdditive, u.additive); gl.uniform1f(L.uLight, u.light); gl.uniform1f(L.uLightF, u.light);
     gl.drawArrays(gl.POINTS, 0, this.n);
   };
