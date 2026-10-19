@@ -65,8 +65,8 @@
     mark: $(".ch--mark img"),
     stat: $$(".headline__static .ch"),
     rule: $(".hero__rule"),
-    tag: $$(".hero__tag .tl"),
-    stores: $$(".hero__stores .store"),
+    tag: $$(".hero__tag .tl, .hero__desc"),
+    stores: $$(".hero__stores .store, .hero__more"),
     cue: $$(".scroll-cue > span"),
     mesh: $("#heroMesh"),
   };
@@ -297,7 +297,6 @@
       }
     });
     // Founder portrait drifts inside its arch
-    if (!reduced) gsap.fromTo(".founder__arch img", { yPercent: -6 }, { yPercent: 6, ease: "none", scrollTrigger: { trigger: ".founder", start: "top bottom", end: "bottom top", scrub: true } });
     // Parallax for the join background
     if (!reduced) gsap.fromTo(".join__bg", { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: ".join", start: "top bottom", end: "bottom top", scrub: true } });
   }
@@ -316,10 +315,22 @@
     loadParticleData(PARTICLES_URL).then((d) => { if (eng.ok) { eng.setData(d); loaded = true; } });
     Object.assign(eng.u, { burst: 1, useStatic: 1, staticAmt: 1, form: 0, additive: 1, light: 0 });
 
+    let pulse = 0, releaseT = 0;
+    hint.textContent = finePointer ? "Move your cursor through the light" : "Touch the light";
     if (finePointer) {
       stage.addEventListener("pointermove", (e) => { eng.setMouse(e.clientX, e.clientY); mx = (e.clientX / innerWidth) * 2 - 1; my = (e.clientY / innerHeight) * 2 - 1; });
       stage.addEventListener("pointerleave", () => { eng.mouse.has = false; mx = my = 0; });
+      stage.addEventListener("pointerdown", () => { pulse = 1.3; });
     }
+    // Touch: tap or drag a finger through the light (passive, so the page still scrolls)
+    const touchAt = (e) => {
+      const t = e.touches && e.touches[0]; if (!t) return;
+      clearTimeout(releaseT);
+      eng.setMouse(t.clientX, t.clientY); mx = (t.clientX / innerWidth) * 2 - 1; my = (t.clientY / innerHeight) * 2 - 1;
+    };
+    stage.addEventListener("touchstart", (e) => { touchAt(e); pulse = 1.4; }, { passive: true });
+    stage.addEventListener("touchmove", touchAt, { passive: true });
+    stage.addEventListener("touchend", () => { releaseT = setTimeout(() => { eng.mouse.has = false; mx = my = 0; }, 1100); }, { passive: true });
 
     // Progress in "vh scrolled since the section's top reached the viewport bottom"
     const total = () => (section.offsetHeight / innerHeight) * 100;   // 430
@@ -343,7 +354,7 @@
       u.size = (mobile ? 1.15 : 1) * (0.95 - 0.12 * light);
       u.rise = smooth(rs(T - 26, T + 40));
       u.alpha = 1 - rs(T - 6, T + 50) * 0.9;
-      u.mouseOn = form > 0.97 && s < T - 20 ? 1 : 0;
+      u.mouseOn = form > 0.97 && s < T - 20 ? 1 + pulse : 0;
       const zWide = eng.fitZ(mobile ? 0.5 : 0.42) * 0.9, zLogo = eng.fitZ(mobile ? 0.86 : 0.64);
       eng.cam.z = mix(zWide, zLogo, form);
       eng.cam.y = mix(0, 0.25, form);
@@ -358,11 +369,12 @@
       c2.style.opacity = o2; c2.style.transform = "translateY(" + ((1 - rs(212, 238)) * 40 - rs(285, 308) * 40) + "px)";
       c3.style.opacity = o3; c3.style.transform = "scale(" + (0.94 + 0.06 * rs(342, 372)) + ") translateY(" + (-rs(T - 18, T + 6) * 40) + "px)";
       c3.style.filter = "blur(" + ((1 - rs(342, 372)) * 8).toFixed(2) + "px)";
-      hint.style.opacity = finePointer ? rs(372, 388) * (1 - rs(T - 30, T - 14)) : 0;
+      hint.style.opacity = rs(372, 388) * (1 - rs(T - 30, T - 14));
     }
 
     function frame(e) {
       cur += (target - cur) * (reduced ? 1 : 0.12);
+      pulse *= 0.94;
       apply(cur);
       const f = e.u.form;
       e.cam.ry = Math.sin(f * Math.PI) * 0.75 + Math.sin(e.u.time * 0.35) * 0.2 * f + mx * 0.18 * f;
@@ -375,7 +387,7 @@
      THE APP: pinned phone walkthrough of Catch / Shift / Rise / Repeat
      ========================================================================== */
   function appSection() {
-    const steps = $$(".app__steps li"), phone = $("#phone"), glow = $(".app__glow");
+    const steps = $$(".app__steps li"), phone = $("#phone"), glows = $$(".app__glow");
     const icons = $$(".phone__icons svg"), cards = $$(".phone__card"), dots = $$(".phone__dots i");
     const colors = ["var(--ember)", "var(--glow)", "var(--aqua)", "var(--lumen)"];
     let current = -1;
@@ -383,7 +395,7 @@
       if (i === current) return; current = i;
       [steps, icons, cards, dots].forEach((list) => list.forEach((n, k) => n.classList.toggle("is-active", k === i)));
       phone.style.setProperty("--sc", colors[i]);
-      glow.style.setProperty("--sc", colors[i]);
+      glows.forEach((g) => g.style.setProperty("--sc", colors[i]));
     }
     setStep(0);
     const st = ScrollTrigger.create({ trigger: ".app", start: "top top", end: "bottom bottom",
@@ -399,8 +411,43 @@
     gsap.timeline({ scrollTrigger: { trigger: ".app", start: "bottom bottom", end: "bottom 15%", scrub: 0.7 } })
       .to(".app__device", { y: () => -innerHeight * 0.2, opacity: 0, ease: "power1.in" }, 0)
       .to(".app__text", { y: -80, opacity: 0, ease: "power1.in" }, 0);
-    // A gentle idle float on the phone
-    gsap.to(phone, { y: -12, duration: 3.2, ease: "sine.inOut", yoyo: true, repeat: -1 });
+    // A pronounced float on the phone
+    gsap.to(phone, { y: -30, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1 });
+    gsap.fromTo(phone, { rotation: -1.6 }, { rotation: 1.6, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
+
+    // Particle rings radiating from behind the phone in the current step's color
+    const rc = $("#appRings"), rx = rc.getContext("2d");
+    const hex = ["#ff9a3c", "#ff5f8a", "#2edfcf", "#1e6fd9"];
+    let rings = [], lastSpawn = -9, on = false, raf = 0, dpr = 1, RW = 0, RH = 0;
+    const rsize = () => { dpr = Math.min(devicePixelRatio || 1, 2); RW = rc.width = rc.clientWidth * dpr; RH = rc.height = rc.clientHeight * dpr; };
+    rsize(); addEventListener("resize", rsize);
+    const spawn = (t) => {
+      const n = mobile ? 80 : 140, dots = [];
+      for (let k = 0; k < n; k++) dots.push({ a: (k / n) * Math.PI * 2 + Math.random() * 0.06, j: (Math.random() - 0.5) * 0.08, s: 1 + Math.random() * 2.2, o: 0.55 + Math.random() * 0.45 });
+      rings.push({ t0: t, c: hex[Math.max(0, current)], dots, spin: (Math.random() - 0.5) * 0.8 });
+    };
+    const LIFE = 4.4;
+    function drawRings(ts) {
+      const t = ts / 1000;
+      if (t - lastSpawn > 1.15) { spawn(t); lastSpawn = t; }
+      rx.clearRect(0, 0, RW, RH);
+      const cx = RW / 2, cy = RH / 2, base = Math.min(RW, RH) * 0.16, maxR = Math.min(RW, RH) * 0.5;
+      rings = rings.filter((r) => t - r.t0 < LIFE);
+      for (const r of rings) {
+        const life = (t - r.t0) / LIFE, R = base + (maxR - base) * (1 - Math.pow(1 - life, 2.2));
+        const fade = Math.sin(Math.PI * Math.min(1, life)) * 0.9;
+        rx.fillStyle = r.c;
+        for (const d of r.dots) {
+          const ang = d.a + r.spin * life, rr = R * (1 + d.j);
+          rx.globalAlpha = fade * d.o;
+          rx.beginPath(); rx.arc(cx + Math.cos(ang) * rr, cy + Math.sin(ang) * rr, d.s * dpr * (1.25 - life * 0.5), 0, Math.PI * 2); rx.fill();
+        }
+      }
+      rx.globalAlpha = 1;
+      if (on) raf = requestAnimationFrame(drawRings);
+    }
+    ScrollTrigger.create({ trigger: ".app", start: "top bottom", end: "bottom top",
+      onToggle: (s) => { on = s.isActive; cancelAnimationFrame(raf); if (on) raf = requestAnimationFrame(drawRings); } });
   }
 
   /* ==========================================================================
@@ -441,7 +488,7 @@
       if (menu.classList.contains("is-open")) toggleMenu(false);
       const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 80;
       let y = id === "#top" ? 0 : el.getBoundingClientRect().top + (lenis ? lenis.scroll : scrollY);
-      if (["#research", "#donate", "#about", "#founder"].includes(id)) y -= navH + 10;
+      if (["#research", "#donate", "#about", "#founder", "#what"].includes(id)) y -= navH + 10;
       if (id === "#method") y = $(".hero-wrap").offsetHeight - innerHeight;
       scrollToY(y);
     });

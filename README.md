@@ -8,9 +8,10 @@ Interactive HTML mockup of the lumanta.co redesign, designed and built by **DYAD
 1. **Loader**: the Lumanta logomark assembles from 72,000 particles (from the Particlefy export, recolored with the real logo gradient), then the camera flies through the ring to reveal the site.
 2. **Hero**: full-bleed looping HD video, RISE / ABOVE / THE STATIC lockup (the O in ABOVE is the logomark), "Coming soon" store buttons, scroll-to-explore cue, animated wave mesh.
 3. **Catch / Shift / Rise / Repeat** cards that slide over the hero, with self-drawing icons.
-4. **The static**: a pinned, scroll-driven particle story. Noise gathers into the logomark and the background dawns from night to the Lumanta off white. The cursor pushes the particles on desktop.
-5. **The app**: pinned phone walkthrough of the four steps.
-6. About statement, Research (placeholder), FAQ, Join the list + Donate, footer.
+4. **The static**: a pinned, scroll-driven particle story. Noise gathers into the logomark and the background dawns from night to the Lumanta off white. The cursor (desktop) or a finger (mobile) pushes the particles.
+5. **What is Lumanta**: the product description with a tap animation.
+6. **The app**: pinned phone walkthrough of the four steps, with color glows and particle rings behind the phone.
+7. About statement, **Meet the founder** (Julie McCord), Research (placeholder), FAQ, Join the list + Donate, footer.
 
 Every asset has a scroll intro and exit animation (GSAP ScrollTrigger + Lenis smooth scroll). Reduced-motion users get a static version.
 
