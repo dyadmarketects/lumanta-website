@@ -484,6 +484,17 @@
       ScrollTrigger.create({ trigger: sec, start: "top 50%", end: "bottom 50%", onToggle: (s) => a.classList.toggle("is-current", s.isActive) });
     });
 
+    // Social sidebar: on phones it waits until the hero has passed and steps aside at the footer
+    const social = $("#social"), heroWrap = $(".hero-wrap"), footer = $(".footer");
+    const socialState = () => {
+      const y = lenis ? lenis.scroll : scrollY;
+      social.classList.toggle("is-hero", y < heroWrap.offsetHeight - innerHeight * 0.9);
+      social.classList.toggle("is-foot", y + innerHeight > footer.offsetTop + 60);
+    };
+    socialState();
+    if (lenis) lenis.on("scroll", socialState);
+    addEventListener("scroll", socialState, { passive: true });
+
     const toggleMenu = (open) => {
       menu.classList.toggle("is-open", open); menu.setAttribute("aria-hidden", !open);
       burger.setAttribute("aria-expanded", open); burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
