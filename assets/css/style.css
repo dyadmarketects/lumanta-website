@@ -108,6 +108,7 @@ em { font-style: normal; }
 }
 .nav.is-hidden { transform: translateY(-110%); }
 .nav[data-theme="sand"] { --nav-rgb: 242, 236, 231; }
+.nav[data-theme="mist"] { --nav-rgb: 230, 240, 248; }
 .nav[data-theme="dark"] { --nav-rgb: 12, 17, 40; --nav-ink: #faf7f5; --nav-ink-2: rgba(250, 247, 245, .8); box-shadow: 0 6px 24px rgba(0, 0, 0, .3); }
 .nav__logo { position: relative; display: block; }
 .nav__logo img { height: clamp(40px, 3.6vw, 54px); width: auto; transition: opacity .5s; }
@@ -471,7 +472,9 @@ em { font-style: normal; }
 }
 
 /* ---------- What is Lumanta ---------- */
-.what { display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(40px, 7vw, 120px); align-items: start; padding: clamp(100px, 18vh, 200px) var(--pad) clamp(80px, 14vh, 160px); }
+.what { position: relative; display: grid; grid-template-columns: .85fr 1.15fr; gap: clamp(40px, 7vw, 120px); align-items: start; padding: clamp(100px, 18vh, 200px) var(--pad) clamp(90px, 16vh, 180px);
+  background: radial-gradient(70% 60% at 85% 10%, rgba(255, 255, 255, .7) 0%, rgba(255, 255, 255, 0) 70%), linear-gradient(165deg, #dff5f2 0%, #e6ecfb 52%, #f6ebf4 100%);
+  border-radius: clamp(40px, 6vw, 110px) clamp(40px, 6vw, 110px) 0 0; }
 .what__head { position: sticky; top: calc(var(--nav-h) + 50px); }
 .what__title { margin-top: 20px; font: 300 clamp(34px, 4.2vw, 72px)/1.12 var(--head); letter-spacing: .04em; text-transform: uppercase; }
 .what__title em { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 500; }
@@ -494,3 +497,9 @@ em { font-style: normal; }
   .what__head { position: static; }
   .what__tap { margin: 30px auto 20px; }
 }
+
+/* Founder photo placeholder (swap for .founder__photo when the headshot arrives) */
+.founder__placeholder { position: absolute; inset: 14px 14px 0; border-radius: 999px 999px 0 0; border: 1.5px dashed rgba(34, 36, 58, .22); border-bottom: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; color: var(--ink-2); }
+.founder__placeholder svg { width: 34%; max-width: 140px; fill: none; stroke: rgba(34, 36, 58, .28); stroke-width: 1.2; stroke-linecap: round; }
+.founder__placeholder span { font: 500 11px/1 var(--body); letter-spacing: .3em; text-transform: uppercase; }

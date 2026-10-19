@@ -23,7 +23,7 @@
 <link rel="preload" href="assets/fonts/dazzle-unicase-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/data/lumanta-particles.bin" as="fetch" type="application/octet-stream" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css?v=20261019-5">
 <script>
 document.documentElement.classList.replace('no-js','js');
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -166,7 +166,7 @@ window.scrollTo(0, 0);
 </section>
 
 <!-- ============ WHAT IS LUMANTA ============ -->
-<section class="what" id="what" aria-label="What is Lumanta" data-nav="light">
+<section class="what" id="what" aria-label="What is Lumanta" data-nav="mist">
   <div class="what__head">
     <p class="kicker" data-anim="up">What is Lumanta?</p>
     <h2 class="what__title" data-anim="up">A simple <em>thought-awareness</em> tool.</h2>
@@ -255,7 +255,12 @@ window.scrollTo(0, 0);
   <div class="founder__media" data-anim="scale">
     <div class="founder__glow" aria-hidden="true"></div>
     <div class="founder__arch" aria-hidden="true"></div>
-    <img class="founder__photo" src="assets/img/julie-mccord.webp" width="705" height="591" alt="Julie McCord, founder of Lumanta" loading="lazy">
+    <!-- PHOTO PLACEHOLDER: replace this div with
+         <img class="founder__photo" src="assets/img/julie-mccord.webp" width="..." height="..." alt="Julie McCord, founder of Lumanta"> -->
+    <div class="founder__placeholder" role="img" aria-label="Photo of Julie McCord coming soon">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.6"/><path d="M4.5 20.5c.9-4 3.9-6.3 7.5-6.3s6.6 2.3 7.5 6.3"/></svg>
+      <span>Photo coming soon</span>
+    </div>
     <img class="founder__mark" src="assets/img/lumanta-mark.webp" width="480" height="531" alt="" loading="lazy">
   </div>
   <div class="founder__text">
@@ -376,7 +381,7 @@ window.scrollTo(0, 0);
 <script src="assets/js/vendor/gsap.min.js"></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
-<script src="assets/js/particles.js"></script>
-<script src="assets/js/main.js"></script>
+<script src="assets/js/particles.js?v=20261019-5"></script>
+<script src="assets/js/main.js?v=20261019-5"></script>
 </body>
 </html>

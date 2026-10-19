@@ -49,14 +49,19 @@
   }, { threshold: 0 }).observe(document.getElementById("hero"));
   // Loop safety net: restart on "ended" (some browsers ignore loop after a src swap) and nudge playback if it stalls
   video.addEventListener("ended", () => { video.currentTime = 0; playVideo(); });
+  // Keep it playing: if the hero is on screen and the browser paused or stalled it, start it again
   let lastT = -1, stuck = 0;
   setInterval(() => {
     if (document.hidden || !heroOnScreen || document.body.classList.contains("is-loading")) return;
-    if (video.currentTime === lastT && !video.paused) {
-      if (++stuck >= 3) { stuck = 0; if (video.duration && video.duration - video.currentTime < 0.5) video.currentTime = 0; playVideo(); }
+    if (video.paused) { playVideo(); stuck = 0; lastT = video.currentTime; return; }
+    if (video.currentTime === lastT) {
+      if (++stuck >= 2) { stuck = 0; if (video.duration && video.duration - video.currentTime < 0.6) video.currentTime = 0; playVideo(); }
     } else stuck = 0;
     lastT = video.currentTime;
   }, 1000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && heroOnScreen) playVideo(); });
+  // Phones in low power mode block autoplay until the first touch: start it on the first interaction
+  ["touchstart", "pointerdown", "keydown", "wheel"].forEach((t) => addEventListener(t, () => { if (heroOnScreen && video.paused) playVideo(); }, { passive: true }));
 
   /* ---------- Initial hidden states for the hero intro ---------- */
   const heroBits = {
