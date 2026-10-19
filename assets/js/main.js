@@ -42,6 +42,16 @@
     video.addEventListener("error", res, { once: true });
   });
   const playVideo = () => { const p = video.play(); if (p && p.catch) p.catch(() => {}); };
+  // Loop safety net: restart on "ended" (some browsers ignore loop after a src swap) and nudge playback if it stalls
+  video.addEventListener("ended", () => { video.currentTime = 0; playVideo(); });
+  let lastT = -1, stuck = 0;
+  setInterval(() => {
+    if (document.hidden || document.body.classList.contains("is-loading")) return;
+    if (video.currentTime === lastT && !video.paused) {
+      if (++stuck >= 3) { stuck = 0; if (video.duration && video.duration - video.currentTime < 0.5) video.currentTime = 0; playVideo(); }
+    } else stuck = 0;
+    lastT = video.currentTime;
+  }, 1000);
 
   /* ---------- Initial hidden states for the hero intro ---------- */
   const heroBits = {
