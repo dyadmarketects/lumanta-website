@@ -36,11 +36,10 @@ assets/fonts/               Dazzle Unicase (Thin/Light/Medium/Bold), Poppins
 | Aurora aqua | `#2EDFCF` |
 | Lumanta off white | `#FAF7F5` |
 
-Headers: Dazzle Unicase (Thin, Light, Medium), set in caps. Body: Poppins.
+Headers: Dazzle Unicase (Thin, Light, Medium), set in caps, licensed for web use. Body: Poppins (OFL).
 
 ## Before launch
 - Body copy for the cards, app steps, FAQ and research section is placeholder writing for client review.
 - The join form and Donate button are not wired to a service yet.
-- Confirm the Dazzle Unicase license covers web embedding (Poppins is OFL).
 - `<meta name="robots" content="noindex">` keeps this preview out of search. Remove it at launch.
 - To use lumanta.co: Settings > Pages > Custom domain, then point the domain's DNS to GitHub Pages.
