@@ -24,7 +24,12 @@
 <link rel="preload" href="assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/data/lumanta-particles.bin" as="fetch" type="application/octet-stream" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css">
-<script>document.documentElement.classList.replace('no-js','js');</script>
+<script>
+document.documentElement.classList.replace('no-js','js');
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (location.hash) history.replaceState(null, '', location.pathname + location.search);
+window.scrollTo(0, 0);
+</script>
 </head>
 <body class="is-loading">
 
@@ -42,9 +47,10 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <!-- ============ NAV ============ -->
-<header class="nav" id="nav">
+<header class="nav" id="nav" data-theme="light">
   <a class="nav__logo" href="#top" aria-label="Lumanta home">
-    <img src="assets/img/lumanta-lockup.webp" width="720" height="189" alt="Lumanta: Rise above the static">
+    <img class="nav__logo-ink" src="assets/img/lumanta-lockup.webp" width="720" height="189" alt="Lumanta: Rise above the static">
+    <img class="nav__logo-light" src="assets/img/lumanta-lockup-light.webp" width="720" height="189" alt="" aria-hidden="true">
   </a>
   <nav class="nav__links" aria-label="Main">
     <a href="#app">App</a>
@@ -70,7 +76,7 @@
 <main id="main">
 
 <!-- ============ HERO ============ -->
-<div class="hero-wrap" id="top">
+<div class="hero-wrap" id="top" data-nav="light">
   <section class="hero" id="hero" aria-label="Rise above the static">
     <div class="hero__media">
       <video class="hero__video" id="heroVideo" muted loop playsinline autoplay preload="auto" poster="assets/img/hero-poster.jpg"
@@ -111,7 +117,7 @@
 </div>
 
 <!-- ============ METHOD: Catch / Shift / Rise / Repeat ============ -->
-<section class="pillars" id="method" aria-label="The Lumanta method">
+<section class="pillars" id="method" aria-label="The Lumanta method" data-nav="light">
   <article class="pillar pillar--catch">
     <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="2.25"/><path d="M4 12.5c1.8 4.2 4.6 6.5 8 6.5s6.2-2.3 8-6.5"/><path d="M12 2.5v0.5"/></svg>
     <h2 class="pillar__title" data-anim="up">Catch</h2>
@@ -139,7 +145,7 @@
 </section>
 
 <!-- ============ THE STATIC: scroll-driven particle story ============ -->
-<section class="static" id="static" aria-label="Rise above the static">
+<section class="static" id="static" aria-label="Rise above the static" data-nav="auto">
   <div class="static__stage">
     <canvas class="static__canvas" id="staticCanvas" aria-hidden="true"></canvas>
     <img class="static__fallback" src="assets/img/lumanta-mark.webp" alt="">
@@ -159,7 +165,7 @@
 </section>
 
 <!-- ============ THE APP: pinned phone walkthrough ============ -->
-<section class="app" id="app" aria-label="The Lumanta app">
+<section class="app" id="app" aria-label="The Lumanta app" data-nav="light">
   <div class="app__stage">
     <div class="app__text">
       <p class="kicker">The app</p>
@@ -212,14 +218,41 @@
 </section>
 
 <!-- ============ ABOUT: statement ============ -->
-<section class="about" id="about" aria-label="About Lumanta">
+<section class="about" id="about" aria-label="About Lumanta" data-nav="light">
   <p class="kicker" data-anim="up">About Lumanta</p>
   <p class="statement" data-anim="words">Lumanta is a quiet place to notice your thoughts, see your patterns and free up space for what <em>matters most.</em></p>
   <div class="about__mark" data-anim="scale"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""></div>
 </section>
 
+<!-- ============ FOUNDER ============ -->
+<section class="founder" id="founder" aria-label="Meet the founder" data-nav="light">
+  <div class="founder__media" data-anim="scale">
+    <div class="founder__glow" aria-hidden="true"></div>
+    <div class="founder__arch"><img src="assets/img/julie-mccord.webp" width="700" height="900" alt="Julie McCord, founder of Lumanta" loading="lazy"></div>
+    <img class="founder__mark" src="assets/img/lumanta-mark.webp" width="480" height="531" alt="" loading="lazy">
+  </div>
+  <div class="founder__text">
+    <p class="kicker" data-anim="up">Meet the founder</p>
+    <h2 class="founder__name" data-anim="up">Julie <em>McCord</em></h2>
+    <p class="founder__role" data-anim="up">Founder of Lumanta <i></i> Background in human resources</p>
+    <p class="founder__lead" data-anim="up">Julie's story is coming soon.</p>
+    <div class="founder__cards">
+      <article class="founder__card" data-anim="up">
+        <span class="num">01</span>
+        <h3>Why she created Lumanta</h3>
+        <p class="soon">Coming soon</p>
+      </article>
+      <article class="founder__card" data-anim="up">
+        <span class="num">02</span>
+        <h3>Her background in human resources</h3>
+        <p class="soon">Coming soon</p>
+      </article>
+    </div>
+  </div>
+</section>
+
 <!-- ============ RESEARCH ============ -->
-<section class="research" id="research" aria-label="Research">
+<section class="research" id="research" aria-label="Research" data-nav="sand">
   <div class="research__head">
     <p class="kicker" data-anim="up">Research</p>
     <h2 class="research__title" data-anim="up">Grounded in <em>research.</em><br>Designed for real life.</h2>
@@ -233,7 +266,7 @@
 </section>
 
 <!-- ============ FAQ ============ -->
-<section class="faq" aria-label="Questions">
+<section class="faq" aria-label="Questions" data-nav="light">
   <h2 class="faq__title" data-anim="up">You may be <em>wondering.</em></h2>
   <div class="faq__list">
     <div class="faq__item" data-anim="up">
@@ -256,7 +289,7 @@
 </section>
 
 <!-- ============ JOIN / CONTACT / DONATE ============ -->
-<section class="join" id="contact" aria-label="Join the list">
+<section class="join" id="contact" aria-label="Join the list" data-nav="light">
   <div class="join__bg" data-parallax><img src="assets/img/beach.jpg" alt="" width="1920" height="1080" loading="lazy"></div>
   <div class="join__inner">
     <img class="join__logo" src="assets/img/lumanta-stacked.webp" width="640" height="829" alt="Lumanta" data-anim="scale" loading="lazy">
@@ -288,7 +321,7 @@
 </main>
 
 <!-- ============ FOOTER ============ -->
-<footer class="footer">
+<footer class="footer" data-nav="sand">
   <div class="footer__top">
     <div class="footer__brand" data-anim="up">
       <img src="assets/img/lumanta-lockup.webp" width="720" height="189" alt="Lumanta" loading="lazy">
@@ -296,7 +329,7 @@
     </div>
     <nav class="footer__col" aria-label="Explore" data-anim="up">
       <p class="kicker">Explore</p>
-      <a href="#app">App</a><a href="#about">About</a><a href="#research">Research</a><a href="#method">The method</a>
+      <a href="#app">App</a><a href="#about">About</a><a href="#founder">Our founder</a><a href="#research">Research</a><a href="#method">The method</a>
     </nav>
     <nav class="footer__col" aria-label="Connect" data-anim="up">
       <p class="kicker">Connect</p>
@@ -305,7 +338,11 @@
   </div>
   <div class="footer__bottom">
     <span>&copy; 2026 Lumanta. All rights reserved.</span>
-    <span>Website by <a href="https://dyadgrow.com/" target="_blank" rel="noopener">DYAD Marketects</a></span>
+    <a class="footer__credit" href="https://dyadgrow.com/" target="_blank" rel="noopener">
+      <span>Website by</span>
+      <img src="assets/img/dyad-logo.webp" width="240" height="75" alt="DYAD Marketects" loading="lazy">
+      <span class="footer__credit-name">DYAD Marketects</span>
+    </a>
   </div>
 </footer>
 

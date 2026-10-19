@@ -42,11 +42,16 @@
     video.addEventListener("error", res, { once: true });
   });
   const playVideo = () => { const p = video.play(); if (p && p.catch) p.catch(() => {}); };
+  let heroOnScreen = true;
+  new IntersectionObserver((entries) => {
+    heroOnScreen = entries[0].isIntersecting;
+    if (heroOnScreen) { if (!document.body.classList.contains("is-loading")) playVideo(); } else video.pause();
+  }, { threshold: 0 }).observe(document.getElementById("hero"));
   // Loop safety net: restart on "ended" (some browsers ignore loop after a src swap) and nudge playback if it stalls
   video.addEventListener("ended", () => { video.currentTime = 0; playVideo(); });
   let lastT = -1, stuck = 0;
   setInterval(() => {
-    if (document.hidden || document.body.classList.contains("is-loading")) return;
+    if (document.hidden || !heroOnScreen || document.body.classList.contains("is-loading")) return;
     if (video.currentTime === lastT && !video.paused) {
       if (++stuck >= 3) { stuck = 0; if (video.duration && video.duration - video.currentTime < 0.5) video.currentTime = 0; playVideo(); }
     } else stuck = 0;
@@ -62,7 +67,8 @@
     rule: $(".hero__rule"),
     tag: $$(".hero__tag .tl"),
     stores: $$(".hero__stores .store"),
-    cue: $(".scroll-cue"),
+    cue: $$(".scroll-cue > span"),
+    mesh: $("#heroMesh"),
   };
   if (!reduced) {
     gsap.set([...heroBits.rise, ...heroBits.above, ...heroBits.stat], { yPercent: 70, opacity: 0, filter: "blur(10px)" });
@@ -70,24 +76,29 @@
     gsap.set(heroBits.rule, { scaleX: 0 });
     gsap.set([...heroBits.tag, ...heroBits.stores], { y: 26, opacity: 0 });
     gsap.set(heroBits.cue, { opacity: 0, y: 14 });
+    gsap.set(heroBits.mesh, { "--mi": 0 });
     gsap.set("#nav", { yPercent: -110 });
   }
 
   function heroIntro() {
-    if (reduced) return;
+    if (reduced) { gsap.set(heroBits.mesh, { "--mi": 1 }); return; }
     const tl = gsap.timeline();
-    tl.to("#nav", { yPercent: 0, duration: 1.1, ease: "power3.out" }, 0.25)
-      .fromTo("#heroVideo", { scale: 1.14 }, { scale: 1, duration: 2.8, ease: "power2.out" }, 0)
-      .to(heroBits.rise, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 1.5, stagger: 0.09, ease: "expo.out" }, 0.25)
-      .to(heroBits.above, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 1.5, stagger: 0.08, ease: "expo.out" }, 0.42)
-      .to(heroBits.mark, { scale: 1, rotation: 0, opacity: 1, duration: 2, ease: "expo.out" }, 0.55)
-      .to(heroBits.stat, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 1.3, stagger: 0.045, ease: "expo.out" }, 0.62)
-      .to(heroBits.rule, { scaleX: 1, duration: 1.5, ease: "expo.inOut" }, 0.8)
-      .to(heroBits.tag, { y: 0, opacity: 1, duration: 1.1, stagger: 0.13, ease: "power3.out" }, 1.0)
-      .to(heroBits.stores, { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power3.out" }, 1.3)
-      .to(heroBits.cue, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 1.6);
+    tl.to("#nav", { yPercent: 0, duration: 0.8, ease: "power3.out" }, 0.1)
+      .fromTo("#heroVideo", { scale: 1.12 }, { scale: 1, duration: 1.8, ease: "power2.out" }, 0)
+      .to(heroBits.rise, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 1, stagger: 0.05, ease: "expo.out" }, 0.1)
+      .to(heroBits.above, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 1, stagger: 0.045, ease: "expo.out" }, 0.2)
+      .to(heroBits.mark, { scale: 1, rotation: 0, opacity: 1, duration: 1.3, ease: "expo.out" }, 0.28)
+      .to(heroBits.stat, { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.9, stagger: 0.025, ease: "expo.out" }, 0.32)
+      .to(heroBits.rule, { scaleX: 1, duration: 0.9, ease: "expo.inOut" }, 0.4)
+      .to(heroBits.tag, { y: 0, opacity: 1, duration: 0.75, stagger: 0.07, ease: "power3.out" }, 0.5)
+      .to(heroBits.stores, { y: 0, opacity: 1, duration: 0.7, stagger: 0.07, ease: "power3.out" }, 0.66)
+      .to(heroBits.cue, { y: 0, opacity: 1, duration: 0.7, ease: "power2.out" }, 0.85)
+      .to(heroBits.mesh, { "--mi": 1, duration: 1.4, ease: "power2.out" }, 0.45);
     return tl;
   }
+
+  const navEl = document.getElementById("nav");
+  function setNavTheme(t) { if (navEl.dataset.theme !== t) navEl.dataset.theme = t; }
 
   /* ==========================================================================
      LOADER
@@ -100,7 +111,7 @@
   }
 
   function runLoader() {
-    const MIN = reduced ? 0.3 : 4.0, MAX = 9.5;
+    const MIN = reduced ? 0.3 : 2.6, MAX = 8;
     const t0 = performance.now();
     const bar = $("#loaderBar"), pct = $("#loaderPct");
     const word = $$(".loader__word span"), tag = $(".loader__tag");
@@ -119,8 +130,8 @@
 
     // Words of the wordmark appear while the logomark assembles
     if (!reduced) {
-      gsap.to(word, { opacity: 1, duration: 1.2, stagger: 0.09, ease: "power2.out", delay: 1.4 });
-      gsap.to(tag, { opacity: 1, duration: 1.2, ease: "power2.out", delay: 2.3 });
+      gsap.to(word, { opacity: 1, duration: 0.8, stagger: 0.06, ease: "power2.out", delay: 0.7 });
+      gsap.to(tag, { opacity: 1, duration: 0.8, ease: "power2.out", delay: 1.2 });
     } else { gsap.set([word, tag], { opacity: 1 }); }
 
     const dataP = loadParticleData(PARTICLES_URL).then((d) => {
@@ -134,10 +145,10 @@
       else {
         eng.cam.z = zFit + 6; eng.cam.ry = -1.1;
         gsap.timeline()
-          .to(eng.u, { burst: 1, duration: 1.3, ease: "power3.out" }, 0)
-          .to(eng.u, { form: 1, duration: 2.8, ease: "power2.inOut" }, 0.6)
-          .to(eng.cam, { z: zFit, duration: 3.6, ease: "power3.out" }, 0)
-          .to(eng.cam, { ry: 0, duration: 3.8, ease: "power3.out" }, 0);
+          .to(eng.u, { burst: 1, duration: 0.9, ease: "power3.out" }, 0)
+          .to(eng.u, { form: 1, duration: 1.9, ease: "power2.inOut" }, 0.35)
+          .to(eng.cam, { z: zFit, duration: 2.4, ease: "power3.out" }, 0)
+          .to(eng.cam, { ry: 0, duration: 2.6, ease: "power3.out" }, 0);
       }
       eng.start((e) => { e.cam.rx = Math.sin(e.u.time * 0.6) * 0.06; });
     }).catch(() => { dataOk = 1; document.documentElement.classList.add("no-webgl"); });
@@ -150,7 +161,7 @@
     const maxWait = new Promise((r) => setTimeout(r, MAX * 1000));
     Promise.race([Promise.all([dataP, videoReady, minWait, document.fonts ? document.fonts.ready : 0]), maxWait]).then(() => {
       dataOk = fontsOk = vidOk = 1;
-      setTimeout(exit, reduced ? 0 : 450);
+      setTimeout(exit, reduced ? 0 : 150);
     });
 
     function exit() {
@@ -161,12 +172,12 @@
         return;
       }
       const tl = gsap.timeline({ onComplete: done });
-      tl.to([".loader__brand", ".loader__progress"], { opacity: 0, y: 12, duration: 0.6, ease: "power2.in" }, 0)
-        .to(eng.u, { explode: 1, duration: 1.7, ease: "power2.in" }, 0.1)
-        .to(eng.cam, { z: 1.2, duration: 1.7, ease: "power3.in" }, 0.1)
-        .to(eng.u, { alpha: 0, duration: 0.6, ease: "power1.in" }, 1.15)
-        .to(loader, { "--hole": "160vmax", duration: 1.35, ease: "power2.in" }, 0.6)
-        .add(() => { heroIntro(); }, 1.05);
+      tl.to([".loader__brand", ".loader__progress"], { opacity: 0, y: 12, duration: 0.4, ease: "power2.in" }, 0)
+        .to(eng.u, { explode: 1, duration: 1.2, ease: "power2.in" }, 0.05)
+        .to(eng.cam, { z: 1.2, duration: 1.2, ease: "power3.in" }, 0.05)
+        .to(eng.u, { alpha: 0, duration: 0.45, ease: "power1.in" }, 0.8)
+        .to(loader, { "--hole": "160vmax", duration: 1, ease: "power2.in" }, 0.35)
+        .add(() => { heroIntro(); }, 0.7);
     }
     function done() {
       gsap.ticker.remove(progressTick);
@@ -199,7 +210,7 @@
       ctx.lineWidth = 1 * dpr;
       for (let i = 0; i < LINES; i++) {
         const v = i / (LINES - 1);
-        const a = (0.1 + 0.26 * Math.sin(v * Math.PI)).toFixed(3), g = ctx.createLinearGradient(0, 0, W, 0);
+        const a = (0.12 + 0.3 * Math.sin(v * Math.PI)).toFixed(3), g = ctx.createLinearGradient(0, 0, W, 0);
         g.addColorStop(0, "rgba(30,111,217,0)"); g.addColorStop(0.08, "rgba(30,111,217," + a + ")");
         g.addColorStop(0.7, "rgba(30,111,217," + a + ")"); g.addColorStop(1, "rgba(30,111,217,0)");
         ctx.strokeStyle = g;
@@ -209,7 +220,7 @@
       }
       for (let j = 1; j < CROSS; j++) {
         const u = j / CROSS; ctx.beginPath();
-        ctx.strokeStyle = "rgba(30,111,217," + (0.11 * Math.min(1, u / 0.08, (1 - u) / 0.3)).toFixed(3) + ")";
+        ctx.strokeStyle = "rgba(30,111,217," + (0.13 * Math.min(1, u / 0.08, (1 - u) / 0.3)).toFixed(3) + ")";
         for (let k = 0; k <= 10; k++) { const p = pt(u, k / 10, t); k ? ctx.lineTo(p[0], p[1]) : ctx.moveTo(p[0], p[1]); }
         ctx.stroke();
       }
@@ -217,7 +228,6 @@
     }
     ScrollTrigger.create({ trigger: ".hero-wrap", start: "top bottom", end: "bottom top",
       onToggle: (s) => { on = s.isActive; cancelAnimationFrame(raf); if (on) raf = requestAnimationFrame(draw); } });
-    gsap.fromTo(c, { opacity: 0 }, { opacity: 1, duration: 2.4, delay: reduced ? 0 : 5.2, ease: "power2.out" });
   }
 
   function heroScroll() {
@@ -226,9 +236,8 @@
       .to(".hero__content", { y: () => -innerHeight * 0.16, opacity: 0, ease: "power1.in" }, 0)
       .to(".headline__rise", { y: -50, ease: "none" }, 0)
       .to(".headline__static", { y: 30, ease: "none" }, 0)
-      .to(".scroll-cue", { opacity: 0, y: 30, duration: 0.25 }, 0)
-      .to(".hero__media", { scale: 1.08, ease: "none" }, 0)
-      .to(".hero__mesh", { opacity: 0, duration: 0.6 }, 0);
+      .fromTo(".scroll-cue", { opacity: 1, y: 0 }, { opacity: 0, y: 30, duration: 0.25, immediateRender: false }, 0)
+      .fromTo(".hero__mesh", { "--mo": 1 }, { "--mo": 0, duration: 0.6, immediateRender: false }, 0);
 
     // Cards arrive in a soft stagger as they slide over the hero
     $$(".pillar").forEach((card, i) => {
@@ -287,6 +296,8 @@
           scrollTrigger: { trigger: el, start: "bottom 24%", end: "bottom -4%", scrub: 0.7 } });
       }
     });
+    // Founder portrait drifts inside its arch
+    if (!reduced) gsap.fromTo(".founder__arch img", { yPercent: -6 }, { yPercent: 6, ease: "none", scrollTrigger: { trigger: ".founder", start: "top bottom", end: "bottom top", scrub: true } });
     // Parallax for the join background
     if (!reduced) gsap.fromTo(".join__bg", { yPercent: -7 }, { yPercent: 7, ease: "none", scrollTrigger: { trigger: ".join", start: "top bottom", end: "bottom top", scrub: true } });
   }
@@ -314,6 +325,9 @@
     const total = () => (section.offsetHeight / innerHeight) * 100;   // 430
     ScrollTrigger.create({ trigger: section, start: "top bottom", end: "bottom bottom",
       onUpdate: (s) => { target = s.progress; } });
+    let underNav = false;
+    ScrollTrigger.create({ trigger: section, start: () => "top " + (navEl.offsetHeight / 2) + "px", end: () => "bottom " + (navEl.offsetHeight / 2) + "px",
+      onToggle: (s) => { underNav = s.isActive; } });
     ScrollTrigger.create({ trigger: section, start: "top bottom", end: "bottom top",
       onToggle: (s) => { if (s.isActive && loaded !== null) eng.start(frame); else eng.stop(); } });
 
@@ -335,6 +349,7 @@
       eng.cam.y = mix(0, 0.25, form);
       const bg = night.map((v, i) => Math.round(mix(v, off[i], light)));
       stage.style.backgroundColor = "rgb(" + bg.join(",") + ")";
+      if (underNav) setNavTheme(light > 0.5 ? "light" : "dark");
       // copy timings
       const o1 = rs(30, 95) * (1 - rs(165, 195));
       const o2 = rs(212, 238) * (1 - rs(285, 308));
@@ -393,12 +408,15 @@
      ========================================================================== */
   function ui() {
     const nav = $("#nav"), burger = $("#burger"), menu = $("#menu");
-    let lastY = 0;
     const onScroll = (y) => {
-      if (menu.classList.contains("is-open")) return;
-      nav.classList.toggle("is-hidden", y > lastY && y > innerHeight * 0.5);
-      lastY = y;
+      nav.style.setProperty("--nav-a", (0.94 - 0.28 * clamp(y / 500, 0, 1)).toFixed(3));
     };
+    onScroll(0);
+    $$("[data-nav]").forEach((sec) => {
+      if (sec.dataset.nav === "auto") return;
+      ScrollTrigger.create({ trigger: sec, start: () => "top " + (nav.offsetHeight / 2) + "px", end: () => "bottom " + (nav.offsetHeight / 2) + "px",
+        onToggle: (s) => { if (s.isActive) setNavTheme(sec.dataset.nav); } });
+    });
     if (lenis) lenis.on("scroll", (l) => onScroll(l.scroll)); else addEventListener("scroll", () => onScroll(scrollY), { passive: true });
 
     // Current section highlight
@@ -423,7 +441,7 @@
       if (menu.classList.contains("is-open")) toggleMenu(false);
       const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 80;
       let y = id === "#top" ? 0 : el.getBoundingClientRect().top + (lenis ? lenis.scroll : scrollY);
-      if (["#research", "#donate", "#about"].includes(id)) y -= navH + 10;
+      if (["#research", "#donate", "#about", "#founder"].includes(id)) y -= navH + 10;
       if (id === "#method") y = $(".hero-wrap").offsetHeight - innerHeight;
       scrollToY(y);
     });
@@ -451,5 +469,7 @@
   staticSection();
   appSection();
   runLoader();
-  addEventListener("load", () => ScrollTrigger.refresh());
+  addEventListener("load", () => { if (document.body.classList.contains("is-loading")) { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); } ScrollTrigger.refresh(); });
+  addEventListener("beforeunload", () => window.scrollTo(0, 0));
+  addEventListener("pageshow", (e) => { if (e.persisted) { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true }); } });
 })();
