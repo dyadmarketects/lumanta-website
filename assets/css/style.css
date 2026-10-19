@@ -534,3 +534,6 @@ em { font-style: normal; }
   .footer__top { grid-template-columns: 1fr 1fr; }
 }
 .menu.is-open ~ .social, body:has(.menu.is-open) .social { opacity: 0; pointer-events: none; }
+
+.founder__arch { overflow: hidden; }
+.founder__scene { width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; }
