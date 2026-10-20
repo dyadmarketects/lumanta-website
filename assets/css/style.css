@@ -557,6 +557,21 @@ em { font-style: normal; }
 @media (max-width: 760px) {
   .static__hint { bottom: auto; top: calc(50% + 39vw + 6px); display: flex; flex-direction: column; align-items: center; gap: 20px; }
   .static__hint-text { margin-right: -.36em; }
-  .static__cue { display: block; color: var(--ink-2); }
-  .static__cue .scroll-cue__mouse { display: block; width: 22px; height: 34px; }
 }
+
+/* ---------- Mobile swipe cue: slow, peaceful, always there until the end ---------- */
+.swipe { display: none; }
+@media (max-width: 760px), (hover: none) and (pointer: coarse) {
+  .swipe { display: block; position: fixed; left: 50%; bottom: max(14px, env(safe-area-inset-bottom)); z-index: 50; width: 44px; height: 56px; margin-left: -22px;
+    border-radius: 22px; color: var(--ink); pointer-events: none;
+    background: rgba(250, 247, 245, .62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px -10px rgba(34, 36, 58, .35), inset 0 0 0 1px rgba(255, 255, 255, .5);
+    opacity: .9; transition: opacity .9s var(--ease), transform .9s var(--ease); }
+  .swipe__hand { position: absolute; left: 50%; top: 50%; width: 22px; height: 28px; margin: -6px 0 0 -12px; animation: swipeHand 3.8s cubic-bezier(.45, 0, .25, 1) infinite; }
+  .swipe__trail { position: absolute; left: 50%; top: 9px; width: 2px; height: 22px; margin-left: -2px; border-radius: 2px; background: var(--grad); transform-origin: bottom; opacity: 0; animation: swipeTrail 3.8s cubic-bezier(.45, 0, .25, 1) infinite; }
+  body.is-loading .swipe, .swipe.is-hidden, body:has(.menu.is-open) .swipe { opacity: 0; transform: translateY(16px); }
+  .hero__content { bottom: calc(5.5vh + 58px); }
+}
+@keyframes swipeHand { 0% { transform: translateY(8px); opacity: 0; } 18% { opacity: 1; } 55% { transform: translateY(-10px); opacity: 1; } 75%, 100% { transform: translateY(-14px); opacity: 0; } }
+@keyframes swipeTrail { 0%, 22% { transform: scaleY(0); opacity: 0; } 50% { transform: scaleY(1); opacity: .85; } 75%, 100% { transform: scaleY(1) translateY(-6px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .swipe__hand, .swipe__trail { animation-duration: 7s; } }

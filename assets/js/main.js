@@ -564,3 +564,10 @@ document.querySelector(".nav__logo")?.addEventListener("click", (e) => {
   window.scrollTo(0, 0);
   location.href = location.pathname + location.search;
 });
+
+/* Swipe cue: fades away near the end of the page */
+addEventListener("DOMContentLoaded", () => {
+  const sw = document.getElementById("swipe"); if (!sw) return;
+  const upd = () => { const end = document.documentElement.scrollHeight - innerHeight * 1.6; sw.classList.toggle("is-hidden", scrollY > end); };
+  addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
+});
