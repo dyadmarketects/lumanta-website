@@ -588,3 +588,15 @@ em { font-style: normal; }
 .scroll-cue.is-past-hero::before { inset: auto; left: 50%; bottom: -10px; width: 46px; height: 58px; margin-left: -23px; border-radius: 23px; }
 .scroll-cue.is-past-hero::before { opacity: 1; }
 .scroll-cue.is-hidden, body.is-loading .scroll-cue, body:has(.menu.is-open) .scroll-cue { opacity: 0; pointer-events: none; }
+
+/* Hero: slow, peaceful glow breathing behind RISE */
+.headline__rise { position: relative; isolation: isolate; }
+.headline__rise::before { content: ""; position: absolute; left: -12%; right: -12%; top: -6%; bottom: -12%; z-index: -1; pointer-events: none;
+  background: radial-gradient(56% 52% at 50% 55%, rgba(255, 154, 60, .75) 0%, rgba(255, 120, 110, .5) 38%, rgba(255, 95, 138, .18) 62%, rgba(255, 95, 138, 0) 80%);
+  filter: blur(22px); opacity: .35; transform: scale(.92); animation: riseGlow 6.5s ease-in-out infinite; }
+@keyframes riseGlow { 0%, 100% { opacity: .22; transform: scale(.88); } 50% { opacity: 1; transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .headline__rise::before { animation: none; opacity: .6; } }
+@media (max-width: 760px) {
+  .headline__rise::before { left: -16%; right: -16%; top: -18%; bottom: -22%; filter: blur(14px);
+    background: radial-gradient(56% 52% at 50% 55%, rgba(255, 140, 60, .85) 0%, rgba(255, 110, 110, .6) 40%, rgba(255, 95, 138, .2) 64%, rgba(255, 95, 138, 0) 82%); }
+}
