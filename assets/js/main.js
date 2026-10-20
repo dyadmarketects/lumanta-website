@@ -21,7 +21,7 @@
   /* ---------- Smooth scroll ---------- */
   let lenis = null;
   if (!reduced && window.Lenis) {
-    lenis = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 0.95 });
+    lenis = new Lenis({ lerp: 0.09, smoothWheel: true, wheelMultiplier: 0.95 }); window.lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
@@ -241,7 +241,6 @@
       .to(".hero__content", { y: () => -innerHeight * 0.16, opacity: 0, ease: "power1.in" }, 0)
       .to(".headline__rise", { y: -50, ease: "none" }, 0)
       .to(".headline__static", { y: 30, ease: "none" }, 0)
-      .fromTo(".scroll-cue", { opacity: 1, y: 0 }, { opacity: 0, y: 30, duration: 0.25, immediateRender: false }, 0)
       .fromTo(".hero__mesh", { "--mo": 1 }, { "--mo": 0, duration: 0.6, immediateRender: false }, 0);
 
     // Cards arrive in a soft stagger as they slide over the hero
@@ -567,7 +566,13 @@ document.querySelector(".nav__logo")?.addEventListener("click", (e) => {
 
 /* Swipe cue: fades away near the end of the page */
 addEventListener("DOMContentLoaded", () => {
-  const sw = document.getElementById("swipe"); if (!sw) return;
-  const upd = () => { const end = document.documentElement.scrollHeight - innerHeight * 1.6; sw.classList.toggle("is-hidden", scrollY > end); };
+  const sw = document.getElementById("swipe"), cue = document.querySelector(".scroll-cue"); if (!sw) return;
+  const join = document.querySelector(".join");
+  const upd = () => { const end = document.documentElement.scrollHeight - innerHeight * 1.6,
+    h = scrollY > end || (join && join.getBoundingClientRect().top < innerHeight * 0.8);
+    sw.classList.toggle("is-hidden", h); cue && cue.classList.toggle("is-hidden", h); cue && cue.classList.toggle("is-past-hero", scrollY > innerHeight * 0.5); };
+  // Clicking the cue moves one screen further down
+  cue && cue.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); const y = scrollY + innerHeight * 0.9;
+    window.lenis ? window.lenis.scrollTo(y) : window.scrollTo({ top: y, behavior: "smooth" }); });
   addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
 });
