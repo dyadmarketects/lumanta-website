@@ -92,9 +92,9 @@ em { font-style: normal; }
 .loader__word span { display: inline-block; opacity: 0; }
 .loader__tag { margin-top: 18px; font: 400 10px/1 var(--body); letter-spacing: .46em; text-transform: uppercase; color: rgba(250, 247, 245, .55); display: flex; align-items: center; justify-content: center; gap: 16px; opacity: 0; }
 .loader__tag i { width: 42px; height: 1px; background: currentColor; }
-.loader__progress { position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: rgba(250, 247, 245, .08); }
-.loader__bar { position: absolute; inset: 0 auto 0 0; width: 100%; transform-origin: left; transform: scaleX(0); background: var(--grad); }
-.loader__pct { position: absolute; right: var(--pad); bottom: 22px; font: 300 12px/1 var(--body); letter-spacing: .3em; color: rgba(250, 247, 245, .5); font-variant-numeric: tabular-nums; }
+.loader__progress { position: absolute; left: 50%; top: calc(76% + clamp(84px, 9vh, 104px)); width: clamp(140px, 16vw, 220px); height: 2px; margin-left: calc(clamp(140px, 16vw, 220px) / -2); border-radius: 2px; overflow: visible; background: rgba(250, 247, 245, .12); }
+.loader__bar { position: absolute; inset: 0 auto 0 0; width: 100%; border-radius: 2px; transform-origin: left; transform: scaleX(0); background: var(--grad); }
+.loader__pct { position: absolute; left: 50%; top: 16px; transform: translateX(-50%); margin-right: -.3em; white-space: nowrap; font: 300 12px/1 var(--body); letter-spacing: .3em; color: rgba(250, 247, 245, .5); font-variant-numeric: tabular-nums; }
 @keyframes breathe { to { transform: translate(-50%, -50%) scale(1.06); opacity: .8; } }
 
 /* ---------- Nav ---------- */
