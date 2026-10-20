@@ -23,7 +23,7 @@
 <link rel="preload" href="assets/fonts/dazzle-unicase-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/data/lumanta-particles.bin" as="fetch" type="application/octet-stream" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=20261020-1">
+<link rel="stylesheet" href="assets/css/style.css?v=20261020-2">
 <script>
 document.documentElement.classList.replace('no-js','js');
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -392,23 +392,26 @@ window.scrollTo(0, 0);
 <script src="assets/js/vendor/gsap.min.js"></script>
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
-<script src="assets/js/particles.js?v=20261020-1"></script>
-<script src="assets/js/main.js?v=20261020-1"></script>
+<script src="assets/js/particles.js?v=20261020-2"></script>
+<script src="assets/js/main.js?v=20261020-2"></script>
 
 <!-- Desktop: scroll cue stays on screen until the end of the page -->
 <a class="scroll-cue" href="#method" aria-label="Scroll to explore">
-  <span class="scroll-cue__text">Scroll to explore</span>
+  <span class="scroll-cue__text"><em class="cue-pulse" data-a="Scroll to explore" data-b="Keep scrolling">Scroll to explore</em></span>
   <span class="scroll-cue__mouse"><i></i></span>
 </a>
 
 <!-- Mobile: gentle swipe-up cue, always on until the end of the page -->
 <div class="swipe" id="swipe" aria-hidden="true">
+  <span class="swipe__label"><em class="cue-pulse" data-a="Swipe to explore" data-b="Keep swiping">Swipe to explore</em></span>
+  <span class="swipe__pad">
   <span class="swipe__trail"></span>
   <svg class="swipe__hand" viewBox="0 0 32 40" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
     <path d="M12.5 21V6.2a2.75 2.75 0 0 1 5.5 0V18.5"/>
     <path d="M18 17.2v-2.4a2.6 2.6 0 0 1 5.2 0v3.4"/>
     <path d="M23.2 18.4v-1.2a2.5 2.5 0 0 1 5 0v8.6c0 6.4-4.1 11.2-10 11.2h-1.6c-3.6 0-5.9-1.4-7.9-4.2L4.4 25.6c-1-1.5-.6-3.4.9-4.1 1.3-.6 2.7-.2 3.6 1l3.6 4.4"/>
   </svg>
+  </span>
 </div>
 </body>
 </html>

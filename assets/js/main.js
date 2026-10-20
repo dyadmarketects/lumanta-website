@@ -570,7 +570,8 @@ addEventListener("DOMContentLoaded", () => {
   const join = document.querySelector(".join");
   const upd = () => { const end = document.documentElement.scrollHeight - innerHeight * 1.6,
     h = scrollY > end || (join && join.getBoundingClientRect().top < innerHeight * 0.8);
-    sw.classList.toggle("is-hidden", h); cue && cue.classList.toggle("is-hidden", h); cue && cue.classList.toggle("is-past-hero", scrollY > innerHeight * 0.5); };
+    sw.classList.toggle("is-hidden", h); cue && cue.classList.toggle("is-hidden", h); const past = scrollY > innerHeight * 0.5; cue && cue.classList.toggle("is-past-hero", past);
+    document.querySelectorAll(".cue-pulse").forEach((el) => { const t = past ? el.dataset.b : el.dataset.a; if (el.textContent !== t) el.textContent = t; }); };
   // Clicking the cue moves one screen further down
   cue && cue.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); const y = scrollY + innerHeight * 0.9;
     window.lenis ? window.lenis.scrollTo(y) : window.scrollTo({ top: y, behavior: "smooth" }); });
