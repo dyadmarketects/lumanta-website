@@ -600,3 +600,13 @@ em { font-style: normal; }
   .headline__rise::before { left: -16%; right: -16%; top: -18%; bottom: -22%; filter: blur(14px);
     background: radial-gradient(56% 52% at 50% 55%, rgba(255, 140, 60, .85) 0%, rgba(255, 110, 110, .6) 40%, rgba(255, 95, 138, .2) 64%, rgba(255, 95, 138, 0) 82%); }
 }
+
+/* Desktop: keep her face clear of the nav on short, wide screens (laptops at 100%) */
+@media (min-width: 761px) {
+  .hero__media { top: var(--nav-h); }
+  .hero__video { object-position: 62% 0%; }
+}
+/* Short laptop screens: drop the long description so the app buttons stay in view */
+@media (min-width: 761px) and (max-height: 720px) {
+  .hero__desc { display: none; }
+}
