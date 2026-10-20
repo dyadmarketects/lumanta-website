@@ -333,7 +333,7 @@
     Object.assign(eng.u, { burst: 1, useStatic: 1, staticAmt: 1, form: 0, additive: 1, light: 0 });
 
     let pulse = 0, releaseT = 0;
-    hint.textContent = finePointer ? "Move your cursor through the light" : "Touch the light";
+    hint.querySelector(".static__hint-text").textContent = finePointer ? "Move your cursor through the light" : "Touch the light";
     if (finePointer) {
       stage.addEventListener("pointermove", (e) => { eng.setMouse(e.clientX, e.clientY); mx = (e.clientX / innerWidth) * 2 - 1; my = (e.clientY / innerHeight) * 2 - 1; });
       stage.addEventListener("pointerleave", () => { eng.mouse.has = false; mx = my = 0; });
