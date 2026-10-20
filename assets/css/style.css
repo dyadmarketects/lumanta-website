@@ -636,3 +636,30 @@ em { font-style: normal; }
 
 /* Desktop: hint sits midway between the ring and the scroll cue */
 @media (min-width: 761px) { .static__hint { bottom: auto; top: calc(75% + 16vmin - 1.3vh - 25px); } }
+
+/* ---------- The app: one step per scroll, color per step, active step lifts off the page ---------- */
+.app { --t0: #fff1e4; --t1: #ffe8ef; --t2: #e4faf6; --t3: #e6effc; height: 300vh; }
+.app__stage { background-color: var(--t0); transition: background-color .9s var(--ease); }
+.app[data-step="1"] .app__stage { background-color: var(--t1); }
+.app[data-step="2"] .app__stage { background-color: var(--t2); }
+.app[data-step="3"] .app__stage { background-color: var(--t3); }
+.app__track { position: relative; max-width: 560px; padding-left: 30px; }
+.app__progress { position: absolute; left: 6px; top: 0; height: 0; width: 3px; border-radius: 3px; background: rgba(34, 36, 58, .12); }
+.app__fill { position: absolute; left: 0; top: 0; width: 100%; height: 0; border-radius: 3px; background: linear-gradient(180deg, var(--ember), var(--glow), var(--aqua), var(--lumen)); transition: height .7s var(--ease); }
+.app__thumb { position: absolute; left: 50%; top: 0; width: 15px; height: 15px; border-radius: 50%; margin-top: -7.5px; background: #fff;
+  box-shadow: 0 0 0 4px var(--tc, var(--ember)), 0 6px 16px rgba(34, 36, 58, .25); transition: transform .7s var(--ease), box-shadow .7s var(--ease); }
+.app[data-step="1"] .app__thumb { --tc: var(--glow); } .app[data-step="2"] .app__thumb { --tc: var(--aqua); } .app[data-step="3"] .app__thumb { --tc: var(--lumen); }
+.app__steps { gap: 10px; }
+.app__steps li { border: 0 !important; border-radius: 18px; padding-right: 18px; background: transparent; cursor: pointer;
+  transition: opacity .6s var(--ease), transform .7s cubic-bezier(.2, .9, .25, 1.15), background-color .6s var(--ease), box-shadow .7s var(--ease); }
+.app__steps li.is-active { background: #fff; transform: translateY(-4px) scale(1.04);
+  box-shadow: 0 26px 50px -22px rgba(34, 36, 58, .45), 0 8px 18px -10px var(--c), 0 0 0 1px rgba(255, 255, 255, .8); }
+.app__steps li::before { left: 8px; }
+@media (max-width: 760px) {
+  .app { height: 260vh; }
+  .app__track { padding-left: 22px; order: 3; }
+  .app__progress { left: 3px; }
+  .app__steps { gap: 6px; }
+  .app__steps li { padding-right: 12px; }
+  .app__steps li.is-active { transform: translateY(-2px) scale(1.03); }
+}

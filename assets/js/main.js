@@ -28,7 +28,8 @@
     lenis.stop();
   }
   window.lumanta = { get lenis() { return lenis; } };
-  const scrollToY = (y) => (lenis ? lenis.scrollTo(y, { duration: 1.6 }) : window.scrollTo({ top: y, behavior: reduced ? "auto" : "smooth" }));
+  const scrollToY = (y) => { window.__progUntil = performance.now() + 1800;
+    return lenis ? lenis.scrollTo(y, { duration: 1.6 }) : window.scrollTo({ top: y, behavior: reduced ? "auto" : "smooth" }); };
 
   /* ---------- Hero video (HD on large screens, 720p on phones) ---------- */
   const video = $("#heroVideo");
@@ -414,16 +415,80 @@
     const icons = $$(".phone__icons svg"), cards = $$(".phone__card"), dots = $$(".phone__dots i");
     const colors = ["var(--ember)", "var(--glow)", "var(--aqua)", "var(--lumen)"];
     let current = -1;
+    const appEl = $(".app"), fill = $(".app__fill"), thumb = $(".app__thumb"), list = $(".app__steps");
+    const prog = $(".app__progress");
+    function placeThumb(i) {
+      const li = steps[i]; if (!li) return;
+      const top = steps[0].offsetTop + 10, last = steps[steps.length - 1];
+      prog.style.top = top + "px"; prog.style.height = (last.offsetTop + last.offsetHeight - 10 - top) + "px";
+      const y = li.offsetTop + li.offsetHeight / 2 - top;
+      thumb.style.transform = `translate(-50%, ${y}px)`; fill.style.height = y + "px";
+    }
     function setStep(i) {
       if (i === current) return; current = i;
       [steps, icons, cards, dots].forEach((list) => list.forEach((n, k) => n.classList.toggle("is-active", k === i)));
       phone.style.setProperty("--sc", colors[i]);
       glows.forEach((g) => g.style.setProperty("--sc", colors[i]));
+      appEl.dataset.step = i;
+      requestAnimationFrame(() => placeThumb(i)); setTimeout(() => placeThumb(i), 650);
     }
     setStep(0);
+    addEventListener("resize", () => placeThumb(current));
+    // Each step owns a quarter of the pinned scroll; positions sit in the middle of each quarter
     const st = ScrollTrigger.create({ trigger: ".app", start: "top top", end: "bottom bottom",
-      onUpdate: (s) => setStep(clamp(Math.floor((s.progress - 0.06) / 0.235), 0, 3)) });
-    steps.forEach((li, i) => li.addEventListener("click", () => scrollToY(st.start + (st.end - st.start) * (0.08 + i * 0.235 + 0.1))));
+      onUpdate: (s) => setStep(clamp(Math.floor(s.progress * 4), 0, 3)) });
+    const posOf = (i) => st.start + (st.end - st.start) * (i + 0.5) / 4;
+    const go = (i) => { busyUntil = performance.now() + 750;
+      lenis ? lenis.scrollTo(posOf(i), { duration: 0.7, easing: (t) => 1 - Math.pow(1 - t, 3), force: true }) : window.scrollTo({ top: posOf(i), behavior: "smooth" }); };
+    steps.forEach((li, i) => li.addEventListener("click", () => go(i)));
+
+    /* One wheel notch or one swipe moves exactly one step. Trackpad/wheel inertia and long swipes are
+       absorbed until the gesture ends, so the next input always means "next step". */
+    let busyUntil = 0, lastInput = 0, swipe = 0, swipeUsed = false;
+    const inSection = (y) => y > st.start - 2 && y < st.end + 2;
+    const scrollNow = () => (lenis ? lenis.animatedScroll : scrollY);
+    function handle(dir, ev, delta) {
+      const y = lenis ? lenis.targetScroll : scrollY, now = performance.now(), after = y + (delta || 0);
+      const quiet = now - lastInput > 160; lastInput = now;
+      // Entering from above or below: land on the first or last step
+      if (dir > 0 && y < st.start - 2 && after >= st.start - 2 && y < st.end) { ev.preventDefault(); if (now > busyUntil) go(0); return true; }
+      if (dir < 0 && y > st.end + 2 && after <= st.end + 2 && y > st.start) { ev.preventDefault(); if (now > busyUntil) go(3); return true; }
+      if (!inSection(scrollNow())) return false;
+      const next = current + dir;
+      if (next < 0 || next > 3) return now < busyUntil ? (ev.preventDefault(), true) : false;   // let the page continue past the ends
+      ev.preventDefault();
+      if (now > busyUntil && (quiet || now - busyUntil > 250)) go(next);
+      return true;
+    }
+    if (lenis) {
+      lenis.options.virtualScroll = ({ deltaY, event }) => {
+        if (event.type === "touchstart") { swipe = 0; swipeUsed = false; return true; }
+        if (event.type === "touchend") return true;
+        if (!deltaY) return true;
+        if (event.type.includes("touch")) {
+          // Touch: decide once per swipe, after a small travel
+          const y = scrollNow();
+          const near = y > st.start - innerHeight * 0.35 && y < st.end + innerHeight * 0.35;
+          if (!near) return true;
+          swipe += deltaY;
+          if (swipeUsed) { if (inSection(y)) { event.cancelable && event.preventDefault(); return false; } return true; }
+          if (Math.abs(swipe) < 24) { if (inSection(y)) { event.cancelable && event.preventDefault(); return false; } return true; }
+          swipeUsed = true; lastInput = 0;
+          return !handle(Math.sign(swipe), { preventDefault: () => event.cancelable && event.preventDefault() });
+        }
+        return !handle(Math.sign(deltaY), event, deltaY);
+      };
+      // A fling that coasts into the section stops on the nearest end step instead of skipping through
+      let prevY = scrollY;
+      addEventListener("scroll", () => {
+        const y = scrollY;
+        if (mobile && !lenis.isTouching && performance.now() > busyUntil && performance.now() > (window.__progUntil || 0)) {
+          if (prevY < st.start - 2 && y > st.start + 8 && y < st.end) go(0);
+          else if (prevY > st.end + 2 && y < st.end - 8 && y > st.start) go(3);
+        }
+        prevY = y;
+      }, { passive: true });
+    }
 
     if (reduced) return;
     // Enter: the phone floats up and straightens, text slides in
@@ -574,6 +639,7 @@ addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".cue-pulse").forEach((el) => { const t = past ? el.dataset.b : el.dataset.a; if (el.textContent !== t) el.textContent = t; }); };
   // Clicking the cue moves one screen further down
   cue && cue.addEventListener("click", (e) => { e.preventDefault(); e.stopPropagation(); const y = scrollY + innerHeight * 0.9;
+    window.__progUntil = performance.now() + 1500;
     window.lenis ? window.lenis.scrollTo(y) : window.scrollTo({ top: y, behavior: "smooth" }); });
   addEventListener("scroll", upd, { passive: true }); addEventListener("resize", upd); upd();
 });
