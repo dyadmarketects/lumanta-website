@@ -435,54 +435,62 @@
     setStep(0);
     addEventListener("resize", () => placeThumb(current));
     // Each step owns a quarter of the pinned scroll; positions sit in the middle of each quarter
+    let busyUntil = 0, target = 0, syncT = 0;
     const st = ScrollTrigger.create({ trigger: ".app", start: "top top", end: "bottom bottom",
-      onUpdate: (s) => setStep(clamp(Math.floor(s.progress * 4), 0, 3)) });
+      onUpdate: (s) => { if (performance.now() < busyUntil) return; target = clamp(Math.floor(s.progress * 4), 0, 3); setStep(target); } });
     const posOf = (i) => st.start + (st.end - st.start) * (i + 0.5) / 4;
-    const go = (i) => { busyUntil = performance.now() + 750;
-      lenis ? lenis.scrollTo(posOf(i), { duration: 0.7, easing: (t) => 1 - Math.pow(1 - t, 3), force: true }) : window.scrollTo({ top: posOf(i), behavior: "smooth" }); };
+    const ease = (t) => 1 - Math.pow(1 - t, 3);
+    const glide = (y, dur) => { busyUntil = performance.now() + dur * 1000 + 80;
+      clearTimeout(syncT); syncT = setTimeout(() => { target = clamp(Math.floor(st.progress * 4), 0, 3); setStep(target); }, dur * 1000 + 120);
+      lenis ? lenis.scrollTo(y, { duration: dur, easing: ease, force: true }) : window.scrollTo({ top: y, behavior: "smooth" }); };
+    // Light up the new step right away, then glide to it
+    const go = (i, dur = 0.7) => { target = i; setStep(i); glide(posOf(i), dur); };
+    // Past the first or last step: glide on to the neighbouring section in one move
+    const leave = (dir) => { target = dir > 0 ? 4 : -1; glide(dir > 0 ? st.end + innerHeight * 0.75 : st.start - innerHeight * 0.75, 0.8); };
     steps.forEach((li, i) => li.addEventListener("click", () => go(i)));
 
-    /* One wheel notch or one swipe moves exactly one step. Trackpad/wheel inertia and long swipes are
-       absorbed until the gesture ends, so the next input always means "next step". */
-    let busyUntil = 0, lastInput = 0, swipe = 0, swipeUsed = false;
+    /* One wheel notch or one swipe moves exactly one step. Wheel/trackpad inertia is absorbed until the
+       gesture ends; on touch every new swipe counts at once, even while the last glide is still moving. */
+    let lastInput = 0;
     const inSection = (y) => y > st.start - 2 && y < st.end + 2;
-    const scrollNow = () => (lenis ? lenis.animatedScroll : scrollY);
-    function handle(dir, ev, delta) {
-      const y = lenis ? lenis.targetScroll : scrollY, now = performance.now(), after = y + (delta || 0);
-      const quiet = now - lastInput > 160; lastInput = now;
+    function wheel(dir, ev, delta) {
+      const y = lenis.targetScroll, now = performance.now(), after = y + delta;
+      const fresh = now - lastInput > 160; lastInput = now;
       // Entering from above or below: land on the first or last step
       if (dir > 0 && y < st.start - 2 && after >= st.start - 2 && y < st.end) { ev.preventDefault(); if (now > busyUntil) go(0); return true; }
       if (dir < 0 && y > st.end + 2 && after <= st.end + 2 && y > st.start) { ev.preventDefault(); if (now > busyUntil) go(3); return true; }
-      if (!inSection(scrollNow())) return false;
-      const next = current + dir;
-      if (next < 0 || next > 3) return now < busyUntil ? (ev.preventDefault(), true) : false;   // let the page continue past the ends
+      if (!inSection(lenis.animatedScroll)) return false;
       ev.preventDefault();
-      if (now > busyUntil && (quiet || now - busyUntil > 250)) go(next);
+      if (now > busyUntil && (fresh || now - busyUntil > 250)) { const next = target + dir; next < 0 || next > 3 ? leave(dir) : go(next); }
       return true;
+    }
+    let touching = false, own = false, swipe = 0, used = false;
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    function touch(deltaY, event) {
+      const type = event.type, stop = () => { if (event.cancelable) event.preventDefault(); };
+      if (type === "touchstart") { touching = true; swipe = 0; used = false; own = inSection(scrollY) || performance.now() < busyUntil; return !own; }
+      if (type === "touchend" || type === "touchcancel") { touching = false; return !own; }   // never let a lifted finger cancel a glide
+      if (!own) return true;                                                                  // gesture began outside: normal scrolling
+      stop();
+      if (used) return false;
+      swipe += deltaY;
+      if (Math.abs(swipe) < 10) return false;
+      used = true;
+      const dir = Math.sign(swipe), next = target + dir;
+      next < 0 || next > 3 ? leave(dir) : go(next, 0.55);
+      return false;
     }
     if (lenis) {
       lenis.options.virtualScroll = ({ deltaY, event }) => {
-        if (event.type === "touchstart") { swipe = 0; swipeUsed = false; return true; }
-        if (event.type === "touchend") return true;
+        if (event.type.includes("touch")) return touch(deltaY, event);
         if (!deltaY) return true;
-        if (event.type.includes("touch")) {
-          // Touch: decide once per swipe, after a small travel
-          const y = scrollNow();
-          const near = y > st.start - innerHeight * 0.35 && y < st.end + innerHeight * 0.35;
-          if (!near) return true;
-          swipe += deltaY;
-          if (swipeUsed) { if (inSection(y)) { event.cancelable && event.preventDefault(); return false; } return true; }
-          if (Math.abs(swipe) < 24) { if (inSection(y)) { event.cancelable && event.preventDefault(); return false; } return true; }
-          swipeUsed = true; lastInput = 0;
-          return !handle(Math.sign(swipe), { preventDefault: () => event.cancelable && event.preventDefault() });
-        }
-        return !handle(Math.sign(deltaY), event, deltaY);
+        return !wheel(Math.sign(deltaY), event, deltaY);
       };
       // A fling that coasts into the section stops on the nearest end step instead of skipping through
       let prevY = scrollY;
       addEventListener("scroll", () => {
-        const y = scrollY;
-        if (mobile && !lenis.isTouching && performance.now() > busyUntil && performance.now() > (window.__progUntil || 0)) {
+        const y = scrollY, now = performance.now();
+        if (coarse && !touching && now > busyUntil && now > (window.__progUntil || 0) && lenis.isScrolling !== "smooth") {
           if (prevY < st.start - 2 && y > st.start + 8 && y < st.end) go(0);
           else if (prevY > st.end + 2 && y < st.end - 8 && y > st.start) go(3);
         }
