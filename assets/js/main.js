@@ -556,3 +556,11 @@
   addEventListener("beforeunload", () => window.scrollTo(0, 0));
   addEventListener("pageshow", (e) => { if (e.persisted) { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true }); } });
 })();
+
+/* Logo: full reload of the homepage, always from the top */
+document.querySelector(".nav__logo")?.addEventListener("click", (e) => {
+  e.preventDefault();
+  try { history.scrollRestoration = "manual"; } catch (_) {}
+  window.scrollTo(0, 0);
+  location.href = location.pathname + location.search;
+});
