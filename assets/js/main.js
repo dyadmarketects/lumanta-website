@@ -468,7 +468,13 @@
       // Entering from above or below: land on the first or last step
       if (dir > 0 && y < st.start - 2 && after >= st.start - 2 && y < st.end) { ev.preventDefault(); step(() => go(0)); return true; }
       if (dir < 0 && y > st.end + 2 && after <= st.end + 2 && y > st.start) { ev.preventDefault(); step(() => go(3)); return true; }
-      if (!inSection(lenis.animatedScroll) && now > busyUntil) return false;
+      // Already gliding out of the section: more scrolling the same way just carries on down (or up) the page,
+      // scrolling back the other way returns to the nearest step
+      if (target > 3 || target < 0) {
+        if ((target > 3) === (dir > 0)) return false;
+        ev.preventDefault(); step(() => go(target > 3 ? 3 : 0)); return true;
+      }
+      if (!inSection(lenis.animatedScroll)) return false;
       ev.preventDefault();
       step(() => { const next = target + dir; next < 0 || next > 3 ? leave(dir) : go(next); });
       return true;
@@ -477,7 +483,7 @@
     const coarse = matchMedia("(pointer: coarse)").matches;
     function touch(deltaY, event) {
       const type = event.type, stop = () => { if (event.cancelable) event.preventDefault(); };
-      if (type === "touchstart") { touching = true; swipe = 0; used = false; own = inSection(scrollY) || performance.now() < busyUntil; return !own; }
+      if (type === "touchstart") { touching = true; swipe = 0; used = false; own = inSection(scrollY) || (performance.now() < busyUntil && target >= 0 && target <= 3); return !own; }
       if (type === "touchend" || type === "touchcancel") { touching = false; return !own; }   // never let a lifted finger cancel a glide
       if (!own) return true;                                                                  // gesture began outside: normal scrolling
       stop();
