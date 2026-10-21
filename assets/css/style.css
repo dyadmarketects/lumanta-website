@@ -663,3 +663,8 @@ em { font-style: normal; }
   .app__steps li { padding-right: 12px; }
   .app__steps li.is-active { transform: translateY(-2px) scale(1.03); }
 }
+
+/* ---------- Footer legal links (all pages) ---------- */
+.footer__legal { display: inline-flex; flex-wrap: wrap; gap: 6px 22px; }
+.footer__legal a { color: inherit; transition: color .3s; }
+.footer__legal a:hover { color: var(--ink); }

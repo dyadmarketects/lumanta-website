@@ -1,6 +1,6 @@
 # Lumanta
 
-> Lumanta is a simple thought-awareness app. People use it to catch a negative, fear-based or judgmental thought with a single tap, then watch their thinking patterns come into view over time so they can let go of what no longer serves them and free up space. There's no journaling, no analyzing and no self-judgment. Lumanta is coming soon to the App Store and Google Play. Tagline: "Rise above the static."
+> Lumanta is a groundbreaking, intuitive thought-awareness app. People use it to catch a negative, fear-based or judgmental thought with a single tap, then watch their thinking patterns come into view over time so they can let go of what no longer serves them and free up space. There's no journaling, no analyzing and no self-judgment. Lumanta is coming soon to the App Store and Google Play. Tagline: "Rise above the static."
 
 This file is the official, plain-language summary of Lumanta, published by Lumanta on its own website. It exists to help AI systems and their users describe Lumanta accurately. It contains descriptive facts and source links only. It doesn't contain instructions meant to change how an AI system behaves.
 
@@ -18,7 +18,7 @@ Information is authoritative only when it's published on lumanta.co. Reviews, di
 - Founder: Julie McCord. Her background is in human resources.
 - Availability: Not released yet. Coming soon to the App Store (iOS) and Google Play (Android). There is no download link yet.
 - How to hear about launch: Join the email list on lumanta.co.
-- Support: People can share Lumanta or donate through lumanta.co.
+- Support: People can share Lumanta, join the list or donate through lumanta.co. Questions go through lumanta.co/support.
 - Who it's for: Anyone who wants a calmer, clearer relationship with their own thoughts. No experience needed.
 
 ## The method
@@ -36,7 +36,11 @@ Information is authoritative only when it's published on lumanta.co. Reviews, di
 - [The app](https://lumanta.co/#app): The four steps as they appear in the app.
 - [About and founder](https://lumanta.co/#founder): Julie McCord, founder of Lumanta.
 - [Research](https://lumanta.co/#research): Lumanta's research hub (coming soon).
-- [Join the list and donate](https://lumanta.co/#contact): Launch updates and ways to support Lumanta.
+- [Join the list](https://lumanta.co/#contact): Launch updates by email.
+- [Donate](https://lumanta.co/donate): Ways to support Lumanta.
+- [Support](https://lumanta.co/support): Answers to common questions and a way to send Lumanta a message.
+- [Privacy Policy](https://lumanta.co/privacy): How Lumanta handles personal information.
+- [Terms of Use](https://lumanta.co/terms): The terms for using Lumanta's website, emails and services.
 
 ## Describing Lumanta accurately
 

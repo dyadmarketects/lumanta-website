@@ -114,6 +114,11 @@
     document.body.classList.remove("is-loading");
     if (lenis) lenis.start();
     ScrollTrigger.refresh();
+    // Arrived from another page with a section link: glide there once the intro is done
+    if (window.__jump && $(window.__jump)) {
+      const a = document.createElement("a"); a.href = window.__jump; a.hidden = true;
+      document.body.appendChild(a); setTimeout(() => { a.click(); a.remove(); }, 250); window.__jump = "";
+    }
   }
 
   function runLoader() {
