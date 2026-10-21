@@ -456,17 +456,21 @@
 
     /* One wheel notch or one swipe moves exactly one step. Wheel/trackpad inertia is absorbed until the
        gesture ends; on touch every new swipe counts at once, even while the last glide is still moving. */
-    let lastInput = 0;
+    /* Wheel: every new wheel click (or the start of a new trackpad swipe) moves one step at once, even while the
+       last glide is still moving. The rest of a trackpad swipe and its inertia stream in every ~16ms, so they're absorbed. */
+    let lastWheel = 0, lastStep = 0;
     const inSection = (y) => y > st.start - 2 && y < st.end + 2;
     function wheel(dir, ev, delta) {
-      const y = lenis.targetScroll, now = performance.now(), after = y + delta;
-      const fresh = now - lastInput > 160; lastInput = now;
+      const y = lenis.targetScroll, now = performance.now(), after = y + delta, gap = now - lastWheel;
+      lastWheel = now;
+      const fresh = gap > 110 || (gap > 40 && (ev.deltaMode === 1 || Math.abs(ev.deltaY) >= 40));
+      const step = (fn) => { if (fresh && now - lastStep > 90) { lastStep = now; fn(); } };
       // Entering from above or below: land on the first or last step
-      if (dir > 0 && y < st.start - 2 && after >= st.start - 2 && y < st.end) { ev.preventDefault(); if (now > busyUntil) go(0); return true; }
-      if (dir < 0 && y > st.end + 2 && after <= st.end + 2 && y > st.start) { ev.preventDefault(); if (now > busyUntil) go(3); return true; }
-      if (!inSection(lenis.animatedScroll)) return false;
+      if (dir > 0 && y < st.start - 2 && after >= st.start - 2 && y < st.end) { ev.preventDefault(); step(() => go(0)); return true; }
+      if (dir < 0 && y > st.end + 2 && after <= st.end + 2 && y > st.start) { ev.preventDefault(); step(() => go(3)); return true; }
+      if (!inSection(lenis.animatedScroll) && now > busyUntil) return false;
       ev.preventDefault();
-      if (now > busyUntil && (fresh || now - busyUntil > 250)) { const next = target + dir; next < 0 || next > 3 ? leave(dir) : go(next); }
+      step(() => { const next = target + dir; next < 0 || next > 3 ? leave(dir) : go(next); });
       return true;
     }
     let touching = false, own = false, swipe = 0, used = false;

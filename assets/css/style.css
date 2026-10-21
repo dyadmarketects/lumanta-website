@@ -668,3 +668,23 @@ em { font-style: normal; }
 .footer__legal { display: inline-flex; flex-wrap: wrap; gap: 6px 22px; }
 .footer__legal a { color: inherit; transition: color .3s; }
 .footer__legal a:hover { color: var(--ink); }
+
+/* ---------- The app on shorter laptop screens: everything fits, Repeat included ---------- */
+@media (min-width: 761px) {
+  .phone { width: min(clamp(230px, 21vw, 330px), calc((100vh - var(--nav-h) - 70px) / 2.13)); }
+}
+@media (min-width: 761px) and (max-height: 860px) {
+  .app__stage { padding-top: calc(var(--nav-h) + 1vh); }
+  .app__title { margin-top: 1.2vh; font-size: clamp(26px, min(3.6vw, 6.6vh), 62px); }
+  .app__steps { margin-top: clamp(14px, 3vh, 40px); gap: clamp(4px, 1vh, 10px); }
+  .app__steps li { padding-top: clamp(8px, 1.6vh, 16px); padding-bottom: clamp(8px, 1.6vh, 16px); }
+  .app__steps b { font-size: clamp(16px, 2.8vh, 24px); margin-bottom: 4px; }
+  .app__steps span:last-child { font-size: clamp(13px, 2vh, 17px); }
+  .app__steps li:not(.is-active) span:last-child { font-size: 0; }
+  .app__steps li:not(.is-active) b { margin-bottom: 0; }
+  .app__stores { margin-top: clamp(14px, 2.6vh, 30px); }
+}
+@media (min-width: 761px) and (max-height: 680px) {
+  .app__text .kicker { display: none; }
+  .app__stores { display: none; }
+}
