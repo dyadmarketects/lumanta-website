@@ -4,6 +4,9 @@
   const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const coarse = matchMedia("(pointer: coarse)").matches;
   document.documentElement.classList.replace("no-js", "js");
+  // Back button returns get a fresh load too, so every page opens the way it was designed to
+  addEventListener("pagehide", (e) => { if (e.persisted) document.documentElement.classList.add("is-leaving"); });
+  addEventListener("pageshow", (e) => { if (e.persisted) location.reload(); });
 
   /* ---------- Nav: lightens a touch as you scroll ---------- */
   const nav = $("#nav");

@@ -688,3 +688,6 @@ em { font-style: normal; }
   .app__text .kicker { display: none; }
   .app__stores { display: none; }
 }
+
+/* Hidden while the browser stores the page for Back, so a return shows a fresh load instead of a stale frame */
+html.is-leaving body { visibility: hidden; }

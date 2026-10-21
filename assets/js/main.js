@@ -635,7 +635,9 @@
   runLoader();
   addEventListener("load", () => { if (document.body.classList.contains("is-loading")) { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); } ScrollTrigger.refresh(); });
   addEventListener("beforeunload", () => window.scrollTo(0, 0));
-  addEventListener("pageshow", (e) => { if (e.persisted) { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true }); } });
+  // Coming back with the browser's Back button: start fresh, intro and all, instead of the frozen copy the browser kept
+  addEventListener("pagehide", (e) => { if (e.persisted) document.documentElement.classList.add("is-leaving"); });
+  addEventListener("pageshow", (e) => { if (e.persisted) location.reload(); });
 })();
 
 /* Logo: full reload of the homepage, always from the top */
