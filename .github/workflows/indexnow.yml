@@ -1,0 +1,27 @@
+# Tells Bing (and Copilot, Yandex, Seznam, Naver) about the site's pages after each push, via IndexNow.
+# The key file /83294c464466bd134804d9caf303ce32.txt in the site root proves ownership; it must stay. Never fails the site.
+name: IndexNow
+on:
+  push:
+    branches: ["main"]
+    paths: ["*.html", "sitemap.xml"]
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for GitHub Pages to publish
+        run: sleep 120
+      - name: Submit sitemap URLs
+        run: |
+          python3 - <<'PY'
+          import json, re, urllib.request
+          urls = re.findall(r"<loc>([^<]+)</loc>", open("sitemap.xml").read())
+          body = json.dumps({"host": "lumanta.co", "key": "83294c464466bd134804d9caf303ce32", "keyLocation": "https://lumanta.co/83294c464466bd134804d9caf303ce32.txt", "urlList": urls}).encode()
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=body, headers={"Content-Type": "application/json; charset=utf-8"})
+          try:
+              with urllib.request.urlopen(req, timeout=30) as r: print("IndexNow HTTP", r.status, "for", len(urls), "URLs")
+          except Exception as e: print("IndexNow request failed:", e)
+          PY

@@ -42,5 +42,5 @@ Headers: Dazzle Unicase (Thin, Light, Medium), set in caps, licensed for web use
 ## Before launch
 - Body copy for the cards, app steps, FAQ and research section is placeholder writing for client review.
 - The join form and Donate button are not wired to a service yet.
-- `<meta name="robots" content="noindex">` keeps this preview out of search. Remove it at launch.
+- Live at https://lumanta.co (launched October 2026). Pages are indexable; 404.html stays noindex.
 - To use lumanta.co: Settings > Pages > Custom domain, then point the domain's DNS to GitHub Pages.
