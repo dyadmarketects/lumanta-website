@@ -338,6 +338,8 @@ em { font-style: normal; }
 .join__form button { padding: 16px 28px; border-radius: 999px; background: var(--ink); color: var(--off); font: 500 14px/1 var(--body); letter-spacing: .14em; text-transform: uppercase; transition: background .3s; }
 .join__form button:hover { background: var(--lumen); }
 .join__thanks { margin-top: 18px; font-weight: 500; color: var(--lumen); }
+.join__note { margin-top: 14px; font-size: 13px; opacity: .75; }
+.join__note a { text-decoration: underline; text-underline-offset: 3px; }
 .join__stores { margin-top: 34px; justify-content: center; }
 .donate { margin-top: clamp(60px, 10vh, 110px); display: flex; align-items: center; gap: 28px; text-align: left; max-width: 720px; padding: 26px 28px 26px 32px; border-radius: 28px; background: rgba(255, 255, 255, .6); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); box-shadow: 0 20px 50px -30px rgba(34, 36, 58, .4); }
 .donate p { color: var(--ink-2); font-size: 15px; }
