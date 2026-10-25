@@ -11,6 +11,7 @@
   const smooth = (t) => t * t * (3 - 2 * t);
   const mix = (a, b, t) => a + (b - a) * t;
   const COLORS = ["#ff9a3c", "#ff5f8a", "#1e6fd9", "#2edfcf", "#ffb86b", "#8fd0ff"];
+  const LIGHTS = ["#ffffff", "#ffffff", "#fff1e4", "#ffe8ef", "#e4faf6", "#e6effc"];
 
   /* ---------- Words drift in, one at a time ---------- */
   $$("[data-split]").forEach((el) => {
@@ -42,7 +43,7 @@
   } else splits.forEach((el) => el.classList.add("in"));
 
   /* ---------- Parallax: hero portal and the join background ---------- */
-  const portalImg = $(".mh__portal img"), joinBg = $(".join__bg img");
+  const portalImg = $(".mh__photo img"), joinBg = $(".join__bg img");
   const portalTop0 = portalImg ? portalImg.parentElement.getBoundingClientRect().top + scrollY : 0;
   let ticking = false;
   function parallax() {
@@ -67,7 +68,7 @@
     const N = coarse ? 150 : 280;
     const spawn = (p, fresh) => {
       p.a = Math.random() * Math.PI * 2; p.r = 0.9 + Math.random() * 0.28; p.s = 0.7 + Math.random() * 2; p.w = (Math.random() < 0.5 ? -1 : 1) * (0.0012 + Math.random() * 0.0026);
-      p.c = COLORS[(Math.random() * COLORS.length) | 0]; p.al = 0.35 + Math.random() * 0.55; p.off = 0; p.lift = 0; p.life = fresh ? Math.random() : 0;
+      p.c = (ringCanvas.hasAttribute("data-light") ? LIGHTS : COLORS)[(Math.random() * 6) | 0]; p.al = 0.35 + Math.random() * 0.55; p.off = 0; p.lift = 0; p.life = fresh ? Math.random() : 0;
       p.x = W / 2; p.y = H / 2; p.vx = 0; p.vy = 0; p.calm = 0;
     };
     function size() {
@@ -143,7 +144,8 @@
     stage.addEventListener("touchmove", (e) => { const tt = e.touches[0]; if (tt) point(tt.clientX, tt.clientY); }, { passive: true });
     stage.addEventListener("touchend", () => setTimeout(() => { eng.mouse.has = false; mx = my = 0; }, 350), { passive: true });
     const night = [10, 15, 36], off = [250, 247, 245], navEl = $("#nav");
-    const windows = { catch: [[0.02, 0.24], [0.3, 0.52], [0.62, 0.97]], shift: [[0.03, 0.28], [0.36, 0.6], [0.68, 0.97]], rise: [[0.03, 0.28], [0.34, 0.56], [0.64, 0.97]] }[MODE];
+    // each line holds for most of its third of the scroll, with long, gentle fades in and out
+    const windows = { catch: [[0.0, 0.3], [0.3, 0.62], [0.62, 1]], shift: [[0.0, 0.32], [0.32, 0.64], [0.64, 1]], rise: [[0.0, 0.32], [0.32, 0.62], [0.62, 1]] }[MODE];
     function progress() {
       const r = stageSec.getBoundingClientRect(), span = stageSec.offsetHeight - innerHeight;
       return clamp(-r.top / (span || 1), 0, 1);
@@ -169,7 +171,7 @@
       stageSec.classList.toggle("is-light", light > 0.5);
       if (navEl) { const r = stageSec.getBoundingClientRect(), y = navEl.offsetHeight / 2; navEl.dataset.theme = r.top < y && r.bottom > y && light < 0.5 ? "dark" : "light"; }
       copies.forEach((c, i) => {
-        const [a, b] = windows[i] || [0, 0], fadeIn = seg(p, a, a + 0.06), fadeOut = i === copies.length - 1 ? 0 : seg(p, b - 0.06, b);
+        const [a, b] = windows[i] || [0, 0], fadeIn = i === 0 ? seg(p, 0.0, 0.07) : seg(p, a, a + 0.09), fadeOut = i === copies.length - 1 ? 0 : seg(p, b - 0.1, b - 0.01);
         const o = reduced ? (i === 0 ? 1 : 0) : fadeIn * (1 - fadeOut);
         c.style.opacity = o.toFixed(3);
         c.style.transform = "translate3d(0," + ((1 - fadeIn) * 30 - fadeOut * 30).toFixed(1) + "px,0)";
@@ -178,7 +180,7 @@
     }
     function frame(e) {
       target = progress();
-      cur += (target - cur) * (reduced ? 1 : 0.12);
+      cur += (target - cur) * (reduced ? 1 : 0.07);
       pulse *= 0.94;
       apply(cur);
       const f = e.u.form;

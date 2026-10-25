@@ -823,11 +823,6 @@ html.is-leaving body { visibility: hidden; }
 .catch__small--judge { --dc: var(--sky); } .catch__small--fear { --dc: var(--lav); }
 .catch__note { font: 300 14px/1 var(--body); letter-spacing: .08em; color: rgba(255, 255, 255, .8); }
 
-/* ---------- App Store and Google Play badges: Lumanta orange ---------- */
-.store { background: linear-gradient(135deg, #ffb062, var(--ember) 55%, #ff8a2a); color: var(--ink); box-shadow: 0 14px 28px -14px rgba(255, 138, 42, .9); }
-.store:hover { background-color: transparent; background-image: linear-gradient(135deg, #ffbd78, #ffa24c 55%, #ff9133); box-shadow: 0 20px 34px -14px rgba(255, 138, 42, 1); }
-.store small { opacity: .78; }
-
 /* ---------- Nav: the founding member CTA where Donate used to be ---------- */
 .nav__links .nav__cta { padding: 12px 20px; border-radius: 999px; background: var(--ink); color: var(--off); font-weight: 500; font-size: clamp(14px, 1vw, 16px); letter-spacing: .04em;
   box-shadow: 0 12px 24px -14px rgba(34, 36, 58, .8); transition: background-color .4s, transform .4s var(--ease), box-shadow .4s var(--ease); }
@@ -902,3 +897,51 @@ altcha-widget .altcha { -webkit-backdrop-filter: blur(10px); backdrop-filter: bl
   .cookie p { grid-column: 1 / -1; font-size: 13px; line-height: 1.5; }
   .cookie button { padding: 10px 14px; font-size: 12.5px; }
 }
+
+/* ==========================================================================
+   App UI, light mode (October 25): soft daylight screens in Lumanta's pastels
+   ========================================================================== */
+.phone__screen { background: linear-gradient(170deg, #ffffff 0%, var(--off) 55%, #fdf3ec 100%); color: var(--ink); }
+.phone__aura i:nth-child(1) { opacity: .28; }
+.phone__aura i:nth-child(2) { background: var(--blush); opacity: .55; }
+.phone__aura i:nth-child(3) { background: var(--sky); opacity: .6; }
+.phone__status { color: var(--ink); }
+.phone__sig i { background: var(--ink); }
+.phone__notch { background: #10111c; }
+.phone__ibtn { background: rgba(255, 255, 255, .75); box-shadow: inset 0 0 0 1px rgba(34, 36, 58, .1), 0 6px 14px -8px rgba(34, 36, 58, .3); }
+.phone__ibtn svg { stroke: var(--ink); }
+.phone__hello { color: var(--ink); }
+.phone__glass { background: linear-gradient(160deg, rgba(255, 255, 255, .92), rgba(255, 255, 255, .62));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .95), 0 16px 30px -20px rgba(34, 36, 58, .35); }
+.phone__arc .track { stroke: rgba(34, 36, 58, .08); }
+.phone__arc .fill { stroke: var(--sc, var(--ember)); filter: none; }
+.phone__big { box-shadow: 0 0 0 7px rgba(255, 154, 60, .1), 0 0 0 15px rgba(255, 95, 138, .06), 0 18px 34px -14px rgba(255, 95, 138, .7), inset 0 2px 12px rgba(255, 255, 255, .45); }
+.phone__count { color: var(--ink-2); }
+.phone__count b { color: var(--ink); }
+.phone__small { color: var(--ink-2); }
+.phone__small b { color: var(--ink); }
+.phone__small--judge { background: linear-gradient(160deg, #eaf4ff, #d6e8fd); } .phone__small--fear { background: linear-gradient(160deg, #f3efff, #e4dcfd); }
+.phone__small svg { stroke: var(--ink); box-shadow: inset 0 0 0 1px rgba(34, 36, 58, .2); }
+.phone__card b { color: var(--ink); }
+.phone__card span { color: var(--ink-2); }
+.phone__dots i { background: rgba(34, 36, 58, .15); }
+.phone__feedback { color: var(--ink); }
+.app__glow { opacity: .78; }
+/* "What is Lumanta" catch card, light */
+.catch { background: linear-gradient(165deg, #ffffff, var(--off)); color: var(--ink); box-shadow: 0 34px 60px -36px rgba(34, 36, 58, .45), inset 0 0 0 1px rgba(255, 255, 255, .9); }
+.catch::before { opacity: .22; } .catch::after { background: var(--sky); opacity: .55; }
+.catch__ring { border-color: var(--glow); }
+.catch__small { color: var(--ink); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .9), 0 10px 20px -14px rgba(34, 36, 58, .35); }
+.catch__small--judge { background: linear-gradient(160deg, #eaf4ff, #d6e8fd); } .catch__small--fear { background: linear-gradient(160deg, #f3efff, #e4dcfd); }
+.catch__note { color: var(--ink-2); }
+
+/* Cookie notice: Lumanta orange with white text */
+.cookie { background: linear-gradient(135deg, #ffa24c, var(--ember) 45%, #f58a2c); color: #fff; box-shadow: 0 30px 60px -24px rgba(245, 138, 44, .75), inset 0 0 0 1px rgba(255, 255, 255, .25); }
+.cookie p { color: #fff; font-weight: 400; text-shadow: 0 1px 2px rgba(120, 50, 0, .25); }
+.cookie p b { color: #fff; font-weight: 600; }
+.cookie a { color: #fff; }
+.cookie__ok { background: #fff; color: #d4650f; }
+.cookie__ok:hover { background: #fff6ee; }
+.cookie__no { color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, .8); }
+.cookie__no:hover { box-shadow: inset 0 0 0 1.5px #fff; background: rgba(255, 255, 255, .12); }
+.cookie__mark { filter: brightness(0) invert(1); }
