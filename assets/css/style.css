@@ -988,6 +988,4 @@ input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #c2265a !important; }
 /* mobile hero: breathing room on the sides */
 @media (max-width: 760px) { .hero__content { padding-left: var(--pad); padding-right: var(--pad); } .join { padding-top: clamp(60px, 9vh, 100px); } .join__logo { width: 120px; } }
 /* shorter scroll story on phones and for reduced motion */
-@media (max-width: 760px) { .static { height: 320vh; } }
-@media (prefers-reduced-motion: reduce) { .static { height: 160vh; } }
 .app__steps li:focus-visible { outline: 3px solid var(--lumen); outline-offset: 4px; }

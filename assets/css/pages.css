@@ -227,3 +227,8 @@ html { scroll-behavior: smooth; }
 .lsec h3[id] { scroll-margin-top: calc(var(--nav-h) + 20px); }
 .share-link { display: block; width: 100%; margin-top: 8px; padding: 10px 12px; border: 0; border-radius: 12px; font: 400 14px/1.3 var(--body); color: var(--ink); background: #fff; }
 @media (max-width: 900px) { .reach__inner { grid-template-columns: minmax(0, 1fr); } .reach__inner > * { min-width: 0; } #donateList { width: 100%; } }
+
+/* staging: readable text on bright brand fills (loads after the rules it overrides) */
+.page .btn--glow, .page .btn--glow:hover { color: var(--ink); }
+.card.card--ember, .card.card--glow, .card.card--aqua, .card.card--ember p, .card.card--glow p, .card.card--aqua p, .card.card--ember .num, .card.card--glow .num, .card.card--aqua .num { color: var(--ink); }
+.card .btn { white-space: normal; max-width: 100%; text-align: left; }

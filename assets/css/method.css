@@ -283,3 +283,4 @@
   .mstage__copy, .mstage__copy + .mstage__copy { display: block; position: relative; bottom: auto; padding: 4vh var(--pad); opacity: 1 !important; }
   .mstage__copy:first-of-type { padding-top: 28vh; }
 }
+.mh { background-color: rgb(var(--tint)); }

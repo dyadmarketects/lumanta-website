@@ -450,8 +450,7 @@
     const go = (i, dur = 0.7) => { target = i; setStep(i); glide(posOf(i), dur); };
     // Past the first or last step: glide on to the neighbouring section in one move
     const leave = (dir) => { target = dir > 0 ? N : -1; glide(dir > 0 ? st.end + innerHeight * 0.75 : st.start - innerHeight * 0.75, 0.8); };
-    steps.forEach((li, i) => { li.addEventListener("click", () => go(i)); li.tabIndex = 0; li.setAttribute("role", "button");
-      li.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(i); } }); });
+    steps.forEach((li, i) => li.addEventListener("click", () => go(i)));
 
     /* One wheel notch or one swipe moves exactly one step. Wheel/trackpad inertia is absorbed until the
        gesture ends; on touch every new swipe counts at once, even while the last glide is still moving. */
@@ -610,6 +609,11 @@
       if (id === "#method") y = $(".hero-wrap").offsetHeight - innerHeight;
       if (id === "#contact" && $("#joinForm")) y = $("#joinForm").getBoundingClientRect().top + (lenis ? lenis.scroll : scrollY) - innerHeight * 0.42;   // land with the email field in view
       scrollToY(y);
+      // the page can grow while it glides (images load); re-aim once at the email field if it ended up out of view
+      if (id === "#contact" && $("#joinForm")) setTimeout(() => {
+        const r = $("#joinForm").getBoundingClientRect();
+        if (r.top < 80 || r.bottom > innerHeight - 20) scrollToY(r.top + (lenis ? lenis.scroll : scrollY) - innerHeight * 0.42);
+      }, 1750);
     });
 
     $$(".faq__q").forEach((q) => q.addEventListener("click", () => {

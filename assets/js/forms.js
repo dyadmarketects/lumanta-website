@@ -117,6 +117,7 @@
       f.insertAdjacentElement("afterend", n);
       var em = f.elements.email;
       if (code === "email" && em) { em.setAttribute("aria-invalid", "true"); em.setAttribute("aria-describedby", n.id); em.focus(); }
+      else if (em) em.focus();   // keep keyboard focus in the form after any failure
     }
   });
 })();
