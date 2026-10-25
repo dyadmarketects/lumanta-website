@@ -248,8 +248,8 @@
       const on = $$(".space-chips .is-on").length;
       orb.style.setProperty("--fill", String(on * 20));
       if (on === 5) { ob.innerHTML = "Free Up Space. See what&rsquo;s possible."; os.textContent = "Look what you've started."; }
-      else if (b.classList.contains("is-on")) { ob.innerHTML = LINES[b.dataset.fill]; os.textContent = on + " of 5"; }
-      else { ob.innerHTML = on ? "What else could fill that space?" : "What could fill that space?"; os.textContent = on ? on + " of 5" : "Tap to choose"; }
+      else if (b.classList.contains("is-on")) { ob.innerHTML = LINES[b.dataset.fill]; os.textContent = "Tap to choose"; }
+      else { ob.innerHTML = on ? "What else could fill that space?" : "What could fill that space?"; os.textContent = "Tap to choose"; }
       ripple(b);
     }));
   }

@@ -257,3 +257,10 @@
 .mh--left .mh__text { grid-column: 1; grid-row: 1; }
 .mh--left .mh__iconwrap { grid-column: 2; grid-row: 1; }
 @media (max-width: 960px) { .mh--left .mh__text, .mh--left .mh__iconwrap { grid-column: 1; grid-row: auto; } }
+
+/* launch callout after the quick answer (audit P1-10) */
+.mcall { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 28px; margin: 0 var(--pad); padding: 22px 28px; border-radius: 26px;
+  background: #fff; box-shadow: 0 30px 60px -44px rgba(34, 36, 58, .5), inset 0 0 0 1px rgba(34, 36, 58, .06); transform: translateY(-50%); position: relative; z-index: 2; margin-bottom: -40px; }
+.mcall p { max-width: 46em; font-size: 16.5px; line-height: 1.6; color: var(--ink-2); }
+.mcall b { color: var(--ink); font-weight: 600; }
+@media (max-width: 760px) { .mcall { transform: none; margin: 24px var(--pad) 0; } .mcall .btn { width: 100%; } }
