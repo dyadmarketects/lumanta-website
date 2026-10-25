@@ -31,7 +31,7 @@
 <link rel="preload" href="assets/fonts/dazzle-unicase-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/data/lumanta-particles.bin" as="fetch" type="application/octet-stream" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=20261025b">
+<link rel="stylesheet" href="assets/css/style.css?v=20261025s">
 <script>
 document.documentElement.classList.replace('no-js','js');
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -114,7 +114,7 @@ window.scrollTo(0, 0);
     </div>
 
     <div class="hero__content">
-      <h1 class="headline" aria-label="Rise Above the Static: Lumanta, the mindfulness app for negative thoughts">
+      <h1 class="headline"><span class="sr-only">Rise Above the Static: Lumanta, the mindfulness app for negative thoughts</span>
         <span class="hero__kicker" aria-hidden="true">The mindfulness app for negative thoughts</span>
         <span class="headline__line headline__rise" aria-hidden="true"><span class="ch">R</span> <span class="ch">I</span> <span class="ch">S</span> <span class="ch">E</span></span>
         <span class="headline__line headline__above" aria-hidden="true"><span class="ch">A</span> <span class="ch">B</span> <span class="ch ch--mark"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""></span> <span class="ch">V</span> <span class="ch">E</span></span>
@@ -141,19 +141,19 @@ window.scrollTo(0, 0);
     <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="2.25"/><path d="M4 12.5c1.8 4.2 4.6 6.5 8 6.5s6.2-2.3 8-6.5"/><path d="M12 2.5v0.5"/></svg>
     <h2 class="pillar__title" data-anim="up">Catch</h2>
     <p class="pillar__text" data-anim="up">Notice the thought the moment it shows up. One tap. You caught it.</p>
-    <a class="pill" href="catch" aria-label="Learn more about Catch: how to notice negative thoughts">Learn More</a>
+    <a class="pill" href="catch" >Learn more <span class="sr-only">about Catch</span></a>
   </article>
   <article class="pillar pillar--shift">
     <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h11a4.5 4.5 0 0 1 0 9H8"/><path d="M10.5 14.5 8 17l2.5 2.5"/></svg>
     <h2 class="pillar__title" data-anim="up">Shift</h2>
     <p class="pillar__text" data-anim="up">Acknowledge it without judgment, analysis or attachment. Then let it pass.</p>
-    <a class="pill" href="shift" aria-label="Learn more about Shift: how to let go of negative thoughts">Learn More</a>
+    <a class="pill" href="shift" >Learn more <span class="sr-only">about Shift</span></a>
   </article>
   <article class="pillar pillar--rise">
     <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19h18"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><path d="M12 10V4"/><path d="M9.5 6.5 12 4l2.5 2.5"/></svg>
     <h2 class="pillar__title" data-anim="up">Rise</h2>
     <p class="pillar__text" data-anim="up">Free up the space it was taking. Make room for what matters and see what&rsquo;s possible.</p>
-    <a class="pill" href="rise" aria-label="Learn more about Rise: how to free up mental space">Learn More</a>
+    <a class="pill" href="rise" >Learn more <span class="sr-only">about Rise</span></a>
   </article>
 </section>
 
@@ -313,32 +313,32 @@ window.scrollTo(0, 0);
   <h2 class="faq__title" data-anim="up">You may be <em>wondering.</em></h2>
   <div class="faq__list">
     <div class="faq__item" data-anim="up">
-      <button class="faq__q" aria-expanded="false"><span class="num">01</span><span>What is Lumanta?</span><i aria-hidden="true"></i></button>
-      <div class="faq__a"><div><p>Lumanta is a mindfulness app for negative thoughts. It follows three steps, Catch, Shift and Rise: you catch a negative, judgmental or fearful thought with one tap, acknowledge it without judgment, and let it go to free up space.</p></div></div>
+      <button type="button" class="faq__q" aria-controls="faq-1" aria-expanded="false"><span class="num">01</span><span>What is Lumanta?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a" id="faq-1" inert><div><p>Lumanta is a mindfulness app for negative thoughts. It follows three steps, Catch, Shift and Rise: you catch a negative, judgmental or fearful thought with one tap, acknowledge it without judgment, and let it go to free up space.</p></div></div>
     </div>
     <div class="faq__item" data-anim="up">
-      <button class="faq__q" aria-expanded="false"><span class="num">02</span><span>How does Lumanta help with negative thinking?</span><i aria-hidden="true"></i></button>
-      <div class="faq__a"><div><p>Lumanta helps you notice negative, fearful and judgmental thoughts as they happen, so they don&rsquo;t quietly run your day. It doesn&rsquo;t promise you&rsquo;ll never have a negative thought again. The practice is noticing, and as your awareness grows, you free up space for other ways of thinking.</p></div></div>
+      <button type="button" class="faq__q" aria-controls="faq-2" aria-expanded="false"><span class="num">02</span><span>How does Lumanta help with negative thinking?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a" id="faq-2" inert><div><p>Lumanta helps you notice negative, fearful and judgmental thoughts as they happen, so they don&rsquo;t quietly run your day. It doesn&rsquo;t promise you&rsquo;ll never have a negative thought again. The practice is noticing, and as your awareness grows, you free up space for other ways of thinking.</p></div></div>
     </div>
     <div class="faq__item" data-anim="up">
-      <button class="faq__q" aria-expanded="false"><span class="num">03</span><span>Can Lumanta help with stress, overthinking or self-doubt?</span><i aria-hidden="true"></i></button>
-      <div class="faq__a"><div><p>Many people come to Lumanta because of a busy mind, worry, stress or self-judgment. Lumanta gives you a quick, calm way to notice those thoughts and let them pass. It isn&rsquo;t therapy or medical care, and it&rsquo;s not a replacement for professional support.</p></div></div>
+      <button type="button" class="faq__q" aria-controls="faq-3" aria-expanded="false"><span class="num">03</span><span>Can Lumanta help with stress, overthinking or self-doubt?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a" id="faq-3" inert><div><p>Many people come to Lumanta because of a busy mind, worry, stress or self-judgment. Lumanta gives you a quick, calm way to notice those thoughts and let them pass. It isn&rsquo;t therapy or medical care, and it&rsquo;s not a replacement for professional support.</p></div></div>
     </div>
     <div class="faq__item" data-anim="up">
-      <button class="faq__q" aria-expanded="false"><span class="num">04</span><span>Who is Lumanta for?</span><i aria-hidden="true"></i></button>
-      <div class="faq__a"><div><p>Anyone who has decided they want to change their relationship with their thoughts, across every age, background and belief. Many people use it alongside a mindfulness or spiritual practice. No experience needed.</p></div></div>
+      <button type="button" class="faq__q" aria-controls="faq-4" aria-expanded="false"><span class="num">04</span><span>Who is Lumanta for?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a" id="faq-4" inert><div><p>Anyone who has decided they want to change their relationship with their thoughts, across every age, background and belief. Many people use it alongside a mindfulness or spiritual practice. No experience needed.</p></div></div>
     </div>
     <div class="faq__item" data-anim="up">
-      <button class="faq__q" aria-expanded="false"><span class="num">05</span><span>What is a founding member?</span><i aria-hidden="true"></i></button>
-      <div class="faq__a"><div><p>Being a founding member means you&rsquo;re on the launch list. Share your email below and we&rsquo;ll email you when Lumanta launches. It&rsquo;s free to join, and there&rsquo;s no noise, we promise.</p></div></div>
+      <button type="button" class="faq__q" aria-controls="faq-5" aria-expanded="false"><span class="num">05</span><span>What is a founding member?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a" id="faq-5" inert><div><p>Being a founding member means you&rsquo;re on the launch list. Share your email below and we&rsquo;ll email you when Lumanta launches. It&rsquo;s free to join, and there&rsquo;s no noise, we promise.</p></div></div>
     </div>
     <div class="faq__item" data-anim="up">
-      <button class="faq__q" aria-expanded="false"><span class="num">06</span><span>When can I download Lumanta?</span><i aria-hidden="true"></i></button>
-      <div class="faq__a"><div><p>Lumanta is coming soon to the App Store and Google Play. Founding members will get an email when it&rsquo;s live.</p></div></div>
+      <button type="button" class="faq__q" aria-controls="faq-6" aria-expanded="false"><span class="num">06</span><span>When can I download Lumanta?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a" id="faq-6" inert><div><p>Lumanta is coming soon to the App Store and Google Play. Founding members will get an email when it&rsquo;s live.</p></div></div>
     </div>
     <div class="faq__item" data-anim="up">
-      <button class="faq__q" aria-expanded="false"><span class="num">07</span><span>How can I support Lumanta?</span><i aria-hidden="true"></i></button>
-      <div class="faq__a"><div><p>Share it with someone who could use a little more space. Donations aren&rsquo;t open yet, but you can join the list on our <a href="donate">Ways to help page</a> to hear when giving opens.</p></div></div>
+      <button type="button" class="faq__q" aria-controls="faq-7" aria-expanded="false"><span class="num">07</span><span>How can I support Lumanta?</span><i aria-hidden="true"></i></button>
+      <div class="faq__a" id="faq-7" inert><div><p>Share it with someone who could use a little more space. Donations aren&rsquo;t open yet, but you can join the list on our <a href="donate">Ways to help page</a> to hear when giving opens.</p></div></div>
     </div>
   </div>
 </section>
@@ -410,10 +410,10 @@ window.scrollTo(0, 0);
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
 <script src="assets/js/particles.js?v=20261021-3"></script>
-<script src="assets/js/vendor/altcha.min.js?v=20261025b"></script>
-<script src="assets/js/forms.js?v=20261025b"></script>
-<script src="assets/js/main.js?v=20261025b"></script>
-<script src="assets/js/cookies.js?v=20261025b"></script>
+<script src="assets/js/vendor/altcha.min.js?v=20261025s"></script>
+<script src="assets/js/forms.js?v=20261025s"></script>
+<script src="assets/js/main.js?v=20261025s"></script>
+<script src="assets/js/cookies.js?v=20261025s"></script>
 
 <!-- Desktop: scroll cue stays on screen until the end of the page -->
 <a class="scroll-cue" href="#method" aria-label="Scroll to explore">

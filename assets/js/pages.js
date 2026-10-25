@@ -52,8 +52,8 @@
   /* ---------- FAQ ---------- */
   $$(".faq2__q").forEach((q) => q.addEventListener("click", () => {
     const open = q.getAttribute("aria-expanded") === "true";
-    $$(".faq2__q").forEach((o) => o.setAttribute("aria-expanded", "false"));
-    q.setAttribute("aria-expanded", String(!open));
+    $$(".faq2__q").forEach((o) => { o.setAttribute("aria-expanded", "false"); const pn = document.getElementById(o.getAttribute("aria-controls")); if (pn) pn.inert = true; });
+    q.setAttribute("aria-expanded", String(!open)); { const pn = document.getElementById(q.getAttribute("aria-controls")); if (pn) pn.inert = open; }
   }));
 
   /* ---------- Forms: confirm on the page (forms.js sends the submission) ---------- */

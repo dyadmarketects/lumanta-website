@@ -11,7 +11,7 @@
 
   function build(now) {
     var el = document.createElement("div");
-    el.className = "cookie"; el.setAttribute("role", "dialog"); el.setAttribute("aria-live", "polite"); el.setAttribute("aria-label", "Cookie notice");
+    el.className = "cookie"; el.setAttribute("role", "region"); el.setAttribute("aria-label", "Cookie notice");
     el.innerHTML =
       '<img class="cookie__mark" src="assets/img/lumanta-mark.webp" width="480" height="531" alt="">' +
       '<p><b>Cookies?</b> Only what this site needs to work. No ads or tracking, and analytics would only ever run if you say yes. ' +
@@ -25,6 +25,7 @@
     };
     el.querySelector(".cookie__ok").addEventListener("click", function () { close("all"); });
     el.querySelector(".cookie__no").addEventListener("click", function () { close("essential"); });
+    el.addEventListener("keydown", function (e) { if (e.key === "Escape") close("essential"); });
     // the homepage plays its intro first; everywhere else the notice slides up after a short pause
     var delay = now ? 30 : document.getElementById("loader") ? 5200 : 1400;
     setTimeout(function () { requestAnimationFrame(function () { el.classList.add("is-in"); }); }, delay);

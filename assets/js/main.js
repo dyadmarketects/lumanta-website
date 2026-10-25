@@ -122,7 +122,9 @@
   }
 
   function runLoader() {
-    const MIN = reduced ? 0.3 : 2.6, MAX = 8;
+    // The full intro plays once per visit; returning in the same session it moves quickly (audit P2-07: faster first content)
+    let seen = false; try { seen = sessionStorage.getItem("lumanta-intro") === "1"; sessionStorage.setItem("lumanta-intro", "1"); } catch (e) {}
+    const MIN = reduced || seen ? 0.3 : 2.6, MAX = seen ? 3 : 8;
     const t0 = performance.now();
     const bar = $("#loaderBar"), pct = $("#loaderPct");
     const word = $$(".loader__word span"), tag = $(".loader__tag");
@@ -618,8 +620,8 @@
 
     $$(".faq__q").forEach((q) => q.addEventListener("click", () => {
       const open = q.getAttribute("aria-expanded") === "true";
-      $$(".faq__q").forEach((o) => o.setAttribute("aria-expanded", "false"));
-      q.setAttribute("aria-expanded", String(!open));
+      $$(".faq__q").forEach((o) => { o.setAttribute("aria-expanded", "false"); const pn = document.getElementById(o.getAttribute("aria-controls")); if (pn) pn.inert = true; });
+      q.setAttribute("aria-expanded", String(!open)); { const pn = document.getElementById(q.getAttribute("aria-controls")); if (pn) pn.inert = open; }
       setTimeout(() => ScrollTrigger.refresh(), 650);
     }));
 

@@ -954,3 +954,16 @@ input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #c2265a !important; }
 .store--soon { cursor: default; }
 .store--soon:hover { transform: none; }
 .hero__soon { line-height: 1.6; }
+
+/* staging: text on bright brand fills uses ink so it passes WCAG contrast (colors themselves unchanged) */
+.pillar, .pillar .pillar__title, .pillar .pillar__text { color: var(--ink); }
+.pillar__icon { stroke: var(--ink); }
+.pill--glow, .btn--glow, .pill--glow:hover, .btn--glow:hover { color: var(--ink); }
+.card--ember, .card--glow, .card--aqua { color: var(--ink); }
+.card--ember .num, .card--glow .num, .card--aqua .num, .card--ember p, .card--glow p, .card--aqua p { color: var(--ink); }
+.mh__step i { color: var(--ink); }
+.hero__soon { color: var(--ink); }
+@media (max-width: 760px) {
+  .hero__media::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, .45) 62%, rgba(15, 23, 42, .72) 100%); }
+  .hero__soon { color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, .5); }
+}
