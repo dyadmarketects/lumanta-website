@@ -27,8 +27,13 @@
     el.querySelector(".cookie__no").addEventListener("click", function () { close("essential"); });
     el.addEventListener("keydown", function (e) { if (e.key === "Escape") close("essential"); });
     // the homepage plays its intro first; everywhere else the notice slides up after a short pause
-    var delay = now ? 30 : document.getElementById("loader") ? 5200 : 1400;
-    setTimeout(function () { requestAnimationFrame(function () { el.classList.add("is-in"); }); }, delay);
+    var show = function () { requestAnimationFrame(function () { el.classList.add("is-in"); }); };
+    if (now) { setTimeout(show, 30); return; }
+    // on phones it waits for the first scroll (or 12 s) so it never covers the first view's call to action
+    if (matchMedia("(max-width: 760px)").matches) {
+      var once = function () { removeEventListener("scroll", once); clearTimeout(t); setTimeout(show, 400); };
+      var t = setTimeout(once, 12000); addEventListener("scroll", once, { passive: true });
+    } else setTimeout(show, document.getElementById("loader") ? 5200 : 1400);
   }
 
   function init() {

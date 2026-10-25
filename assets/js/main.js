@@ -124,7 +124,7 @@
   function runLoader() {
     // The full intro plays once per visit; returning in the same session it moves quickly (audit P2-07: faster first content)
     let seen = false; try { seen = sessionStorage.getItem("lumanta-intro") === "1"; sessionStorage.setItem("lumanta-intro", "1"); } catch (e) {}
-    const MIN = reduced || seen ? 0.3 : 2.6, MAX = seen ? 3 : 8;
+    const MIN = reduced || seen ? 0.3 : 2.4, MAX = reduced || seen ? 0.8 : 4;   // never hold the page hostage to the video or particle download
     const t0 = performance.now();
     const bar = $("#loaderBar"), pct = $("#loaderPct");
     const word = $$(".loader__word span"), tag = $(".loader__tag");
@@ -455,7 +455,8 @@
     const go = (i, dur = 0.7) => { target = i; setStep(i); glide(posOf(i), dur); };
     // Past the first or last step: glide on to the neighbouring section in one move
     const leave = (dir) => { target = dir > 0 ? N : -1; glide(dir > 0 ? st.end + innerHeight * 0.75 : st.start - innerHeight * 0.75, 0.8); };
-    steps.forEach((li, i) => li.addEventListener("click", () => go(i)));
+    steps.forEach((li, i) => { li.addEventListener("click", () => go(i)); li.tabIndex = 0; li.setAttribute("role", "button");
+      li.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(i); } }); });
 
     /* One wheel notch or one swipe moves exactly one step. Wheel/trackpad inertia is absorbed until the
        gesture ends; on touch every new swipe counts at once, even while the last glide is still moving. */
@@ -615,6 +616,7 @@
       let y = id === "#top" ? 0 : el.getBoundingClientRect().top + (lenis ? lenis.scroll : scrollY);
       if (["#research", "#donate", "#about", "#founder", "#what"].includes(id)) y -= navH + 10;
       if (id === "#method") y = $(".hero-wrap").offsetHeight - innerHeight;
+      if (id === "#contact" && $("#joinForm")) y = $("#joinForm").getBoundingClientRect().top + (lenis ? lenis.scroll : scrollY) - innerHeight * 0.42;   // land with the email field in view
       scrollToY(y);
     });
 

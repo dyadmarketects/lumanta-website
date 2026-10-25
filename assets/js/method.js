@@ -172,9 +172,9 @@
       if (navEl) { const r = stageSec.getBoundingClientRect(), y = navEl.offsetHeight / 2; navEl.dataset.theme = r.top < y && r.bottom > y && light < 0.5 ? "dark" : "light"; }
       copies.forEach((c, i) => {
         const [a, b] = windows[i] || [0, 0], fadeIn = i === 0 ? seg(p, 0.0, 0.07) : seg(p, a, a + 0.09), fadeOut = i === copies.length - 1 ? 0 : seg(p, b - 0.1, b - 0.01);
-        const o = reduced ? (i === 0 ? 1 : 0) : fadeIn * (1 - fadeOut);
+        const o = reduced ? 1 : fadeIn * (1 - fadeOut);
         c.style.opacity = o.toFixed(3);
-        c.style.transform = "translate3d(0," + ((1 - fadeIn) * 30 - fadeOut * 30).toFixed(1) + "px,0)";
+        c.style.transform = reduced ? "none" : "translate3d(0," + ((1 - fadeIn) * 30 - fadeOut * 30).toFixed(1) + "px,0)";
       });
       if (hint) hint.style.opacity = (seg(p, 0.05, 0.12) * (1 - seg(p, 0.9, 0.98))).toFixed(3);
     }
@@ -235,8 +235,8 @@
       })();
     };
     btn && btn.addEventListener("click", () => {
-      btn.disabled = true; burst(); card.classList.add("is-gone"); say(LINES[i % LINES.length]);
-      setTimeout(() => { i++; q.innerHTML = THOUGHTS[i % THOUGHTS.length]; card.classList.remove("is-gone"); btn.disabled = false; }, 1700);
+      if (btn.getAttribute("aria-disabled") === "true") return; btn.setAttribute("aria-disabled", "true"); burst(); card.classList.add("is-gone"); say(LINES[i % LINES.length]);
+      setTimeout(() => { i++; q.innerHTML = THOUGHTS[i % THOUGHTS.length]; card.classList.remove("is-gone"); btn.removeAttribute("aria-disabled"); }, 1700);
     });
   }
 

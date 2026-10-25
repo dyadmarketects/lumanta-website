@@ -967,3 +967,27 @@ input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #c2265a !important; }
   .hero__media::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, .45) 62%, rgba(15, 23, 42, .72) 100%); }
   .hero__soon { color: #fff; text-shadow: 0 1px 10px rgba(0, 0, 0, .5); }
 }
+
+/* ---------- staging: UX review fixes ---------- */
+/* cookie notice: a small card in the bottom-right corner on desktop, away from the hero CTA */
+@media (min-width: 900px) {
+  .cookie { left: auto; right: 24px; width: 420px; grid-template-columns: 1fr; gap: 12px; padding: 18px 20px; }
+  .cookie__mark { display: none; }
+  .cookie__btns { grid-column: 1; }
+}
+.cookie button { min-height: 44px; }
+/* mobile menu: everything in one scrollable column, nothing overlapping */
+.menu { overflow-y: auto; place-items: start center; padding: calc(var(--nav-h) + 30px) 24px 40px; }
+.menu nav { gap: 22px; }
+.menu__social, .menu__mark { position: static; margin: 34px auto 0; justify-content: center; }
+.menu__mark { display: block; margin-top: 24px; }
+.menu .menu__cta { font: 400 17px/1.35 var(--body); letter-spacing: .06em; text-align: center; padding: 14px 22px; border-radius: 999px; background: var(--glow); color: var(--ink); max-width: 300px; }
+/* bigger tap targets (WCAG 2.5.8; 44 px for primary controls) */
+.pill { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.footer__legal a, .footer__legal button { display: inline-block; padding: 8px 0; }
+/* mobile hero: breathing room on the sides */
+@media (max-width: 760px) { .hero__content { padding-left: var(--pad); padding-right: var(--pad); } .join { padding-top: clamp(60px, 9vh, 100px); } .join__logo { width: 120px; } }
+/* shorter scroll story on phones and for reduced motion */
+@media (max-width: 760px) { .static { height: 320vh; } }
+@media (prefers-reduced-motion: reduce) { .static { height: 160vh; } }
+.app__steps li:focus-visible { outline: 3px solid var(--lumen); outline-offset: 4px; }
