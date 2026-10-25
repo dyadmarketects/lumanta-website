@@ -68,11 +68,18 @@
   /* ---------- Share ---------- */
   $$("[data-share]").forEach((b) => b.addEventListener("click", async () => {
     const url = new URL("./", location.href).href, msg = $(b.dataset.share);
-    const data = { title: "Lumanta", text: "Lumanta helps you notice your thoughts, see your patterns and free up space.", url };
-    try {
-      if (navigator.share) { await navigator.share(data); return; }
-      await navigator.clipboard.writeText(url); if (msg) msg.textContent = "Link copied. Thank you for sharing!";
-    } catch (_) { if (msg && !navigator.share) msg.textContent = url; }
+    const data = { title: "Lumanta", text: "Lumanta helps you notice your thoughts, let them go and free up space.", url };
+    const say = (t) => { if (!msg) return; msg.textContent = ""; setTimeout(() => { msg.textContent = t; }, 60); };
+    if (navigator.share) {
+      try { await navigator.share(data); return; } catch (err) { if (err && err.name === "AbortError") return; }
+    }
+    try { await navigator.clipboard.writeText(url); say("Link copied. Thank you for sharing!"); return; } catch (_) {}
+    // no share sheet and no clipboard: show the link, selected, ready to copy
+    if (msg) {
+      msg.textContent = "Copy this link: ";
+      const inp = document.createElement("input"); inp.type = "text"; inp.readOnly = true; inp.value = url; inp.className = "share-link";
+      inp.setAttribute("aria-label", "Link to Lumanta"); msg.appendChild(inp); inp.focus(); inp.select();
+    }
   }));
 
   /* ---------- 404: the static, calming into a ring of light where you are ---------- */
