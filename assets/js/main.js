@@ -419,6 +419,7 @@
     const steps = $$(".app__steps li"), phone = $("#phone"), glows = $$(".app__glow");
     const icons = $$(".phone__icons svg"), cards = $$(".phone__card"), dots = $$(".phone__dots i");
     const colors = ["var(--ember)", "var(--glow)", "var(--aqua)", "var(--lumen)"];
+    const N = steps.length, LAST = N - 1;
     let current = -1;
     const appEl = $(".app"), fill = $(".app__fill"), thumb = $(".app__thumb"), list = $(".app__steps");
     const prog = $(".app__progress");
@@ -442,16 +443,16 @@
     // Each step owns a quarter of the pinned scroll; positions sit in the middle of each quarter
     let busyUntil = 0, target = 0, syncT = 0;
     const st = ScrollTrigger.create({ trigger: ".app", start: "top top", end: "bottom bottom",
-      onUpdate: (s) => { if (performance.now() < busyUntil) return; target = clamp(Math.floor(s.progress * 4), 0, 3); setStep(target); } });
-    const posOf = (i) => st.start + (st.end - st.start) * (i + 0.5) / 4;
+      onUpdate: (s) => { if (performance.now() < busyUntil) return; target = clamp(Math.floor(s.progress * N), 0, LAST); setStep(target); } });
+    const posOf = (i) => st.start + (st.end - st.start) * (i + 0.5) / N;
     const ease = (t) => 1 - Math.pow(1 - t, 3);
     const glide = (y, dur) => { busyUntil = performance.now() + dur * 1000 + 80;
-      clearTimeout(syncT); syncT = setTimeout(() => { target = clamp(Math.floor(st.progress * 4), 0, 3); setStep(target); }, dur * 1000 + 120);
+      clearTimeout(syncT); syncT = setTimeout(() => { target = clamp(Math.floor(st.progress * N), 0, LAST); setStep(target); }, dur * 1000 + 120);
       lenis ? lenis.scrollTo(y, { duration: dur, easing: ease, force: true }) : window.scrollTo({ top: y, behavior: "smooth" }); };
     // Light up the new step right away, then glide to it
     const go = (i, dur = 0.7) => { target = i; setStep(i); glide(posOf(i), dur); };
     // Past the first or last step: glide on to the neighbouring section in one move
-    const leave = (dir) => { target = dir > 0 ? 4 : -1; glide(dir > 0 ? st.end + innerHeight * 0.75 : st.start - innerHeight * 0.75, 0.8); };
+    const leave = (dir) => { target = dir > 0 ? N : -1; glide(dir > 0 ? st.end + innerHeight * 0.75 : st.start - innerHeight * 0.75, 0.8); };
     steps.forEach((li, i) => li.addEventListener("click", () => go(i)));
 
     /* One wheel notch or one swipe moves exactly one step. Wheel/trackpad inertia is absorbed until the
@@ -467,23 +468,23 @@
       const step = (fn) => { if (fresh && now - lastStep > 90) { lastStep = now; fn(); } };
       // Entering from above or below: land on the first or last step
       if (dir > 0 && y < st.start - 2 && after >= st.start - 2 && y < st.end) { ev.preventDefault(); step(() => go(0)); return true; }
-      if (dir < 0 && y > st.end + 2 && after <= st.end + 2 && y > st.start) { ev.preventDefault(); step(() => go(3)); return true; }
+      if (dir < 0 && y > st.end + 2 && after <= st.end + 2 && y > st.start) { ev.preventDefault(); step(() => go(LAST)); return true; }
       // Already gliding out of the section: more scrolling the same way just carries on down (or up) the page,
       // scrolling back the other way returns to the nearest step
-      if (target > 3 || target < 0) {
-        if ((target > 3) === (dir > 0)) return false;
-        ev.preventDefault(); step(() => go(target > 3 ? 3 : 0)); return true;
+      if (target > LAST || target < 0) {
+        if ((target > LAST) === (dir > 0)) return false;
+        ev.preventDefault(); step(() => go(target > LAST ? LAST : 0)); return true;
       }
       if (!inSection(lenis.animatedScroll)) return false;
       ev.preventDefault();
-      step(() => { const next = target + dir; next < 0 || next > 3 ? leave(dir) : go(next); });
+      step(() => { const next = target + dir; next < 0 || next > LAST ? leave(dir) : go(next); });
       return true;
     }
     let touching = false, own = false, swipe = 0, used = false;
     const coarse = matchMedia("(pointer: coarse)").matches;
     function touch(deltaY, event) {
       const type = event.type, stop = () => { if (event.cancelable) event.preventDefault(); };
-      if (type === "touchstart") { touching = true; swipe = 0; used = false; own = inSection(scrollY) || (performance.now() < busyUntil && target >= 0 && target <= 3); return !own; }
+      if (type === "touchstart") { touching = true; swipe = 0; used = false; own = inSection(scrollY) || (performance.now() < busyUntil && target >= 0 && target <= LAST); return !own; }
       if (type === "touchend" || type === "touchcancel") { touching = false; return !own; }   // never let a lifted finger cancel a glide
       if (!own) return true;                                                                  // gesture began outside: normal scrolling
       stop();
@@ -492,7 +493,7 @@
       if (Math.abs(swipe) < 10) return false;
       used = true;
       const dir = Math.sign(swipe), next = target + dir;
-      next < 0 || next > 3 ? leave(dir) : go(next, 0.55);
+      next < 0 || next > LAST ? leave(dir) : go(next, 0.55);
       return false;
     }
     if (lenis) {
@@ -507,7 +508,7 @@
         const y = scrollY, now = performance.now();
         if (coarse && !touching && now > busyUntil && now > (window.__progUntil || 0) && lenis.isScrolling !== "smooth") {
           if (prevY < st.start - 2 && y > st.start + 8 && y < st.end) go(0);
-          else if (prevY > st.end + 2 && y < st.end - 8 && y > st.start) go(3);
+          else if (prevY > st.end + 2 && y < st.end - 8 && y > st.start) go(LAST);
         }
         prevY = y;
       }, { passive: true });
