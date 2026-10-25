@@ -69,33 +69,51 @@
         try { human.verify(); } catch (err) { human.removeEventListener("statechange", done); note(f, "Please check the box to confirm you're not a robot."); }
         return;
       }
-      var old = document.getElementById(id + "Error");
-      if (old) old.remove();
+      // From here this file owns the whole submission: the thank-you only appears once the server confirms the save
+      e.preventDefault(); e.stopImmediatePropagation();
+      if (busy) return;                                     // ignore double clicks and repeated Enter
+      clearError();
       var data = new URLSearchParams(new FormData(f));
       data.set("form", FORMS[id]);
       data.set("page", location.pathname);   // the path only: never the query string or #fragment
+      setBusy(true);
+      var ctl = window.AbortController ? new AbortController() : null;
+      var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 20000);
       // A plain form-encoded POST is a CORS "simple request", so the script's JSON reply can be read
-      fetch(ENDPOINT, { method: "POST", body: data })
+      fetch(ENDPOINT, { method: "POST", body: data, signal: ctl ? ctl.signal : undefined })
         .then(function (r) { return r.json(); })
-        .then(function (res) { if (!res || !res.ok) fail(res && res.error); })
-        .catch(function () { fail(""); });
+        .then(function (res) { clearTimeout(timer); setBusy(false); if (res && res.ok) succeed(); else fail(res && res.error); })
+        .catch(function () { clearTimeout(timer); setBusy(false); fail(navigator.onLine === false ? "offline" : ""); });
     });
 
-    // Bring the form back after the thank-you animation (main.js / pages.js) has run, and say what went wrong
+    var busy = false, btn = f.querySelector('[type="submit"]'), label = btn ? btn.innerHTML : "";
+    function setBusy(on) {
+      busy = on; f.setAttribute("aria-busy", on ? "true" : "false");
+      if (btn) { btn.disabled = on; btn.innerHTML = on ? "Sending\u2026" : label; }
+    }
+    function clearError() {
+      var old = document.getElementById(id + "Error"); if (old) old.remove();
+      var em = f.elements.email; if (em) { em.removeAttribute("aria-invalid"); em.removeAttribute("aria-describedby"); }
+    }
+    function succeed() {
+      var show = function () { f.hidden = true; if (thanks) { thanks.hidden = false; thanks.classList.add("rv", "in"); thanks.setAttribute("tabindex", "-1"); thanks.focus({ preventScroll: true }); } };
+      if (window.gsap && !matchMedia("(prefers-reduced-motion: reduce)").matches) window.gsap.to(f, { opacity: 0, y: -10, duration: 0.4, onComplete: function () { show(); window.gsap.fromTo(thanks, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.6 }); } });
+      else show();
+      try { window.dispatchEvent(new CustomEvent("lumanta:signup", { detail: { form: FORMS[id] } })); } catch (err) {}
+    }
+    // Keep the form (and what the visitor typed), say what went wrong next to it, and let them try again
     function fail(code) {
-      setTimeout(function () {
-        if (thanks) thanks.hidden = true;
-        if (window.gsap) window.gsap.set(f, { clearProps: "opacity,transform" });
-        f.hidden = false;
-        if (human && typeof human.reset === "function") human.reset();
-        var n = document.createElement("p");
-        n.id = id + "Error"; n.setAttribute("role", "alert");
-        n.style.cssText = "margin:14px auto 0;font-size:14px;line-height:1.5;max-width:560px";
-        n.textContent = code === "email" ? "That email address doesn't look right. Please check it and try again."
-          : code === "human" ? "Please check the “I'm not a robot” box again, then resend."
-          : "Sorry, that didn't go through. Please try again in a minute, or email julie@lumanta.co.";
-        f.insertAdjacentElement("afterend", n);
-      }, 700);
+      if (human && typeof human.reset === "function") human.reset();
+      var n = document.createElement("p");
+      n.id = id + "Error"; n.className = "form-error"; n.setAttribute("role", "alert");
+      n.textContent = code === "email" ? "That email address doesn't look right. Please check it and try again."
+        : code === "human" ? "Please check the \u201cI'm not a robot\u201d box again, then resend."
+        : code === "offline" ? "You seem to be offline. Please check your connection and try again."
+        : code === "busy" ? "We're getting a lot of sign-ups right now. Please try again in a minute."
+        : "Sorry, that didn't go through. Please try again in a minute, or email julie@lumanta.co.";
+      f.insertAdjacentElement("afterend", n);
+      var em = f.elements.email;
+      if (code === "email" && em) { em.setAttribute("aria-invalid", "true"); em.setAttribute("aria-describedby", n.id); em.focus(); }
     }
   });
 })();
