@@ -56,7 +56,7 @@
     q.setAttribute("aria-expanded", String(!open));
   }));
 
-  /* ---------- Forms (mockup: confirm on the page) ---------- */
+  /* ---------- Forms: confirm on the page (forms.js sends the submission) ---------- */
   $$("form[data-thanks]").forEach((f) => f.addEventListener("submit", (e) => {
     e.preventDefault();
     const t = $(f.dataset.thanks);
