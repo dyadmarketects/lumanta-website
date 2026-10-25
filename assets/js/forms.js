@@ -69,6 +69,9 @@
         try { human.verify(); } catch (err) { human.removeEventListener("statechange", done); note(f, "Please check the box to confirm you're not a robot."); }
         return;
       }
+      // same rule as the server: an address needs a dot in its domain (saves a round trip for "name@host")
+      var em0 = f.elements.email;
+      if (em0 && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em0.value.trim())) { e.preventDefault(); e.stopImmediatePropagation(); clearError(); fail("email"); return; }
       // From here this file owns the whole submission: the thank-you only appears once the server confirms the save
       e.preventDefault(); e.stopImmediatePropagation();
       if (busy) return;                                     // ignore double clicks and repeated Enter
