@@ -278,8 +278,6 @@
         scrollTrigger: { trigger: card, start: "top 92%", end: "top 40%", scrub: 0.6 } });
       gsap.fromTo($(".pillar__icon", card), { scale: 0.6, rotation: -30, opacity: 0.2 }, { scale: 1, rotation: 0, opacity: 1, ease: "power2.out",
         scrollTrigger: { trigger: card, start: "top 92%", end: "top 40%", scrub: 0.6 } });
-      gsap.to($(".pillar__icon", card), { opacity: 0, y: -30, ease: "power1.in",
-        scrollTrigger: { trigger: card, start: "top 10%", end: "top -20%", scrub: 0.6 } });
     });
   }
 
@@ -308,15 +306,12 @@
         splitWords(el);
         if (reduced) return;
         gsap.fromTo($$(".w", el), { "--in": 0 }, { "--in": 1, ease: "none", stagger: 0.08,
-          scrollTrigger: { trigger: el, start: "top 86%", end: "bottom 52%", scrub: 0.7 } });
+          scrollTrigger: { trigger: el, start: "top 92%", end: "top 55%", scrub: 0.4 } });
       } else if (!reduced) {
         gsap.fromTo(el, { "--in": 0 }, { "--in": 1, ease: "power2.out",
-          scrollTrigger: { trigger: el, start: "top 97%", end: "top 70%", scrub: 0.7 } });
+          scrollTrigger: { trigger: el, start: "top 100%", end: "top 80%", scrub: 0.4 } });
       }
-      if (!reduced) {
-        gsap.fromTo(el, { "--out": 1 }, { "--out": 0, ease: "power1.in", immediateRender: false,
-          scrollTrigger: { trigger: el, start: "bottom 24%", end: "bottom -4%", scrub: 0.7 } });
-      }
+      // No exit fade: once something has appeared it stays readable until it scrolls off screen
     });
     // Founder portrait drifts inside its arch
     // Parallax for the join background
@@ -519,10 +514,7 @@
     gsap.timeline({ scrollTrigger: { trigger: ".app", start: "top bottom", end: "top top", scrub: 0.7 } })
       .fromTo(".app__device", { y: () => innerHeight * 0.35, rotation: 8, opacity: 0 }, { y: 0, rotation: 0, opacity: 1, ease: "power2.out" }, 0)
       .fromTo(".app__text > *", { y: 60, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, ease: "power2.out" }, 0.2);
-    // Exit: everything lifts away
-    gsap.timeline({ scrollTrigger: { trigger: ".app", start: "bottom bottom", end: "bottom 15%", scrub: 0.7 } })
-      .to(".app__device", { y: () => -innerHeight * 0.2, opacity: 0, ease: "power1.in" }, 0)
-      .to(".app__text", { y: -80, opacity: 0, ease: "power1.in" }, 0);
+    // (no exit fade: the section simply scrolls away, fully readable)
     // A pronounced float on the phone
     gsap.to(phone, { y: -30, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1 });
     gsap.fromTo(phone, { rotation: -1.6 }, { rotation: 1.6, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
