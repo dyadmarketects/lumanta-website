@@ -408,7 +408,7 @@
   }
 
   /* ==========================================================================
-     THE APP: pinned phone walkthrough of Catch / Shift / Rise / Repeat
+     THE APP: pinned phone walkthrough of Catch / Shift / Rise
      ========================================================================== */
   function appSection() {
     const steps = $$(".app__steps li"), phone = $("#phone"), glows = $$(".app__glow");

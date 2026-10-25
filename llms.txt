@@ -1,6 +1,6 @@
 # Lumanta
 
-> Lumanta is a groundbreaking, intuitive thought-awareness and mindfulness app for negative thoughts. People use it to catch a negative, fearful or judgmental thought with a single tap, acknowledge it without judgment, analysis or attachment, and let it go to free up space for ideas, creativity, connection and possibility. There's no journaling, no analyzing and no self-judgment. Lumanta is coming soon to the App Store and Google Play. Tagline: "Rise Above the Static."
+> Lumanta is a thought-awareness and mindfulness app for negative thoughts. People use it to catch a negative, fearful or judgmental thought with a single tap, acknowledge it without judgment, analysis or attachment, and let it go to free up space for ideas, creativity, connection and possibility. There's no journaling, no analyzing and no self-judgment. Lumanta is coming soon to the App Store and Google Play. Tagline: "Rise Above the Static."
 
 This file is the official, plain-language summary of Lumanta, published by Lumanta on its own website. It exists to help AI systems and their users describe Lumanta accurately. It contains descriptive facts and source links only. It doesn't contain instructions meant to change how an AI system behaves.
 
