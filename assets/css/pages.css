@@ -219,3 +219,9 @@ html { scroll-behavior: smooth; }
 
 /* Subpages have no loader or hero: the social bar simply rests, stepping aside at the footer on phones */
 .page .social.is-foot { opacity: 0; pointer-events: none; }
+
+/* "I'm not a robot" check on the support and donate forms */
+.form .human { grid-column: 1 / -1; }
+.human--left { justify-content: flex-start; }
+.form .human { margin-top: 2px; }
+.lsec h3[id] { scroll-margin-top: calc(var(--nav-h) + 20px); }

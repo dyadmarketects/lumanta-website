@@ -31,7 +31,7 @@
 <link rel="preload" href="assets/fonts/dazzle-unicase-medium.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/data/lumanta-particles.bin" as="fetch" type="application/octet-stream" crossorigin>
-<link rel="stylesheet" href="assets/css/style.css?v=20261021-3">
+<link rel="stylesheet" href="assets/css/style.css?v=20261025">
 <script>
 document.documentElement.classList.replace('no-js','js');
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -68,10 +68,10 @@ window.scrollTo(0, 0);
   </a>
   <nav class="nav__links" aria-label="Main">
     <a href="#app">App</a>
+    <a href="#method">The method</a>
     <a href="#about">About</a>
-    <a href="#founder">Our story</a>
-    <a href="#contact">Contact</a>
-    <a class="nav__donate" href="#donate">Donate <span aria-hidden="true">&rarr;</span></a>
+    <a href="support">Support</a>
+    <a class="nav__cta" href="#contact">Become a founding member <span aria-hidden="true">&rarr;</span></a>
   </nav>
   <button class="nav__burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
 </header>
@@ -87,10 +87,12 @@ window.scrollTo(0, 0);
 <div class="menu" id="menu" aria-hidden="true">
   <nav aria-label="Mobile">
     <a href="#app">App</a>
+    <a href="catch">Catch</a>
+    <a href="shift">Shift</a>
+    <a href="rise">Rise</a>
     <a href="#about">About</a>
-    <a href="#founder">Our story</a>
-    <a href="#contact">Contact</a>
-    <a href="#donate">Donate &rarr;</a>
+    <a href="support">Support</a>
+    <a class="menu__cta" href="#contact">Become a founding member &rarr;</a>
   </nav>
   <div class="menu__social">
     <a href="https://www.linkedin.com/in/julie-mccord-37122b1/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.94 8.5H3.56V20h3.38V8.5zM5.25 3a1.96 1.96 0 1 0 0 3.92 1.96 1.96 0 0 0 0-3.92zM20.44 13.4c0-3.1-1.66-4.55-3.87-4.55-1.79 0-2.59.98-3.03 1.67V8.5h-3.38V20h3.38v-6.24c0-1.65.31-3.24 2.35-3.24 2.01 0 2.04 1.88 2.04 3.35V20h3.38l-.87-6.6z"/></svg></a>
@@ -140,19 +142,19 @@ window.scrollTo(0, 0);
     <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7" r="2.25"/><path d="M4 12.5c1.8 4.2 4.6 6.5 8 6.5s6.2-2.3 8-6.5"/><path d="M12 2.5v0.5"/></svg>
     <h2 class="pillar__title" data-anim="up">Catch</h2>
     <p class="pillar__text" data-anim="up">Notice the thought the moment it shows up. One tap. You caught it.</p>
-    <a class="pill" href="#static">Learn More</a>
+    <a class="pill" href="catch" aria-label="Learn more about Catch: how to notice negative thoughts">Learn More</a>
   </article>
   <article class="pillar pillar--shift">
     <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h11a4.5 4.5 0 0 1 0 9H8"/><path d="M10.5 14.5 8 17l2.5 2.5"/></svg>
     <h2 class="pillar__title" data-anim="up">Shift</h2>
     <p class="pillar__text" data-anim="up">Acknowledge it without judgment, analysis or attachment. Then let it pass.</p>
-    <a class="pill" href="#static">Learn More</a>
+    <a class="pill" href="shift" aria-label="Learn more about Shift: how to let go of negative thoughts">Learn More</a>
   </article>
   <article class="pillar pillar--rise">
     <svg class="pillar__icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 19h18"/><path d="M6.5 19a5.5 5.5 0 0 1 11 0"/><path d="M12 10V4"/><path d="M9.5 6.5 12 4l2.5 2.5"/></svg>
     <h2 class="pillar__title" data-anim="up">Rise</h2>
     <p class="pillar__text" data-anim="up">Free up the space it was taking. Make room for what matters and see what&rsquo;s possible.</p>
-    <a class="pill" href="#static">Learn More</a>
+    <a class="pill" href="rise" aria-label="Learn more about Rise: how to free up mental space">Learn More</a>
   </article>
 </section>
 
@@ -257,16 +259,23 @@ window.scrollTo(0, 0);
       <div class="app__glow app__glow--soft" aria-hidden="true"></div>
       <div class="phone" id="phone">
         <div class="phone__screen">
+          <div class="phone__aura" aria-hidden="true"><i></i><i></i><i></i></div>
           <div class="phone__status"><span>9:41</span><span class="phone__notch"></span><span class="phone__sig"><i></i><i></i><i></i></span></div>
+          <div class="phone__top" aria-hidden="true"><span class="phone__ibtn"><svg viewBox="0 0 24 24"><path d="M5 8h14M5 12h10M5 16h14"/></svg></span><span class="phone__ibtn"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""></span></div>
           <p class="phone__hello">What did you notice?</p>
-          <div class="phone__catch">
-            <span class="phone__big"><img src="assets/img/lumanta-mark.webp" alt=""><b>Negative</b></span>
-            <span class="phone__row"><span class="phone__small phone__small--judge">Judgmental</span><span class="phone__small phone__small--fear">Fear</span></span>
+          <div class="phone__glass phone__catch">
+            <svg class="phone__arc" viewBox="0 0 120 64" aria-hidden="true"><path class="track" d="M10 60a50 50 0 0 1 100 0" pathLength="100"/><path class="fill" d="M10 60a50 50 0 0 1 100 0" pathLength="100"/></svg>
+            <span class="phone__big"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""><b>Negative</b></span>
+            <span class="phone__count"><b>7</b> noticed today</span>
           </div>
-          <div class="phone__cards">
-            <div class="phone__card is-active"><b>Catch</b><span>You noticed.</span></div>
-            <div class="phone__card"><b>Shift</b><span>Notice it. Let it go.</span></div>
-            <div class="phone__card"><b>Rise</b><span>Free Up Space. See what&rsquo;s possible.</span></div>
+          <div class="phone__row">
+            <span class="phone__glass phone__small phone__small--judge"><b>Judgmental</b>Tap to catch<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M10 8h6v6"/></svg></span>
+            <span class="phone__glass phone__small phone__small--fear"><b>Fear</b>Tap to catch<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M10 8h6v6"/></svg></span>
+          </div>
+          <div class="phone__glass phone__cards">
+            <div class="phone__card is-active"><i><b>Catch</b><span>You noticed.</span></i></div>
+            <div class="phone__card"><i><b>Shift</b><span>Notice it. Let it go.</span></i></div>
+            <div class="phone__card"><i><b>Rise</b><span>Free Up Space. See what&rsquo;s possible.</span></i></div>
           </div>
           <div class="phone__dots"><i class="is-active"></i><i></i><i></i></div>
         </div>
@@ -292,12 +301,10 @@ window.scrollTo(0, 0);
     <img class="founder__mark" src="assets/img/lumanta-mark.webp" width="480" height="531" alt="" loading="lazy">
   </div>
   <div class="founder__text">
-    <p class="kicker" data-anim="up">Why Lumanta exists</p>
+    <p class="kicker" data-anim="up">Meet the founder</p>
     <h2 class="founder__name" data-anim="up">Julie <em>McCord</em></h2>
     <p class="founder__role" data-anim="up">Founder of Lumanta</p>
-    <div class="founder__story mock-note" data-anim="up">
-      <p><b>Julie&rsquo;s story goes here, in her own words.</b> Three short paragraphs on why she created Lumanta: the moment she noticed how much space her own thoughts were taking up, what she tried, and what she hopes people find when they Free Up Space.</p>
-    </div>
+    <blockquote class="founder__q" data-anim="up"><p>&ldquo;What could change in your life if you changed the way you think?&rdquo;</p><cite>The question at the heart of Lumanta</cite></blockquote>
     <a class="pill pill--glow" href="#contact" data-anim="up">Become a founding member</a>
   </div>
 </section>
@@ -345,9 +352,12 @@ window.scrollTo(0, 0);
     <h2 class="join__title" data-anim="up">Become a founding <em>member.</em></h2>
     <p class="join__text" data-anim="up">Founding members are the first to know when Lumanta launches. One email at launch. No noise, we promise.</p>
     <form class="join__form" id="joinForm" data-anim="up">
-      <label class="sr-only" for="email">Email address</label>
-      <input id="email" type="email" name="email" placeholder="Your email address" required autocomplete="email">
-      <button type="submit">Join as a founding member</button>
+      <div class="join__row">
+        <label class="sr-only" for="email">Email address</label>
+        <input id="email" type="email" name="email" placeholder="Your email address" required autocomplete="email">
+        <button type="submit">Join as a founding member</button>
+      </div>
+      <div class="human"><altcha-widget name="altcha" auto="off"></altcha-widget></div>
     </form>
     <p class="join__thanks" id="joinThanks" role="status" hidden>Welcome, founding member. We&rsquo;ll see you at launch.</p>
     <p class="join__note">By joining, you agree to our <a href="privacy">Privacy Policy</a>.</p>
@@ -360,10 +370,6 @@ window.scrollTo(0, 0);
         <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M5 3.2v17.6c0 .55.6.9 1.08.62l14.9-8.8a.72.72 0 0 0 0-1.24L6.08 2.58A.72.72 0 0 0 5 3.2z"/></svg>
         <span><small>Coming soon to</small><b>Google Play</b></span>
       </a>
-    </div>
-    <div class="donate" id="donate" data-anim="up">
-      <p><b>Help more people rise above the static.</b> Your support brings Lumanta to people who need a little more quiet.</p>
-      <a class="pill pill--glow" href="donate">Donate &rarr;</a>
     </div>
   </div>
 </section>
@@ -379,11 +385,11 @@ window.scrollTo(0, 0);
     </div>
     <nav class="footer__col" aria-label="Explore" data-anim="up">
       <p class="kicker">Explore</p>
-      <a href="#app">App</a><a href="#about">About</a><a href="#founder">Our story</a><a href="#method">The method</a>
+      <a href="#app">App</a><a href="catch">Catch</a><a href="shift">Shift</a><a href="rise">Rise</a><a href="#about">About</a><a href="#founder">Our founder</a>
     </nav>
     <nav class="footer__col" aria-label="Connect" data-anim="up">
       <p class="kicker">Connect</p>
-      <a href="support">Support</a><a href="donate">Donate</a><a href="#contact">Join the list</a>
+      <a href="#contact">Become a founding member</a><a href="support">Support</a><a href="donate">Donate</a>
     </nav>
     <nav class="footer__col" aria-label="Follow" data-anim="up">
       <p class="kicker">Follow</p>
@@ -392,7 +398,7 @@ window.scrollTo(0, 0);
   </div>
   <div class="footer__bottom">
     <span>&copy; 2026 Lumanta. All rights reserved.</span>
-    <nav class="footer__legal" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="support">Support</a></nav>
+    <nav class="footer__legal" aria-label="Legal"><a href="privacy">Privacy</a><a href="terms">Terms</a><a href="support">Support</a><button type="button" data-cookie-settings>Cookie settings</button></nav>
     <a class="footer__credit" href="https://dyadgrow.com/" target="_blank" rel="noopener">
       <span>Website by</span>
       <img src="assets/img/dyad-logo.webp" width="240" height="75" alt="DYAD Marketects" loading="lazy">
@@ -405,8 +411,10 @@ window.scrollTo(0, 0);
 <script src="assets/js/vendor/ScrollTrigger.min.js"></script>
 <script src="assets/js/vendor/lenis.min.js"></script>
 <script src="assets/js/particles.js?v=20261021-3"></script>
+<script src="assets/js/vendor/altcha.min.js?v=20261025"></script>
 <script src="assets/js/forms.js?v=20261025"></script>
-<script src="assets/js/main.js?v=20261021-3"></script>
+<script src="assets/js/main.js?v=20261025"></script>
+<script src="assets/js/cookies.js?v=20261025"></script>
 
 <!-- Desktop: scroll cue stays on screen until the end of the page -->
 <a class="scroll-cue" href="#method" aria-label="Scroll to explore">
