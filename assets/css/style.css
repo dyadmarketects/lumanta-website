@@ -950,3 +950,7 @@ altcha-widget .altcha { -webkit-backdrop-filter: blur(10px); backdrop-filter: bl
 .form-error { margin: 14px auto 0; max-width: 560px; padding: 12px 16px; border-radius: 14px; font-size: 15px; line-height: 1.5; color: #8a1538; background: #fff0f3; box-shadow: inset 0 0 0 1px #f6c4d0; }
 form[aria-busy="true"] [type="submit"] { opacity: .75; cursor: progress; }
 input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #c2265a !important; }
+/* store badges are "coming soon" labels, not buttons (audit P1-04) */
+.store--soon { cursor: default; }
+.store--soon:hover { transform: none; }
+.hero__soon { line-height: 1.6; }
