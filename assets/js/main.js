@@ -603,7 +603,7 @@
       if (menu.classList.contains("is-open")) toggleMenu(false);
       const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 80;
       let y = id === "#top" ? 0 : el.getBoundingClientRect().top + (lenis ? lenis.scroll : scrollY);
-      if (["#research", "#donate", "#about", "#founder", "#what"].includes(id)) y -= navH + 10;
+      if (["#research", "#about", "#founder", "#what"].includes(id)) y -= navH + 10;
       if (id === "#method") y = $(".hero-wrap").offsetHeight - innerHeight;
       scrollToY(y);
     });

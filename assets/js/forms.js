@@ -6,7 +6,7 @@
 (function () {
   "use strict";
   var ENDPOINT = "https://script.google.com/macros/s/AKfycbxEFYuXYRnJvk-o7pWuV3jrwgD4Bk1t1-gJ0sv88O3uE3C05vx7B4qtT2Tn39FAqzdRfg/exec";
-  var FORMS = { joinForm: "founding", msgForm: "support", donateList: "donate" };
+  var FORMS = { joinForm: "founding", msgForm: "support" };
   var MAX = { name: 120, email: 254, message: 4000 };   // same limits as the script, so nothing is cut off silently
   var STRINGS = JSON.stringify({
     label: "I'm not a robot", verified: "Verified. Thank you.", verifying: "Checking...", waitAlert: "Checking... please wait.",

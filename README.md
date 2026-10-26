@@ -7,11 +7,11 @@ Interactive HTML mockup of the lumanta.co redesign, designed and built by **DYAD
 ## What's on the page
 1. **Loader**: the Lumanta logomark assembles from 72,000 particles (from the Particlefy export, recolored with the real logo gradient), then the camera flies through the ring to reveal the site.
 2. **Hero**: full-bleed looping HD video, RISE / ABOVE / THE STATIC lockup (the O in ABOVE is the logomark), "Coming soon" store buttons, scroll-to-explore cue, animated wave mesh.
-3. **Catch / Shift / Rise / Repeat** cards that slide over the hero, with self-drawing icons.
+3. **Catch / Shift / Rise** cards that slide over the hero, with self-drawing icons.
 4. **The static**: a pinned, scroll-driven particle story. Noise gathers into the logomark and the background dawns from night to the Lumanta off white. The cursor (desktop) or a finger (mobile) pushes the particles.
 5. **What is Lumanta**: the product description with a tap animation.
-6. **The app**: pinned phone walkthrough of the four steps, with color glows and particle rings behind the phone.
-7. About statement, **Meet the founder** (Julie McCord), Research (placeholder), FAQ, Join the list + Donate, footer.
+6. **The app**: pinned phone walkthrough of the three steps, with color glows and particle rings behind the phone.
+7. About statement, **Meet the founder** (Julie McCord), Research (placeholder), FAQ, Become a founding member, footer.
 
 Every asset has a scroll intro and exit animation (GSAP ScrollTrigger + Lenis smooth scroll). Reduced-motion users get a static version.
 
@@ -41,6 +41,5 @@ Headers: Dazzle Unicase (Thin, Light, Medium), set in caps, licensed for web use
 
 ## Before launch
 - Body copy for the cards, app steps, FAQ and research section is placeholder writing for client review.
-- The join form and Donate button are not wired to a service yet.
 - Live at https://lumanta.co (launched October 2026). Pages are indexable; 404.html stays noindex.
 - To use lumanta.co: Settings > Pages > Custom domain, then point the domain's DNS to GitHub Pages.

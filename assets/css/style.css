@@ -954,3 +954,32 @@ input[aria-invalid="true"] { box-shadow: inset 0 0 0 2px #c2265a !important; }
 .store--soon { cursor: default; }
 .store--soon:hover { transform: none; }
 .hero__soon { line-height: 1.6; }
+
+/* ---------- Final corrections: mobile review (layout only; brand colors unchanged) ---------- */
+/* mobile menu: one scrollable column, nothing overlapping; the founding member link is a pill like the rest of the site */
+.menu { overflow-y: auto; place-items: start center; padding: calc(var(--nav-h) + 30px) 24px 40px; }
+.menu nav { gap: 22px; }
+.menu__social, .menu__mark { position: static; margin: 34px auto 0; justify-content: center; }
+.menu__mark { display: block; margin-top: 24px; }
+.menu .menu__cta { font: 400 17px/1.35 var(--body); letter-spacing: .06em; text-align: center; padding: 14px 22px; border-radius: 999px; background: var(--glow); color: #fff; max-width: 300px; }
+/* comfortable tap targets */
+.pill { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+.footer__legal a, .footer__legal button { display: inline-block; padding: 8px 0; }
+@media (max-width: 760px) {
+  /* hero: side gutters, and the launch note stays readable over the photo */
+  .hero__content { padding-left: var(--pad); padding-right: var(--pad); }
+  .hero__media::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 45%, rgba(15, 23, 42, .28) 70%, rgba(15, 23, 42, .5) 100%); }
+  .hero__soon { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, .45); }
+  /* founding member section: less empty space on top, room between the robot check and the note */
+  .join { padding-top: clamp(60px, 9vh, 100px); }
+  .join__logo { width: 120px; }
+  .join__note { margin-top: 18px; }
+}
+/* App Store / Google Play badges: "Coming soon" stays visible and readable at every phone width */
+@media (max-width: 760px) {
+  .store small { font-size: 8.5px; letter-spacing: .08em; }
+}
+@media (max-width: 380px) {
+  .store small { display: block; }
+  .stores { flex-wrap: wrap; justify-content: center; }
+}
