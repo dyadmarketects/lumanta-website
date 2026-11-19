@@ -412,8 +412,8 @@
      ========================================================================== */
   function appSection() {
     const steps = $$(".app__steps li"), phone = $("#phone"), glows = $$(".app__glow");
-    const icons = $$(".phone__icons svg"), cards = $$(".phone__card"), dots = $$(".phone__dots i");
-    const colors = ["var(--ember)", "var(--glow)", "var(--aqua)", "var(--lumen)"];
+    const icons = $$(".phone__icons svg"), cards = $$(".phone__card, .lite__view"), dots = $$(".phone__dots i");
+    const colors = ["var(--a-catch)", "var(--a-shift)", "var(--a-rise)", "var(--lumen)"];
     const N = steps.length, LAST = N - 1;
     let current = -1;
     const appEl = $(".app"), fill = $(".app__fill"), thumb = $(".app__thumb"), list = $(".app__steps");

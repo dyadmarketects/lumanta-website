@@ -35,6 +35,7 @@
 <link rel="preload" href="assets/fonts/poppins-300.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/data/lumanta-particles.bin" as="fetch" type="application/octet-stream" crossorigin>
 <link rel="stylesheet" href="assets/css/style.css?v=20261026a">
+<link rel="stylesheet" href="assets/css/app-ui.css?v=20261118-1">
 <script>
 document.documentElement.classList.replace('no-js','js');
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -185,16 +186,11 @@ window.scrollTo(0, 0);
   <div class="what__head">
     <p class="kicker" data-anim="up">What is Lumanta?</p>
     <h2 class="what__title" data-anim="up">A mindfulness app for <em>negative thoughts.</em></h2>
-    <div class="catch" data-anim="scale" aria-label="The Lumanta catch screen: one large Negative button with Judgmental and Fear buttons below" role="img">
-      <span class="catch__ring"></span><span class="catch__ring"></span>
-      <span class="catch__big"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""><b>Negative</b></span>
-      <span class="catch__row"><span class="catch__small catch__small--judge">Judgmental</span><span class="catch__small catch__small--fear">Fear</span></span>
-      <span class="catch__note">You noticed.</span>
-    </div>
+    <div class="catch catch--lite" data-anim="scale" aria-label="The Lumanta catch screen: one large Negative button with Fear and Judgment buttons below" role="img"><span class="catch__ring"></span><span class="catch__ring"></span><span class="lite__btns"><span class="lite__btn lite__btn--neg is-pulse"><svg viewBox="0 0 62 40" aria-hidden="true"><path d="M17 35 C9 35 5 29 7 23 C8.6 18 13 16 17.5 17 C19 8.5 28 4 35.5 8.5 C39.5 10.8 41.5 14 42 17.5 C49 17 55 21 55 27.5 C55 32 51 35 46 35 Z"/></svg>Negative</span><span class="lite__btn lite__btn--fear"><svg viewBox="0 0 60 40" aria-hidden="true"><path d="M18 28 C20 16 28 8 38 3 C37 12 38 21 46 28"/><path d="M4 28 q7 -7 14 0 t14 0 t14 0 t10 0"/><path d="M8 35.5 q6 -6 12 0 t12 0 t12 0 t12 0"/></svg>Fear</span><span class="lite__btn lite__btn--judge"><svg viewBox="0 0 64 48" aria-hidden="true"><path d="M32 6 C23 15 23 29 32 38 C41 29 41 15 32 6 Z"/><path d="M32 38 C21 38 11 31 9 19 C20 19 28 26 32 38 Z"/><path d="M32 38 C43 38 53 31 55 19 C44 19 36 26 32 38 Z"/><path d="M14 43 C24 47 40 47 50 43"/></svg>Judgment</span></span><span class="lite__today">Today: <b>7</b> thoughts noticed</span></div>
   </div>
   <div class="what__body">
     <p class="what__lead" data-anim="words">An awareness practice that fits in your pocket and takes a single tap.</p>
-    <p class="what__p" data-anim="up">When you notice a <mark class="chip chip--ember">Negative</mark>, <mark class="chip chip--lumen">Judgmental</mark> or <mark class="chip chip--glow">Fear</mark> thought, catch it with one tap. Acknowledge it without judgment or analysis, and practice letting it go.</p>
+    <p class="what__p" data-anim="up">When you notice a <mark class="chip chip--neg">Negative</mark>, <mark class="chip chip--fear">Fear</mark> or <mark class="chip chip--judge">Judgment</mark> thought, catch it with one tap. Acknowledge it without judgment or analysis, and practice letting it go.</p>
     <ul class="what__nos">
       <li data-anim="up">No journaling.</li>
       <li data-anim="up">No analyzing.</li>
@@ -249,9 +245,9 @@ window.scrollTo(0, 0);
       <h2 class="app__title">Three steps.<br><em>One thought at a time.</em></h2>
       <div class="app__track"><div class="app__progress" aria-hidden="true"><span class="app__fill"></span><span class="app__thumb"></span></div>
       <ol class="app__steps">
-        <li class="is-active" data-step="0"><span class="num">01</span><span><b>Catch</b>Tap Negative, Judgmental or Fear the moment you notice it.</span></li>
-        <li data-step="1"><span class="num">02</span><span><b>Shift</b>No analyzing. Notice it, then let it go.</span></li>
-        <li data-step="2"><span class="num">03</span><span><b>Rise</b>Free Up Space. See what&rsquo;s possible.</span></li>
+        <li class="is-active" data-step="0"><span class="num">01</span><span><b>Catch</b>Notice the thought. Tap Negative, Fear or Judgment, once.</span></li>
+        <li data-step="1"><span class="num">02</span><span><b>Shift</b>No judgment. No analysis. Let it pass.</span></li>
+        <li data-step="2"><span class="num">03</span><span><b>Rise</b>Free Up Space. Watch your patterns come into view.</span></li>
       </ol></div>
       <div class="app__cta"><a class="pill pill--glow" href="#contact">Become a founding member</a></div>
     </div>
@@ -259,28 +255,8 @@ window.scrollTo(0, 0);
     <div class="app__device">
       <canvas class="app__rings" id="appRings" aria-hidden="true"></canvas>
       <div class="app__glow app__glow--soft" aria-hidden="true"></div>
-      <div class="phone" id="phone">
-        <div class="phone__screen">
-          <div class="phone__aura" aria-hidden="true"><i></i><i></i><i></i></div>
-          <div class="phone__status"><span>9:41</span><span class="phone__notch"></span><span class="phone__sig"><i></i><i></i><i></i></span></div>
-          <div class="phone__top" aria-hidden="true"><span class="phone__ibtn"><svg viewBox="0 0 24 24"><path d="M5 8h14M5 12h10M5 16h14"/></svg></span><span class="phone__ibtn"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""></span></div>
-          <p class="phone__hello">What did you notice?</p>
-          <div class="phone__glass phone__catch">
-            <svg class="phone__arc" viewBox="0 0 120 64" aria-hidden="true"><path class="track" d="M10 60a50 50 0 0 1 100 0" pathLength="100"/><path class="fill" d="M10 60a50 50 0 0 1 100 0" pathLength="100"/></svg>
-            <span class="phone__big"><img src="assets/img/lumanta-mark.webp" width="480" height="531" alt=""><b>Negative</b></span>
-            <span class="phone__count"><b>7</b> noticed today</span>
-          </div>
-          <div class="phone__row">
-            <span class="phone__glass phone__small phone__small--judge"><b>Judgmental</b>Tap to catch<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M10 8h6v6"/></svg></span>
-            <span class="phone__glass phone__small phone__small--fear"><b>Fear</b>Tap to catch<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 16 16 8M10 8h6v6"/></svg></span>
-          </div>
-          <div class="phone__glass phone__cards">
-            <div class="phone__card is-active"><i><b>Catch</b><span>You noticed.</span></i></div>
-            <div class="phone__card"><i><b>Shift</b><span>Notice it. Let it go.</span></i></div>
-            <div class="phone__card"><i><b>Rise</b><span>Free Up Space. See what&rsquo;s possible.</span></i></div>
-          </div>
-          <div class="phone__dots"><i class="is-active"></i><i></i><i></i></div>
-        </div>
+      <div class="phone" id="phone"><span class="sr-only">The Lumanta app: the Catch a Thought screen with Negative, Fear and Judgment buttons, the welcome screen with the Catch, Shift and Rise steps, and the Your Progress screen.</span>
+        <div class="phone__screen lite"><div class="lite__sky" aria-hidden="true"><i class="cloud"></i><i class="cloud"></i></div><svg class="lite__land" viewBox="0 0 300 130" preserveAspectRatio="none" aria-hidden="true"><defs><radialGradient id="liteSun" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#fde68a"/><stop offset=".45" stop-color="#fbbf24" stop-opacity=".85"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient><linearGradient id="liteWater" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0ecfb"/><stop offset="1" stop-color="#f8fafc"/></linearGradient></defs><circle cx="150" cy="58" r="34" fill="url(#liteSun)"/><path d="M0 62 C40 30 80 34 120 56 C150 72 180 40 220 34 C255 30 280 44 300 52 V130 H0Z" fill="#a9c6f7" opacity=".85"/><path d="M0 74 C50 60 90 66 140 76 C190 86 240 64 300 70 V130 H0Z" fill="#d7c3f5" opacity=".8"/><path d="M0 84 C60 74 110 80 160 86 C210 92 250 80 300 82 V130 H0Z" fill="#fbcfe8" opacity=".75"/><path d="M0 92 C50 86 100 90 150 94 C200 98 250 88 300 92 V130 H0Z" fill="#86e3c3" opacity=".85"/><path d="M0 100 H300 V130 H0Z" fill="url(#liteWater)"/><path d="M120 106 h60 M130 112 h40 M140 118 h20" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" opacity=".55"/></svg><div class="lite__status" aria-hidden="true"><span>9:41</span><span class="notch"></span><span class="sig"><i></i><i></i><i></i></span></div><div class="lite__view lite__view--catch is-active"><img class="lite__logo" src="assets/img/lumanta-stacked.webp" width="640" height="829" alt=""><h3 class="lite__h">Catch a Thought</h3><p class="lite__sub">Notice it. Tap once. Move on.</p><div class="lite__btns"><span class="lite__btn lite__btn--neg"><svg viewBox="0 0 62 40" aria-hidden="true"><path d="M17 35 C9 35 5 29 7 23 C8.6 18 13 16 17.5 17 C19 8.5 28 4 35.5 8.5 C39.5 10.8 41.5 14 42 17.5 C49 17 55 21 55 27.5 C55 32 51 35 46 35 Z"/></svg>Negative</span><span class="lite__btn lite__btn--fear"><svg viewBox="0 0 60 40" aria-hidden="true"><path d="M18 28 C20 16 28 8 38 3 C37 12 38 21 46 28"/><path d="M4 28 q7 -7 14 0 t14 0 t14 0 t10 0"/><path d="M8 35.5 q6 -6 12 0 t12 0 t12 0 t12 0"/></svg>Fear</span><span class="lite__btn lite__btn--judge"><svg viewBox="0 0 64 48" aria-hidden="true"><path d="M32 6 C23 15 23 29 32 38 C41 29 41 15 32 6 Z"/><path d="M32 38 C21 38 11 31 9 19 C20 19 28 26 32 38 Z"/><path d="M32 38 C43 38 53 31 55 19 C44 19 36 26 32 38 Z"/><path d="M14 43 C24 47 40 47 50 43"/></svg>Judgment</span></div><p class="lite__today">Today: <b>7</b> thoughts noticed</p><p class="lite__motto">Notice. Release. Free Up Space.</p><div class="lite__tabs" aria-hidden="true"><span class="on"><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg>CATCH</span><span class=""><svg viewBox="0 0 24 24"><path d="M5 20v-6h3v6zM10.5 20V9h3v11zM16 20V4h3v16z"/></svg>PROGRESS</span><span class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6z"/></svg>ACCOUNT</span></div></div><div class="lite__view lite__view--welcome"><img class="lite__logo lite__logo--sm" src="assets/img/lumanta-stacked.webp" width="640" height="829" alt=""><p class="lite__q">What could change in your life if you changed the way you think?</p><div class="lite__steps" data-focus="shift"><div class="lite__step lite__step--catch"><b>CATCH</b><span>Notice the thought.</span></div><div class="lite__step lite__step--shift"><b>SHIFT</b><span>No judgment. No analysis. Let it pass.</span></div><div class="lite__step lite__step--rise"><b>RISE</b><span>Free Up Space. See what&rsquo;s possible.</span></div></div><span class="lite__go">Begin Lumanta</span></div><div class="lite__view lite__view--progress"><h3 class="lite__h">Your Progress</h3><p class="lite__sub">No score. No judgment. Just awareness.</p><div class="lite__seg"><span class="on">TODAY</span><span>WEEK</span><span>MONTH</span><span>HISTORY</span></div><div class="lite__card lite__card--today"><small>Thoughts Noticed Today</small><strong>7</strong><svg viewBox="0 0 300 90" aria-hidden="true"><defs><radialGradient id="liteSun2"><stop offset="0" stop-color="#fde68a"/><stop offset=".5" stop-color="#fbbf24" stop-opacity=".7"/><stop offset="1" stop-color="#fbbf24" stop-opacity="0"/></radialGradient></defs><circle cx="70" cy="34" r="30" fill="url(#liteSun2)"/><path d="M0 52 C50 36 100 40 150 50 C200 60 250 40 300 46 V90 H0Z" fill="#d7c3f5" opacity=".8"/><path d="M0 62 C60 54 120 58 180 62 C230 66 270 58 300 60 V90 H0Z" fill="#fbcfe8"/><path d="M0 72 H300 V90 H0Z" fill="#e8f1fb"/><path d="M0 90 C10 74 40 70 60 90Z" fill="#86e3c3"/><path d="M240 90 C255 72 285 70 300 76 V90Z" fill="#86e3c3"/><path d="M262 80 C262 70 266 62 272 56 M272 56 C264 56 258 60 256 66 C262 66 268 62 272 56 Z M272 56 C280 54 286 48 288 42 C280 42 274 48 272 56 Z" stroke="#2dd4bf" stroke-width="1.6" fill="#99f6e4" stroke-linejoin="round"/></svg></div><div class="lite__card lite__bars"><div class="lite__bar" style="--c:var(--a-shift);--w:100%"><span>Negative</span><span>4</span><i></i></div><div class="lite__bar" style="--c:var(--a-catch);--w:50%"><span>Fear</span><span>2</span><i></i></div><div class="lite__bar" style="--c:var(--a-rise);--w:25%"><span>Judgment</span><span>1</span><i></i></div></div><div class="lite__tabs" aria-hidden="true"><span class=""><svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg>CATCH</span><span class="on"><svg viewBox="0 0 24 24"><path d="M5 20v-6h3v6zM10.5 20V9h3v11zM16 20V4h3v16z"/></svg>PROGRESS</span><span class=""><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6z"/></svg>ACCOUNT</span></div></div></div>
       </div>
       <div class="app__glow" aria-hidden="true"></div>
     </div>
@@ -415,7 +391,7 @@ window.scrollTo(0, 0);
 <script src="assets/js/particles.js?v=20261021-3"></script>
 <script src="assets/js/vendor/altcha.min.js?v=20261026a"></script>
 <script src="assets/js/forms.js?v=20261026a"></script>
-<script src="assets/js/main.js?v=20261026a"></script>
+<script src="assets/js/main.js?v=20261118-1"></script>
 <script src="assets/js/cookies.js?v=20261026a"></script>
 
 <!-- Desktop: scroll cue stays on screen until the end of the page -->
