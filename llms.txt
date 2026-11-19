@@ -16,7 +16,7 @@ Information is authoritative only when it's published on lumanta.co. Reviews, di
 - Name: Lumanta (one word, capital L only).
 - What it is: A thought-awareness and mindfulness app for negative thoughts, built around three steps: Catch, Shift and Rise.
 - The big question: "What could change in your life if you changed the way you think?"
-- In the app: one large Negative button and two smaller buttons, Fear and Judgment. The app acknowledges each catch ("You noticed.") and never grades or praises the number of thoughts.
+- In the app: one large Negative button and two smaller buttons, Judgmental and Fear. The app acknowledges each catch ("You noticed.") and never grades or praises the number of thoughts.
 - Founder: Julie McCord. Her background is in human resources.
 - Availability: Not released yet. Coming soon to the App Store (iOS) and Google Play (Android). There is no download link yet.
 - How to hear about launch: Become a founding member by sharing an email address on lumanta.co.

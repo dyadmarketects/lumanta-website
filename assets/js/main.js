@@ -412,8 +412,8 @@
      ========================================================================== */
   function appSection() {
     const steps = $$(".app__steps li"), phone = $("#phone"), glows = $$(".app__glow");
-    const icons = $$(".phone__icons svg"), cards = $$(".phone__card, .lite__view"), dots = $$(".phone__dots i");
-    const colors = ["var(--a-catch)", "var(--a-shift)", "var(--a-rise)", "var(--lumen)"];
+    const icons = $$(".phone__icons svg"), cards = $$(".phone__card"), dots = $$(".phone__dots i");
+    const colors = ["var(--ember)", "var(--glow)", "var(--aqua)", "var(--lumen)"];
     const N = steps.length, LAST = N - 1;
     let current = -1;
     const appEl = $(".app"), fill = $(".app__fill"), thumb = $(".app__thumb"), list = $(".app__steps");
@@ -425,40 +425,15 @@
       const y = li.offsetTop + li.offsetHeight / 2 - top;
       thumb.style.transform = `translate(-50%, ${y}px)`; fill.style.height = y + "px";
     }
-    // Catch: Judgment gets a press and "You noticed." rises in. Shift: it fades away as + bubbles float up. Rise: the stats fill in.
-    const lite = $("#phone .lite"), judge = lite && $(".lite__view--catch .lite__btn--judge", lite), toast = lite && $(".lite__view--catch .lite__toast", lite);
-    const today = lite && $(".lite__view--catch .lite__today b", lite), total = lite && $(".lite__card--today strong", lite);
-    let liteT = [];
-    function liteStep(i) {
-      if (!lite) return;
-      liteT.forEach(clearTimeout); liteT = [];
-      const later = (ms, fn) => liteT.push(setTimeout(fn, reduced ? 0 : ms));
-      if (i === 0) {
-        toast.classList.remove("is-on", "is-out"); today.textContent = today.dataset.from;
-        later(700, () => { judge.classList.add("is-tap"); later(260, () => judge.classList.remove("is-tap")); });
-        later(820, () => { today.textContent = +today.dataset.from + 1; today.classList.remove("is-bump"); void today.offsetWidth; today.classList.add("is-bump"); toast.classList.add("is-on"); });
-      } else if (i === 1) {
-        today.textContent = +today.dataset.from + 1;
-        toast.classList.add("is-on"); later(450, () => { toast.classList.add("is-out"); toast.classList.remove("is-on"); });
-      } else if (i === 2 && total) {
-        const to = +total.dataset.to, t0 = performance.now();
-        const tick = (now) => { const f = Math.min(1, (now - t0) / 1100); total.textContent = Math.round(to * (1 - Math.pow(1 - f, 3))); if (f < 1) requestAnimationFrame(tick); };
-        if (reduced) total.textContent = to; else { total.textContent = 0; requestAnimationFrame(tick); }
-      }
-    }
     function setStep(i) {
       if (i === current) return; current = i;
-      [steps, icons, dots].forEach((list) => list.forEach((n, k) => n.classList.toggle("is-active", k === i)));
-      cards.forEach((n, k) => n.classList.toggle("is-active", n.dataset.steps ? n.dataset.steps.split(" ").includes(String(i)) : k === i));
-      liteStep(i);
+      [steps, icons, cards, dots].forEach((list) => list.forEach((n, k) => n.classList.toggle("is-active", k === i)));
       phone.style.setProperty("--sc", colors[i]);
       glows.forEach((g) => g.style.setProperty("--sc", colors[i]));
       appEl.dataset.step = i;
       requestAnimationFrame(() => placeThumb(i)); setTimeout(() => placeThumb(i), 650);
     }
     setStep(0);
-    // replay the current moment each time the phone comes into view (it may have played off screen)
-    if (lite && "IntersectionObserver" in window) new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) liteStep(current); }), { threshold: 0.35 }).observe(phone);
     addEventListener("resize", () => placeThumb(current));
     // Each step owns a quarter of the pinned scroll; positions sit in the middle of each quarter
     let busyUntil = 0, target = 0, syncT = 0;
