@@ -169,9 +169,12 @@ button.lite__btn { cursor: pointer; }
 .lite__card--patterns svg { display: block; width: 100%; margin-top: 1.6cqw; height: auto; }
 /* Shift: + bubbles drift up from behind the phone */
 .app__plus { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
-.app__plus i { position: absolute; bottom: 18%; left: var(--x); font: 400 calc(var(--s) * 1.35)/1 var(--body); font-style: normal; text-shadow: 0 0 14px color-mix(in srgb, var(--c) 50%, transparent); color: var(--c); opacity: 0; will-change: transform, opacity; }
+.app__plus i { position: absolute; bottom: 14%; left: var(--x); display: grid; place-items: center; width: calc(var(--s) * 1.9); aspect-ratio: 1; border-radius: 50%;
+  font: 600 calc(var(--s) * 1.5)/1 var(--body); font-style: normal; color: var(--c); opacity: 0; will-change: transform, opacity;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, .95), rgba(255, 255, 255, .55) 45%, color-mix(in srgb, var(--c) 22%, rgba(255, 255, 255, .3)) 100%);
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--c) 45%, transparent), 0 8px 22px -8px color-mix(in srgb, var(--c) 70%, transparent); }
 .app[data-step="1"] .app__plus i { animation: plusRise var(--t) cubic-bezier(.3, .6, .4, 1) var(--d) infinite; }
-@keyframes plusRise { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.6); } 15% { opacity: .9; } 70% { opacity: .7; } 100% { opacity: 0; transform: translate3d(var(--w), -62vh, 0) scale(1.1); } }
+@keyframes plusRise { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.5); } 12% { opacity: 1; } 75% { opacity: .95; } 100% { opacity: 0; transform: translate3d(var(--w), -62vh, 0) scale(1.1); } }
 .app__plus i:nth-child(3n+1) { --c: var(--a-shift); } .app__plus i:nth-child(3n+2) { --c: var(--a-catch); } .app__plus i:nth-child(3n) { --c: var(--a-rise); }
 .app__plus i:nth-child(1) { --x: 18%; --s: 34px; --t: 5.2s; --d: 0s; --w: -20px; }
 .app__plus i:nth-child(2) { --x: 76%; --s: 26px; --t: 4.6s; --d: .4s; --w: 24px; }
