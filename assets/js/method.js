@@ -203,14 +203,18 @@
 
   if (MODE === "catch") {
     const LINES = ["You noticed.", "You caught it.", "There it is.", "That&rsquo;s awareness.", "You caught the thought.", "Notice. That&rsquo;s enough.", "Another moment of awareness.", "Awareness begins here."];
-    const count = $(".phone__count b, .lite__today b"), arc = $(".phone__arc");
+    const count = $(".phone__count b, .lite__today b"), arc = $(".phone__arc"), toast = $(".lite__toast");
+    let toastT = 0;
     let n = 0, k = 0;
     $$(".phone--demo [data-kind]").forEach((b) => b.addEventListener("click", () => {
       n++; if (count) { count.textContent = n; count.classList.remove("is-bump"); void count.offsetWidth; count.classList.add("is-bump"); }
       if (arc) arc.style.setProperty("--arc", String(Math.max(0, 100 - Math.min(100, 12 + n * 11))));
       b.classList.add("is-tap"); setTimeout(() => b.classList.remove("is-tap"), 220);
       ripple(b);
-      say(LINES[k++ % LINES.length] + (b.dataset.kind !== "negative" ? "" : ""));
+      if (toast) {                                  // the app's own acknowledgment: a dark toast near the bottom
+        toast.textContent = "You noticed."; toast.classList.remove("is-on"); void toast.offsetWidth; toast.classList.add("is-on");
+        clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove("is-on"), 1800);
+      } else say(LINES[k++ % LINES.length]);
     }));
   }
 

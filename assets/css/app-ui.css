@@ -70,6 +70,14 @@ button.lite__btn { cursor: pointer; }
 @keyframes liteBump { 40% { transform: scale(1.5); color: var(--a-shift); } }
 .lite__motto { position: absolute; left: 0; right: 0; bottom: 21cqw; font: 600 3.7cqw/1 "Source Sans 3", sans-serif; color: var(--a-ink); }
 
+/* "You noticed." toast, as the app shows it after a catch */
+.lite__toast { position: absolute; z-index: 4; left: 6cqw; right: 6cqw; bottom: 21cqw; margin: 0; padding: 4.4cqw 4cqw; border-radius: 4.4cqw; background: var(--a-ink); color: #fff;
+  font: 600 4.4cqw/1 "Source Sans 3", sans-serif; text-align: center; box-shadow: 0 2.4cqw 6cqw -2cqw rgba(15, 23, 42, .45);
+  opacity: 0; transform: translateY(3cqw); transition: opacity .35s var(--ease), transform .45s var(--ease); pointer-events: none; }
+.lite__toast.is-on { opacity: 1; transform: none; }
+.lite__motto { transition: opacity .3s; } .lite__view:has(.lite__toast.is-on) .lite__motto { opacity: 0; }
+.mdemo .lite p.lite__toast { margin-top: 0; font-size: 4.4cqw; line-height: 1; color: #fff; }
+
 /* ---------- Welcome screen: the three steps ---------- */
 .lite__steps { width: 100%; margin-top: 5cqw; display: grid; gap: 3cqw; text-align: left; }
 .lite__step { border-radius: 5.4cqw; padding: 3.6cqw 5cqw; background: var(--c); color: var(--a-ink); transition: transform .6s var(--ease), opacity .6s, box-shadow .6s; }
@@ -148,6 +156,5 @@ button.lite__btn { cursor: pointer; }
 .mdemo .lite p.lite__today { margin-top: 4.4cqw; font-size: 4.2cqw; line-height: 1; color: var(--a-ink-2); }
 .mdemo .lite p.lite__h { margin-top: 3cqw; font-size: 7cqw; line-height: 1.15; color: var(--a-ink); }
 .mdemo .lite p.phone__feedback { margin-top: 3cqw; font-size: 4.2cqw; line-height: 1.3; color: var(--a-shift); }
-.mdemo .lite .lite__motto { display: none; }
 
 @media (prefers-reduced-motion: reduce) { .lite__sky .cloud, .lite__btn.is-pulse { animation: none; } }
