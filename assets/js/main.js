@@ -466,9 +466,31 @@
     // Touch screens scroll natively (no hijacking, so momentum can never fight a glide); when a swipe settles
     // inside the walkthrough it eases onto the middle of the nearest step, so each step sits in full frame.
     const st = ScrollTrigger.create({ trigger: ".app", start: "top top", end: "bottom bottom",
-      snap: coarse ? { snapTo: (v) => (clamp(Math.floor(v * N), 0, LAST) + 0.5) / N, duration: { min: 0.25, max: 0.55 }, delay: 0.12, ease: "power2.inOut", inertia: false } : false,
       onUpdate: (s) => { if (performance.now() < busyUntil) return; target = clamp(Math.floor(s.progress * N), 0, LAST); setStep(target); } });
     const posOf = (i) => st.start + (st.end - st.start) * (i + 0.5) / N;
+    // Touch screens scroll natively. When a swipe settles near or inside the walkthrough, it eases onto the
+    // nearest step so the whole section (title, tabs and phone) is in frame. Coming in from above it settles on
+    // Catch, coming back up from below it settles on Rise, and swiping on past either end just leaves.
+    if (coarse) {
+      let touching = false, idle = 0, lastY = scrollY, dir = 1;
+      const settle = () => {
+        if (touching || performance.now() < busyUntil) return;
+        const y = scrollY, s = st.start, e = st.end, zone = innerHeight * 0.5;
+        let i = null;
+        if (y >= s && y <= e) i = clamp(Math.floor((y - s) / (e - s) * N), 0, LAST);
+        else if (y < s && y > s - zone && dir > 0) i = 0;
+        else if (y > e && y < e + zone && dir < 0) i = LAST;
+        if (i === null) return;
+        const to = posOf(i); if (i !== current) { target = i; setStep(i); }
+        if (Math.abs(to - y) < 3) return;
+        busyUntil = performance.now() + 650;
+        lenis ? lenis.scrollTo(to, { duration: 0.55, force: true }) : window.scrollTo({ top: to, behavior: "smooth" });
+      };
+      addEventListener("touchstart", () => { touching = true; if (lenis && lenis.isScrolling === "smooth") { lenis.stop(); lenis.start(); } clearTimeout(idle); }, { passive: true });
+      addEventListener("touchend", () => { touching = false; clearTimeout(idle); idle = setTimeout(settle, 180); }, { passive: true });
+      addEventListener("scroll", () => { const y = scrollY; if (Math.abs(y - lastY) > 1) dir = y > lastY ? 1 : -1; lastY = y;
+        clearTimeout(idle); idle = setTimeout(settle, 160); }, { passive: true });
+    }
     const ease = (t) => 1 - Math.pow(1 - t, 3);
     const glide = (y, dur) => { busyUntil = performance.now() + dur * 1000 + 80;
       clearTimeout(syncT); syncT = setTimeout(() => { target = clamp(Math.floor(st.progress * N), 0, LAST); setStep(target); }, dur * 1000 + 120);
