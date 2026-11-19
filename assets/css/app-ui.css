@@ -86,7 +86,6 @@ button.lite__btn { cursor: pointer; }
 .lite__step--catch { --c: var(--a-catch); } .lite__step--shift { --c: var(--a-shift); color: #fff; } .lite__step--rise { --c: var(--a-rise); }
 .lite__steps[data-focus] .lite__step { opacity: .45; transform: scale(.96); }
 .lite__steps[data-focus="catch"] .lite__step--catch, .lite__steps[data-focus="shift"] .lite__step--shift, .lite__steps[data-focus="rise"] .lite__step--rise { opacity: 1; transform: scale(1.03); box-shadow: 0 3cqw 7cqw -3cqw var(--c); }
-.lite__free { margin-top: 4.4cqw; font: 400 3.4cqw/1.3 "Source Sans 3", sans-serif; color: var(--a-ink-2); }
 .lite__go { margin-top: 3cqw; width: 100%; padding: 4.4cqw 0; border-radius: 99px; background: linear-gradient(90deg, #3b82f6, #0ea5e9); color: var(--a-ink); font: 700 5cqw/1 "Source Sans 3", sans-serif; box-shadow: 0 2.4cqw 6cqw -2.4cqw rgba(59, 130, 246, .8); }
 
 /* ---------- Progress screen ---------- */
@@ -157,4 +156,36 @@ button.lite__btn { cursor: pointer; }
 .mdemo .lite p.lite__h { margin-top: 3cqw; font-size: 7cqw; line-height: 1.15; color: var(--a-ink); }
 .mdemo .lite p.phone__feedback { margin-top: 3cqw; font-size: 4.2cqw; line-height: 1.3; color: var(--a-shift); }
 
-@media (prefers-reduced-motion: reduce) { .lite__sky .cloud, .lite__btn.is-pulse { animation: none; } }
+/* ---------- homepage walkthrough moments ---------- */
+/* Catch: "You noticed." rises gently from the bottom of the phone. Shift: it fades away. */
+#phone .lite__toast { transition: opacity 1.1s cubic-bezier(.22, .8, .3, 1), transform 1.4s cubic-bezier(.22, .8, .3, 1); }
+#phone .lite__toast:not(.is-on):not(.is-out) { transform: translateY(24cqw); }
+#phone .lite__toast.is-out { opacity: 0; transform: translateY(-2cqw); transition-duration: 1.6s, 1.8s; }
+#phone .lite__btn--judge.is-tap { transform: scale(.93); transition-duration: .18s; }
+/* Rise: the counts fill in one after another */
+.lite__bar:nth-child(2) i::after { transition-delay: .35s; } .lite__bar:nth-child(3) i::after { transition-delay: .5s; }
+.lite__card--patterns { padding: 3.6cqw 0 0; background: linear-gradient(180deg, #fbf8fb, #fdeee6); }
+.lite__card--patterns p { padding: 0 5cqw; font: 400 3.7cqw/1.3 "Source Sans 3", sans-serif; color: var(--a-ink); }
+.lite__card--patterns svg { display: block; width: 100%; margin-top: 1.6cqw; height: auto; }
+/* Shift: + bubbles drift up from behind the phone */
+.app__plus { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+.app__plus i { position: absolute; bottom: 18%; left: var(--x); font: 400 calc(var(--s) * 1.35)/1 var(--body); font-style: normal; text-shadow: 0 0 14px color-mix(in srgb, var(--c) 50%, transparent); color: var(--c); opacity: 0; will-change: transform, opacity; }
+.app[data-step="1"] .app__plus i { animation: plusRise var(--t) cubic-bezier(.3, .6, .4, 1) var(--d) infinite; }
+@keyframes plusRise { 0% { opacity: 0; transform: translate3d(0, 0, 0) scale(.6); } 15% { opacity: .9; } 70% { opacity: .7; } 100% { opacity: 0; transform: translate3d(var(--w), -62vh, 0) scale(1.1); } }
+.app__plus i:nth-child(3n+1) { --c: var(--a-shift); } .app__plus i:nth-child(3n+2) { --c: var(--a-catch); } .app__plus i:nth-child(3n) { --c: var(--a-rise); }
+.app__plus i:nth-child(1) { --x: 18%; --s: 34px; --t: 5.2s; --d: 0s; --w: -20px; }
+.app__plus i:nth-child(2) { --x: 76%; --s: 26px; --t: 4.6s; --d: .4s; --w: 24px; }
+.app__plus i:nth-child(3) { --x: 30%; --s: 22px; --t: 5.8s; --d: .9s; --w: -36px; }
+.app__plus i:nth-child(4) { --x: 64%; --s: 40px; --t: 6s; --d: 1.3s; --w: 18px; }
+.app__plus i:nth-child(5) { --x: 12%; --s: 24px; --t: 4.8s; --d: 1.8s; --w: -14px; }
+.app__plus i:nth-child(6) { --x: 84%; --s: 32px; --t: 5.4s; --d: 2.2s; --w: 30px; }
+.app__plus i:nth-child(7) { --x: 42%; --s: 28px; --t: 5s; --d: 2.6s; --w: -24px; }
+.app__plus i:nth-child(8) { --x: 58%; --s: 22px; --t: 4.4s; --d: .2s; --w: 20px; }
+.app__plus i:nth-child(9) { --x: 24%; --s: 30px; --t: 6.2s; --d: 3s; --w: -30px; }
+.app__plus i:nth-child(10) { --x: 70%; --s: 36px; --t: 5.6s; --d: 3.4s; --w: 12px; }
+.app__plus i:nth-child(11) { --x: 8%; --s: 20px; --t: 5s; --d: 3.8s; --w: -10px; }
+.app__plus i:nth-child(12) { --x: 90%; --s: 24px; --t: 4.8s; --d: 1.1s; --w: 26px; }
+.app__plus i:nth-child(13) { --x: 48%; --s: 26px; --t: 5.8s; --d: 4.2s; --w: -16px; }
+.app__plus i:nth-child(14) { --x: 36%; --s: 38px; --t: 6s; --d: 2s; --w: 22px; }
+
+@media (prefers-reduced-motion: reduce) { .lite__sky .cloud, .lite__btn.is-pulse, .app[data-step="1"] .app__plus i { animation: none; } }
