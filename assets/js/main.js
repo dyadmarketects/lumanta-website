@@ -462,7 +462,11 @@
     addEventListener("resize", () => placeThumb(current));
     // Each step owns a quarter of the pinned scroll; positions sit in the middle of each quarter
     let busyUntil = 0, target = 0, syncT = 0;
+    const coarse = matchMedia("(pointer: coarse)").matches;
+    // Touch screens scroll natively (no hijacking, so momentum can never fight a glide); when a swipe settles
+    // inside the walkthrough it eases onto the middle of the nearest step, so each step sits in full frame.
     const st = ScrollTrigger.create({ trigger: ".app", start: "top top", end: "bottom bottom",
+      snap: coarse ? { snapTo: (v) => (clamp(Math.floor(v * N), 0, LAST) + 0.5) / N, duration: { min: 0.25, max: 0.55 }, delay: 0.12, ease: "power2.inOut", inertia: false } : false,
       onUpdate: (s) => { if (performance.now() < busyUntil) return; target = clamp(Math.floor(s.progress * N), 0, LAST); setStep(target); } });
     const posOf = (i) => st.start + (st.end - st.start) * (i + 0.5) / N;
     const ease = (t) => 1 - Math.pow(1 - t, 3);
@@ -474,6 +478,7 @@
     // Past the first or last step: glide on to the neighbouring section in one move
     const leave = (dir) => { target = dir > 0 ? N : -1; glide(dir > 0 ? st.end + innerHeight * 0.75 : st.start - innerHeight * 0.75, 0.8); };
     steps.forEach((li, i) => li.addEventListener("click", () => go(i)));
+    ScrollTrigger.create({ trigger: ".app", start: "top 70%", end: "bottom 30%", onToggle: (s) => document.documentElement.classList.toggle("in-app", s.isActive) });
 
     /* One wheel notch or one swipe moves exactly one step. Wheel/trackpad inertia is absorbed until the
        gesture ends; on touch every new swipe counts at once, even while the last glide is still moving. */
@@ -500,38 +505,12 @@
       step(() => { const next = target + dir; next < 0 || next > LAST ? leave(dir) : go(next); });
       return true;
     }
-    let touching = false, own = false, swipe = 0, used = false;
-    const coarse = matchMedia("(pointer: coarse)").matches;
-    function touch(deltaY, event) {
-      const type = event.type, stop = () => { if (event.cancelable) event.preventDefault(); };
-      if (type === "touchstart") { touching = true; swipe = 0; used = false; own = inSection(scrollY) || (performance.now() < busyUntil && target >= 0 && target <= LAST); return !own; }
-      if (type === "touchend" || type === "touchcancel") { touching = false; return !own; }   // never let a lifted finger cancel a glide
-      if (!own) return true;                                                                  // gesture began outside: normal scrolling
-      stop();
-      if (used) return false;
-      swipe += deltaY;
-      if (Math.abs(swipe) < 10) return false;
-      used = true;
-      const dir = Math.sign(swipe), next = target + dir;
-      next < 0 || next > LAST ? leave(dir) : go(next, 0.55);
-      return false;
-    }
     if (lenis) {
       lenis.options.virtualScroll = ({ deltaY, event }) => {
-        if (event.type.includes("touch")) return touch(deltaY, event);
+        if (event.type.includes("touch")) return true;                 // touch: native scrolling (see snap above)
         if (!deltaY) return true;
         return !wheel(Math.sign(deltaY), event, deltaY);
       };
-      // A fling that coasts into the section stops on the nearest end step instead of skipping through
-      let prevY = scrollY;
-      addEventListener("scroll", () => {
-        const y = scrollY, now = performance.now();
-        if (coarse && !touching && now > busyUntil && now > (window.__progUntil || 0) && lenis.isScrolling !== "smooth") {
-          if (prevY < st.start - 2 && y > st.start + 8 && y < st.end) go(0);
-          else if (prevY > st.end + 2 && y < st.end - 8 && y > st.start) go(LAST);
-        }
-        prevY = y;
-      }, { passive: true });
     }
 
     if (reduced) return;
@@ -541,7 +520,7 @@
       .fromTo(".app__text > *", { y: 60, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.08, ease: "power2.out" }, 0.2);
     // (no exit fade: the section simply scrolls away, fully readable)
     // A pronounced float on the phone
-    gsap.to(phone, { y: -30, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1 });
+    gsap.to(phone, { y: mobile ? -10 : -30, duration: 2.6, ease: "sine.inOut", yoyo: true, repeat: -1 });
     gsap.fromTo(phone, { rotation: -1.6 }, { rotation: 1.6, duration: 3.4, ease: "sine.inOut", yoyo: true, repeat: -1 });
 
     // Particle rings radiating from behind the phone in the current step's color
@@ -656,6 +635,13 @@
   reveals();
   staticSection();
   appSection();
+  // Anything that changes the page height after load (images, fonts, the form) moves every section below it,
+  // so re-measure the scroll triggers whenever the page height settles on a new value
+  if ("ResizeObserver" in window) {
+    let lastH = document.documentElement.scrollHeight, rT = 0;
+    new ResizeObserver(() => { const h = document.documentElement.scrollHeight; if (Math.abs(h - lastH) < 2) return; lastH = h;
+      clearTimeout(rT); rT = setTimeout(() => ScrollTrigger.refresh(), 180); }).observe(document.body);
+  }
   runLoader();
   addEventListener("load", () => { if (document.body.classList.contains("is-loading")) { window.scrollTo(0, 0); if (lenis) lenis.scrollTo(0, { immediate: true, force: true }); } ScrollTrigger.refresh(); });
   addEventListener("beforeunload", () => window.scrollTo(0, 0));

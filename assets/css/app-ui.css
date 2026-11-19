@@ -191,4 +191,32 @@ button.lite__btn { cursor: pointer; }
 .app__plus i:nth-child(13) { --x: 48%; --s: 26px; --t: 5.8s; --d: 4.2s; --w: -16px; }
 .app__plus i:nth-child(14) { --x: 36%; --s: 38px; --t: 6s; --d: 2s; --w: 22px; }
 
+/* step descriptions: plain text on larger screens */
+.app__desc { font-size: inherit; }
+
+/* ---------- Phones: the whole walkthrough fits one screen (title, the three steps as tabs, the full phone) ---------- */
+@media (max-width: 760px) {
+  .app__stage { display: flex; flex-direction: column; align-items: stretch; padding: calc(var(--nav-h) + 1.6svh) var(--pad) 1.6svh; }
+  .app__text { flex: none; }
+  .app__title { margin-top: 0; font-size: clamp(21px, 6vw, 26px); line-height: 1.15; }
+  .app__cta { display: none; }
+  .app__track { order: 3; padding-left: 0; max-width: none; }
+  .app__progress { display: none; }
+  .app__steps { position: relative; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 12px 0 calc(2 * 1.3 * 13.5px + 16px); }
+  .app__steps li { position: static; display: block; padding: 8px 4px; text-align: center; border-radius: 14px; }
+  .app__steps li::before { display: none; }
+  .app__steps li .num { display: none; }
+  .app__steps li b { display: block; margin: 0; font-size: 13px; letter-spacing: .2em; margin-right: -.2em; }
+  .app__steps li.is-active { transform: none; box-shadow: 0 10px 24px -14px rgba(34, 36, 58, .45), inset 0 -3px 0 var(--c); }
+  .app__steps li span:last-child, .app__steps li:not(.is-active) span:last-child { font-size: 13px; }
+  .app__steps li .app__desc { display: none; }
+  .app__steps li.is-active .app__desc { display: block; position: absolute; left: 0; right: 0; top: calc(100% + 8px); font-size: 13.5px; line-height: 1.3; text-align: center; color: var(--ink-2); }
+  .app__device { flex: 1; min-height: 0; margin-top: 0; display: grid; place-items: center; }
+  .phone { width: min(60vw, calc((100svh - var(--nav-h) - 228px) / 2.13)); border-radius: 26px; padding: 6px; }
+  .phone__screen { border-radius: 21px; }
+  .app__plus i { bottom: 6%; }
+}
+/* the swipe hint never covers the phone */
+.in-app .swipe { opacity: 0 !important; pointer-events: none; }
+
 @media (prefers-reduced-motion: reduce) { .lite__sky .cloud, .lite__btn.is-pulse, .app[data-step="1"] .app__plus i { animation: none; } }
