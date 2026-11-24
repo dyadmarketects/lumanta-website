@@ -138,6 +138,22 @@
     const p = gl.createProgram(); gl.attachShader(p, v); gl.attachShader(p, f); gl.linkProgram(p);
     if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.warn(gl.getProgramInfoLog(p)); return false; }
     this.prog = p;
+    // Composite pass. The glow is drawn additively (alpha 0, colour > 0), which is not a valid premultiplied pixel.
+    // Some GPUs (Apple's Metal compositor in Safari and Chrome on Macs) treat those pixels as fully transparent,
+    // so the particles vanished there. Drawing offscreen first and then copying out with alpha raised to the
+    // brightest channel gives every browser a valid image that looks the same.
+    const cv = sh(gl.VERTEX_SHADER, "attribute vec2 aQ; varying vec2 vUv; void main(){ vUv = aQ * 0.5 + 0.5; gl_Position = vec4(aQ, 0.0, 1.0); }");
+    const cf = sh(gl.FRAGMENT_SHADER, "precision mediump float; uniform sampler2D uTex; varying vec2 vUv; void main(){ vec4 c = texture2D(uTex, vUv); gl_FragColor = vec4(c.rgb, max(c.a, max(c.r, max(c.g, c.b)))); }");
+    if (cv && cf) {
+      const q = gl.createProgram(); gl.attachShader(q, cv); gl.attachShader(q, cf); gl.linkProgram(q);
+      if (gl.getProgramParameter(q, gl.LINK_STATUS)) {
+        this.comp = { prog: q, loc: gl.getAttribLocation(q, "aQ"), tex: gl.getUniformLocation(q, "uTex"), buf: gl.createBuffer(), fbo: gl.createFramebuffer(), t: gl.createTexture() };
+        gl.bindBuffer(gl.ARRAY_BUFFER, this.comp.buf); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+        gl.bindTexture(gl.TEXTURE_2D, this.comp.t);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      }
+    }
     this.loc = {};
     ["uProj", "uView", "uModel", "uTime", "uBurst", "uForm", "uUseStatic", "uStatic", "uExplode", "uRise", "uSize", "uDpr", "uMouseOn", "uMouse", "uAlpha", "uAdditive", "uLight", "uLightF"].forEach(function (n) {
       this.loc[n] = gl.getUniformLocation(p, n);
@@ -164,8 +180,10 @@
       const loc = gl.getAttribLocation(self.prog, name); if (loc < 0) return;
       const b = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, b); gl.bufferData(gl.ARRAY_BUFFER, arr, gl.STATIC_DRAW);
       gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, size, gl.FLOAT, false, 0, 0);
+      self.attrs.push({ loc: loc, buf: b, size: size });
     }
     gl.useProgram(this.prog);
+    this.attrs = [];
     attr("aTarget", data.pos.subarray(0, n * 3), 3);
     attr("aScatter", scatter, 3);
     attr("aStatic", stat, 3);
@@ -181,6 +199,15 @@
     this.dpr = dpr; this.w = w; this.h = h; this.aspect = w / h;
     this.canvas.width = Math.round(w * dpr); this.canvas.height = Math.round(h * dpr);
     this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+    const c = this.comp, gl = this.gl;
+    if (c) {
+      gl.bindTexture(gl.TEXTURE_2D, c.t);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, this.canvas.width, this.canvas.height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+      gl.bindFramebuffer(gl.FRAMEBUFFER, c.fbo);
+      gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, c.t, 0);
+      if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) this.comp = null;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    }
   };
 
   /* Camera distance that keeps the ~7.8 x 8 unit logomark comfortably in frame */
@@ -223,9 +250,12 @@
     this.mouse.sx += (this.mouse.x - this.mouse.sx) * 0.2;
     this.mouse.sy += (this.mouse.y - this.mouse.sy) * 0.2;
     this.mouse.k += ((this.mouse.has ? 1 : 0) - this.mouse.k) * (this.mouse.has ? 0.12 : 0.06);
+    const c = this.comp;
+    if (c) gl.bindFramebuffer(gl.FRAMEBUFFER, c.fbo);
     gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
     gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA); gl.disable(gl.DEPTH_TEST);
     gl.useProgram(this.prog);
+    if (c) this.attrs.forEach(function (a) { gl.bindBuffer(gl.ARRAY_BUFFER, a.buf); gl.enableVertexAttribArray(a.loc); gl.vertexAttribPointer(a.loc, a.size, gl.FLOAT, false, 0, 0); });
     gl.uniformMatrix4fv(L.uProj, false, proj);
     gl.uniformMatrix4fv(L.uView, false, view);
     gl.uniformMatrix4fv(L.uModel, false, model);
@@ -235,6 +265,15 @@
     gl.uniform1f(L.uMouseOn, u.mouseOn * this.mouse.k); gl.uniform3f(L.uMouse, this.mouse.sx, this.mouse.sy, 0);
     gl.uniform1f(L.uAlpha, u.alpha); gl.uniform1f(L.uAdditive, u.additive); gl.uniform1f(L.uLight, u.light); gl.uniform1f(L.uLightF, u.light);
     gl.drawArrays(gl.POINTS, 0, this.n);
+    if (c) {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.clear(gl.COLOR_BUFFER_BIT); gl.disable(gl.BLEND);
+      gl.useProgram(c.prog);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, c.t); gl.uniform1i(c.tex, 0);
+      gl.bindBuffer(gl.ARRAY_BUFFER, c.buf); gl.enableVertexAttribArray(c.loc); gl.vertexAttribPointer(c.loc, 2, gl.FLOAT, false, 0, 0);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      gl.disableVertexAttribArray(c.loc);
+    }
   };
 
   LumantaParticles.prototype.start = function (onFrame) {
